@@ -1,0 +1,20 @@
+# Perfil preenchido é local: pode conter contexto de cliente ou da equipe (§11)
+PERFIL.md
+
+# Prompts gerados pela concatenação (ver README → Como usar → cenário 2)
+prompt-*.md
+
+# Segredos e ambiente
+.env
+.env.*
+*.pem
+*.key
+
+# Sistema operacional e editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*~
