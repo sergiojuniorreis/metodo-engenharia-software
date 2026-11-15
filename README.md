@@ -192,6 +192,41 @@ núcleo inteiro e só abre as referências que a tarefa pede.
 5. *(Opcional)* Copie `PERFIL.modelo.md` para `PERFIL.md` dentro da pasta da skill e preencha
    idioma, shell, moeda, lei de dados e regras do seu domínio.
 
+#### Instalação por terminal (Linux, Claude Code, Codespaces)
+
+No **Claude Code** (local no Linux) ou em um **GitHub Codespaces**, cole o comando abaixo no
+terminal. Ele clona o repositório e instala só os arquivos da skill em `~/.claude/skills/`, na
+pasta com o nome do campo `name` do `SKILL.md`:
+
+```bash
+# 1. Clona num diretório temporário e instala a skill no Claude Code
+git clone --depth 1 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes \
+  && mkdir -p ~/.claude/skills/metodo-engenharia-software \
+  && cp -r /tmp/mes/SKILL.md /tmp/mes/PERFIL.modelo.md /tmp/mes/references \
+        ~/.claude/skills/metodo-engenharia-software/ \
+  && rm -rf /tmp/mes \
+  && echo "Skill instalada em ~/.claude/skills/metodo-engenharia-software"
+```
+
+> **Codespaces:** o diretório `~/.claude/skills/` é lido pelo Claude Code dentro do Codespace.
+> Se o seu agente usa outro caminho (por exemplo um diretório `skills/` na raiz do projeto),
+> troque o destino `~/.claude/skills/metodo-engenharia-software` pelo caminho que ele lê.
+
+**Conferir a instalação:**
+
+```bash
+ls ~/.claude/skills/metodo-engenharia-software
+# deve listar: PERFIL.modelo.md  references  SKILL.md
+```
+
+**Atualizar depois** (repetir o mesmo comando sobrescreve com a versão mais recente) ou, se
+preferir manter um clone versionado:
+
+```bash
+git clone https://github.com/sergiojuniorreis/metodo-engenharia-software.git
+cd metodo-engenharia-software && git pull   # nas próximas vezes
+```
+
 **Como conferir que funcionou:** peça ao agente *"vou começar um projeto novo de integração
 com ERP"*. Uma skill carregada responde pelo **estudo de abordagem (§3)** e pelo **módulo
 §16.1** antes de propor qualquer código. Se ele for direto para o código, a skill não
