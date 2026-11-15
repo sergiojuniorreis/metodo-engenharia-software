@@ -7,7 +7,7 @@
 [![Licença: MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-blue.svg)](LICENSE)
 [![Idioma: pt-BR](https://img.shields.io/badge/idioma-pt--BR-009c3b.svg)](#)
 [![Formato: SKILL.md](https://img.shields.io/badge/formato-SKILL.md-8a2be2.svg)](SKILL.md)
-[![Módulos: 9 + 5](https://img.shields.io/badge/m%C3%B3dulos-9%20%2B%205-orange.svg)](#índice-dos-módulos)
+[![Módulos: 9 + 6](https://img.shields.io/badge/m%C3%B3dulos-9%20%2B%206-orange.svg)](#índice-dos-módulos)
 
 *Regra sem teste é boato.*
 
@@ -83,6 +83,7 @@ flowchart TD
         M3["§16.3 Apps Microsoft, Google e afins"]
         M4["§16.4 Extensões de navegador"]
         M5["§16.5 Aplicativos web, mobile, desktop"]
+        M6["§16.6 Front-end: interface, desempenho, acessibilidade"]
     end
 
     N --> REF
@@ -111,7 +112,8 @@ metodo-engenharia-software/
 │       ├── orquestracao-mcp.md
 │       ├── apps-microsoft-google.md
 │       ├── extensoes-navegador.md
-│       └── aplicativos.md
+│       ├── aplicativos.md
+│       └── front-end.md
 ├── README.md
 └── LICENSE
 ```
@@ -151,6 +153,7 @@ metodo-engenharia-software/
 | §16.3 | [`apps-microsoft-google.md`](references/16-modulos/apps-microsoft-google.md) | O agente lê ou escreve em e-mail, calendário, documentos, chat ou arquivos de uma suíte de escritório |
 | §16.4 | [`extensoes-navegador.md`](references/16-modulos/extensoes-navegador.md) | O projeto é uma extensão, um userscript ou um agente que navega e clica |
 | §16.5 | [`aplicativos.md`](references/16-modulos/aplicativos.md) | O projeto tem interface para usuário final ou API pública |
+| §16.6 | [`front-end.md`](references/16-modulos/front-end.md) | O projeto tem interface web: renderização, orçamento de bundle, Core Web Vitals, arquitetura de componentes, acessibilidade e a stack de referência |
 
 > **Projeto sem IA:** §5, §6, as análises A e B do §3 e os módulos §16.2 a §16.4 se respondem
 > "não se aplica — motivo". O resto vale inteiro.

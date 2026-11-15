@@ -32,6 +32,7 @@ quando a situação pede. Toda referência "§n" aponta para o arquivo desta tab
 | §16.3 Agentes conectados a apps (Microsoft, Google e afins) | `references/16-modulos/apps-microsoft-google.md` |
 | §16.4 Extensões de navegador e agentes que operam o navegador | `references/16-modulos/extensoes-navegador.md` |
 | §16.5 Aplicativos (web, mobile, desktop) | `references/16-modulos/aplicativos.md` |
+| §16.6 Front-end (web): interface, desempenho e acessibilidade | `references/16-modulos/front-end.md` |
 
 - **Modelo ou agente sem suporte a skills:** concatene este arquivo com as referências da
   situação no system prompt, no `AGENTS.md` ou no arquivo de regras do projeto.
@@ -61,6 +62,7 @@ quando a situação pede. Toda referência "§n" aponta para o arquivo desta tab
 | Agente ligado a Microsoft 365, Google Workspace ou app semelhante | §16.3 |
 | Extensão de navegador ou agente que opera o navegador | §16.4 |
 | Aplicativo web, mobile ou desktop | §16.5 |
+| Interface web: tela, desempenho no navegador, acessibilidade, componentes, bundle | §16.6 |
 
 ### As oito regras de ouro
 

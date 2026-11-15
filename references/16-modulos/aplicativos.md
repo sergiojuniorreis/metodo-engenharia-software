@@ -2,6 +2,9 @@
 
 Carregue quando o projeto tem interface para usuário final ou API pública.
 
+> **Interface web?** Carregue também o **§16.6 (Front-end)**: renderização, orçamento de bundle,
+> Core Web Vitals, arquitetura de componentes, acessibilidade e a stack de referência.
+
 - **Pauta §14.6 itens 10 e 11 obrigatórios.**
 - **Mobile:** segredo no armazenamento seguro do sistema (Keychain ou Keystore); nunca chave de
   API embutida no app; funcionamento offline com sincronização idempotente (§8).
