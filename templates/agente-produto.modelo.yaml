@@ -18,7 +18,7 @@ saida:
 modelo:
   provedor: <provedor>          # adaptador de provedor: a regra de negócio não conhece o fornecedor
   nome: <modelo e versão fixados>
-  temperatura: 0
+  temperatura: <0 onde o modelo aceita; a garantia vem do schema, não da temperatura>
   prompt: <prompts/classificador.v1.md>   # arquivo próprio, versionado
   escalonamento: <modelo maior só quando o menor titubeia, ou "nenhum">
 

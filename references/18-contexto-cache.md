@@ -13,7 +13,7 @@ que não serve à tarefa.
 | Camada | O que guarda | Onde fica | Quando carrega |
 |---|---|---|---|
 | **Quente** | Fatos que quase toda tarefa usa: o que é o projeto, invariantes, comando de teste, mapa de pastas, onde fica cada setor, armadilhas conhecidas | `AGENTS.md` (o `CLAUDE.md` só o importa com `@AGENTS.md`) | Em toda sessão, inteiro |
-| **Morna** | O que algumas tarefas usam: documento de setores, contratos, ADRs, runbooks, questionários, o método (`SKILL.md` e `references/`) | Arquivos próprios, apontados pela camada quente | Só quando a tarefa toca o assunto |
+| **Morna** | O que algumas tarefas usam: documento de setores, contratos, ADRs, runbooks, questionários e as referências do método (`references/`; o `SKILL.md` entra inteiro quando a skill dispara) | Arquivos próprios, apontados pela camada quente | Só quando a tarefa toca o assunto |
 | **Fria** | O código e os dados | O repositório | Por busca e por trecho, nunca por varredura |
 
 **A camada quente é a mais cara por linha**, porque entra em toda sessão, use-se ou não. Por isso:

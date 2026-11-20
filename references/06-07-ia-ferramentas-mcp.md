@@ -33,7 +33,9 @@ Projeto sem IA: "não se aplica — motivo".
 - **Idempotência obrigatória** em tudo que escreve.
 - **Trava antes do envio**, não correção depois. Barrar antes de gravar é regra; remover
   depois é remendo.
-- **Tudo ou nada em lote.** Um item impedido cancela o lote inteiro.
+- **Tudo ou nada na unidade de negócio.** Escrita que forma um todo (um documento com seus itens,
+  um lote que o destino julga junto) é atômica: um item impedido cancela o conjunto. Mensagens
+  independentes numa fila falham uma a uma, para a fila de mensagens mortas (§3D).
 - **Rota oficial sempre que existir**; automação de tela é reserva documentada com o motivo e
   com a permissão descrita abaixo.
 - **Nenhuma requisição fora do escopo documentado.** Toda requisição que nós implementamos segue,

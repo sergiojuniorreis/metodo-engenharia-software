@@ -106,7 +106,10 @@ Priorizamos a primeira sempre; a segunda entra por gatilho medido.
 - **Adaptador de persistência:** a regra de negócio não conhece o banco; trocar armazenamento
   não toca em skill. O mesmo vale para o provedor de IA (§16.2).
 - **Lote e fila antes de laço serial**; blocos com retomada, não maratona que recomeça do zero.
-- **Horizontal antes de vertical.**
+- **Vertical quando é o mais simples, horizontal quando é preciso.** Máquina maior resolve sem
+  mudar o desenho e costuma ser o primeiro degrau; várias instâncias entram quando a máquina
+  maior não basta, quando a disponibilidade exige redundância ou quando o custo cresce mais que o
+  ganho — e exigem processo sem estado (§10, escada).
 - **Meça com o volume real do acervo.** O que aguenta 50 e quebra em 5.000 não está pronto.
 - **Custo por unidade de trabalho entra na conta:** dobrar throughput dobrando a conta de IA
   não é escalar.

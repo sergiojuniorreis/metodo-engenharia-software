@@ -40,7 +40,7 @@ nas análises A a C do §3.
 ## Modelagem
 
 - **Base simples primeiro e sempre ao lado**: regra, média, sazonal ingênuo, regressão linear ou
-  logística. Toda candidata enfrenta a base no mesmo corpus e com a mesma métrica (§3, análise B).
+  logística. Toda candidata enfrenta a base no mesmo corpus e com a mesma métrica (§3B; tabela por forma do dado no §17.4).
 - **Divisão temporal** quando o dado tem tempo: treino no passado, teste no futuro. Divisão
   aleatória em dado temporal vaza.
 - **Vazamento caçado de propósito**: o mesmo registro, a mesma entidade ou informação do futuro

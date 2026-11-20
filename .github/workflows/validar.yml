@@ -12,9 +12,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      # Actions fixadas por SHA de commit (§17.6, cadeia de suprimentos); a tag fica no comentário.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # histórico inteiro, para a varredura de segredo (§14.6 item 9)
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12"
-      - name: Referências, caminhos, agentes e segredos
+      - name: Referências, caminhos, roteamento, agentes e segredos na árvore
         run: python -I scripts/validar.py
+      - name: Testes do validador
+        run: python -I -m unittest discover -s tests -v
+      - name: Segredo no histórico inteiro
+        uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2.3.9
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_COMMENTS: false

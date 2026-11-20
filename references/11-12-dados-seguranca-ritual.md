@@ -4,10 +4,18 @@
 
 - **Minimização primeiro.** Dado desnecessário à decisão não é coletado, não vai para a
   memória e não fica "por via das dúvidas".
-- **Nenhum dado pessoal ou credencial vai ao modelo sem ofuscação feita no núcleo.** Nome,
-  documento nacional (ex.: CPF), endereço, telefone, e-mail, conta bancária e documento de
-  identidade saem mascarados ou trocados por rótulo estável antes do envio. **O que vai ao
-  modelo sai da nossa fronteira: trate cada chamada como publicação.**
+- **O que vai ao modelo sai da nossa fronteira: trate cada chamada como envio a terceiro.** O
+  que pode sair, e como, depende da classe do dado e do contrato com o provedor:
+
+  | Classe | Exemplos | Ao modelo externo |
+  |---|---|---|
+  | Segredo | Senha, token, chave, credencial | **Nunca.** O modelo chama a ferramenta; a credencial fica com ela |
+  | Pessoal sensível | Saúde, biometria, religião, dado de criança | Só com base legal específica, finalidade que exija o dado e contrato que o permita; senão, ofuscado |
+  | Pessoal | Nome, documento nacional (ex.: CPF), endereço, telefone, e-mail, conta bancária | **Ofuscado por padrão** (máscara ou rótulo estável, feito no núcleo). Em claro só quando a finalidade exige o dado (ex.: agente que responde e-mail precisa do endereço), com o provedor contratado como operador — sem treino sobre o que enviamos, região e retenção conferidas — e só o mínimo |
+  | Comercial interno | Custo, margem, preço de outra empresa | Ofuscado, salvo contrato que o permita; nunca em texto que terceiro lê (§12) |
+  | Interno ou público | Regra, catálogo, documento público | Livre, respeitando o contrato |
+
+  A escolha de cada classe que sai em claro é escrita, com o motivo, no `PERFIL.md` ou no ADR.
 - **Log e memória guardam identificador, não identidade.** Onde o nome for indispensável ao
   operador, ele aparece na tela, não no arquivo que circula entre máquinas.
 - **Retenção declarada e descarte automático.** Cada base diz por quanto tempo guarda; backup
@@ -55,9 +63,11 @@
 
 - **Nunca vazar preço, custo ou margem nossa** em campo que cliente ou concorrente lê —
   varrido por bateria em todo o código, não conferido no olho.
-- **Voz do texto operacional — opcional por projeto.** Texto que vai a sistema de terceiro pode
-  seguir a voz da operação, sem mencionar robô, IA ou "automação", **só quando os termos de uso
-  do sistema de destino e a lei aplicável permitirem**; na dúvida, informe que há automação. O
+- **Voz do texto operacional — opcional por projeto, desligada por padrão.** Texto que vai a
+  sistema de terceiro pode seguir a voz da operação, sem mencionar robô, IA ou "automação", **só
+  quando o projeto liga a opção por escrito (`PERFIL.md` ou `AGENTS.md`) e os termos de uso do
+  sistema de destino e a lei aplicável permitem**; na dúvida, informe que há automação. Nunca
+  vale para se passar por pessoa diante de quem pergunta se fala com uma máquina. O
   veredito técnico fica no log interno. Em qualquer caso, quem tem direito de saber — cliente,
   auditor, titular de dados — sabe que há automação, e a decisão é rastreável e revisável por
   humano (§11).

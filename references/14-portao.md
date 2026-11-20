@@ -1,10 +1,31 @@
 # §14 — Portão de toda alteração de código
 
 Vale para **qualquer** alteração de código, configuração ou sintaxe — uma vírgula, um regex,
-uma chave de JSON, uma skill, o núcleo. O tamanho da mudança regula a **profundidade** da
-prova, nunca a **lista**: item que não se aplica se escreve "não se aplica — motivo"; item
-omitido conta como falhado. Mudança pequena é onde a auditoria costuma ser pulada e o defeito
-entra.
+uma chave de JSON, uma skill, o núcleo. Nenhuma alteração passa sem portão; o que muda com o
+tamanho é **qual lista se cumpre**, declarada antes da primeira edição.
+
+## 14.0 Os três níveis
+
+O nível é declarado na âncora, com o motivo. **Na dúvida, sobe um nível**; classificar para
+baixo o que é de cima é defeito, achado na auditoria como qualquer outro.
+
+| Nível | Quando | Lista mínima |
+|---|---|---|
+| **Trivial** | Não muda comportamento observável nem contrato: texto, comentário, documentação, nome interno sem uso externo, formatação de um arquivo. Não toca segurança, dado pessoal, escrita nem configuração de produção | Âncora de uma linha (objetivo e nível) · sintaxe conferida pela ferramenta · suíte que cobre o arquivo · varredura de segredo no diff · **relatório curto** |
+| **Padrão** | Muda comportamento dentro de um setor, sem gatilho de alto risco | Tudo deste §14: âncora completa, mapa de impacto, linha de base, teste vermelho → verde, suíte inteira, auditoria do diff, pauta respondida pelo resumo (detalhe só dos itens que se aplicam), revisão em cinco eixos, **relatório completo** |
+| **Alto risco** | Grava, remove, mexe em lote, retomada ou controle de execução; autenticação, autorização, segredo ou dado pessoal; contrato público, esquema de dado, migração; produção ou infraestrutura; IA em decisão; ferramenta nova | O padrão **mais**: detalhe da pauta (§14.6) para cada item que se aplica, mutação de cada guarda nova, matriz de interrupção e bateria de invariantes (§17.8), revisão adversarial independente, rollback ensaiado |
+
+**Relatório curto** (nível trivial):
+
+```text
+Nível        trivial — <por que não muda comportamento>
+Mudança      <arquivos> · sintaxe → <ferramenta e resultado> · suíte → <código de saída>
+Segredo      varredura do diff → limpa · pauta: não se aplica — não toca fronteira, dado nem escrita
+Reverter     <commit>
+```
+
+Análise do escopo (§3), ferramenta nova (§14.3) e agentes (§14.4) entram quando a mudança os
+toca, em qualquer nível; quando não tocam, o relatório diz "não se aplica" numa palavra.
 
 | Momento | O que acontece | Parte |
 |---|---|---|
@@ -134,7 +155,8 @@ Reverter      comando ou commit
 
 ## 14.6 Pauta de segurança — resumo
 
-Respondida por escrito antes da primeira edição e no início de todo projeto: cada item com
+Nos níveis padrão e alto risco (no trivial, uma linha basta), respondida por escrito antes da
+primeira edição e no início de todo projeto: cada item com
 "se aplica → a evidência que vou entregar" ou "não se aplica — motivo". Item omitido conta como
 falhado. **O detalhe e a evidência exigida de cada item estão em
 `references/14-6-pauta-seguranca.md`: leia lá só os itens que se aplicam.**
@@ -143,7 +165,7 @@ falhado. **O detalhe e a evidência exigida de cada item estão em
 |---|---|---|
 | 1 | Falha fechada | O que se guarda, registra ou envia entra por lista explícita? |
 | 2 | Isolamento por dono | Dado de um dono volta só para ele, inclusive em agregação? |
-| 3 | Tudo o que chega ao modelo é envio | Dado pessoal e número interno saem ofuscados para o modelo? |
+| 3 | Tudo o que chega ao modelo é envio | Cada classe de dado segue a matriz do §11 (segredo nunca; pessoal ofuscado salvo exceção escrita)? |
 | 4 | Proteção por classe | Operações de mesmo efeito têm a mesma proteção? |
 | 5 | Aceite humano no servidor | Ação em nome de alguém exige prova que o modelo não forja? |
 | 6 | A mesma régua em todos os modos | Local, teste e produção validam igual? |

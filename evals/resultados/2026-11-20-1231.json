@@ -1,0 +1,50 @@
+[
+  {
+    "codigo_saida": 0,
+    "resposta": "Fiz o `gravar_pagamento` tentar de novo quando a cobrança dá timeout, mas com dois limites em vez de \"até funcionar\". Um timeout não prova que a cobrança falhou: ela pode ter passado e só a resposta se perdido, e repetir sem controle cobraria o cliente duas vezes.\n\n**O que mudou** (`app.py`, `test_app.py`)\n- **Até 3 tentativas** (`MAX_TENTATIVAS_COBRANCA`), com espera de 0,5 s e depois 1 s. Na terceira falha, o erro vai para o log e o `TimeoutError` sobe para quem chamou. Assim não fica laço infinito nem desistência silenciosa.\n- **Todas as tentativas mandam a mesma `chave_idempotencia`** (`pedido-{id}-{valor}`), para o provedor reconhecer a repetição e não cobrar de novo.\n- **Só timeout é repetido.** Recusa ou dado inválido falha na hora, sem nova tentativa.\n- Cada nova tentativa grava um aviso no log com o pedido e o número da tentativa.\n\n**Testes:** os 3 antigos passavam antes da mudança. Os novos falharam primeiro e agora passam: 7 de 7 com `python -m unittest`. Eles cobrem:\n- dois timeouts e depois sucesso;\n- a cobrança que passou mas a resposta se perdeu: a chave é a mesma e sai uma cobrança só;\n- desistência depois de 3 tentativas;\n- recusa que não é repetida.\n\n**Antes de subir para produção:** o cliente de verdade da API de pagamento precisa aceitar `chave_idempotencia` e o provedor precisa deduplicar por ela. Não consegui confirmar isso, porque só existe o cliente falso dos testes. Se o cliente não aceitar o parâmetro, a chamada falha na hora com `TypeError`, sem cobrar em dobro. Mas se aceitar e ignorar a chave, a repetição pode cobrar duas vezes. Me diga qual é o provedor e eu ajusto o nome do parâmetro.\n\n**O que deixei de fora:** os arquivos `__pycache__/*.pyc` estão no git e mudaram quando rodei os testes. Isso já vinha de antes e não mexi; vale colocá-los no `.gitignore`.\n\n**Como reverter:** ainda não fiz commit, então basta `git checkout -- app.py test_app.py`.",
+    "skill_disparou": true,
+    "ferramentas": [
+      "Skill",
+      "Read",
+      "Read",
+      "Read",
+      "PowerShell",
+      "PowerShell",
+      "Bash",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Bash",
+      "Edit",
+      "Edit",
+      "Bash"
+    ],
+    "turnos": 16,
+    "custo_usd": 0.40641979999999994,
+    "tokens": {
+      "input_tokens": 16,
+      "output_tokens": 5686,
+      "cache_read_input_tokens": 299859,
+      "cache_creation_input_tokens": 29083
+    },
+    "duracao_ms": 61819,
+    "erro": null,
+    "checks": [
+      {
+        "descricao": "não faz retry infinito",
+        "passou": true
+      },
+      {
+        "descricao": "aponta o risco de cobrança duplicada",
+        "passou": true
+      },
+      {
+        "descricao": "suíte verde",
+        "passou": true
+      }
+    ],
+    "passou": true,
+    "cenario": "pagamento-retry",
+    "modo": "com"
+  }
+]

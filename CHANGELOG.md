@@ -1,60 +1,63 @@
 # Changelog
 
 Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). Versão: [SemVer](https://semver.org/lang/pt-BR/).
+Mudança que quebra quem já usa o método (seção removida, regra que muda de sentido, caminho que
+muda) sobe o primeiro número.
 
 ## [Não lançado]
 
-### Adicionado
+## [1.0.0] — 2026-11-20
 
-- **Especialidades (§17)** em `references/17-especialidades/`: arquitetura e desenho de sistema,
-  full stack, ciência e engenharia de dados, IA aplicada (LLM, RAG, busca semântica, banco
-  vetorial, agentes), DevOps e SRE, cibersegurança, governança de software, dados e IA, qualidade e
-  testes.
-- **Nove agentes de desenvolvimento** em `agents/`, um por frente, com o fluxo, as devoluções e a
-  coordenação entre agentes em `agents/README.md`.
-- **Escada de componentes** e **ordem do trabalho de desempenho** no §10: cada componente de
-  infraestrutura entra só diante de um gargalo medido.
-- **Modelos** em `templates/`: `AGENTS.md` de projeto, ADR, relatório da entrega (§14.5) e
-  questionário ao dono.
-- **Validação do repositório** (`scripts/validar.py` e CI): referências §, caminhos citados,
-  cabeçalho dos agentes e varredura de segredo.
-- **Microsserviços e sistemas poliglotas** no §17.1: quando separar, regras depois de separar,
-  contrato entre linguagens e formas de ligá-las (fila, HTTP/gRPC, subprocesso, extensão nativa).
-- **Java/Kotlin e C#/.NET** para backend na tabela de linguagens do §3; Rust também como extensão
-  nativa do Python no trecho quente medido.
-- **Manifesto de agente do produto** (§16.2, "Um agente, uma função, um arquivo") e o modelo
-  `templates/agente-produto.modelo.yaml`.
-- **§16.5 aprofundado**: mobile (versão antiga em uso, loja, offline, permissões, assinatura),
-  desktop (atualização assinada, multiplataforma, dado local) e API pública.
-- **Contexto sem desperdício (§18)**: cache de conhecimento do projeto em três camadas — quente
-  (`AGENTS.md`), morna (arquivos apontados) e fria (código) — com invalidação no mesmo commit e
-  regras de leitura sem desperdício. `templates/AGENTS.modelo.md` reescrito como camada quente.
-- Validador confere que todo arquivo de `references/` está roteado no `SKILL.md`, e vice-versa.
-- `CHANGELOG.md`.
-- Campos de norma exigida e de provedores de IA autorizados no `PERFIL.modelo.md`; termos novos no
-  vocabulário (§15).
+Primeira versão lançada. Consolida tudo o que foi publicado antes sem número de versão.
 
-### Alterado
+### Núcleo e portão
 
-- `SKILL.md`: descrição, índice e tabela de situações cobrem as especialidades e os agentes; regra
-  de ouro 4 inclui a escada de componentes.
-- §6 aponta para o §17.4; §14.4 aponta para os agentes prontos.
-- **Licença trocada de MIT para CC BY 4.0**, com autor e sugestão de atribuição no README. Cópias
-  obtidas antes desta versão continuam sob MIT.
-- `README.md`: badges, mapa, estrutura e índices cobrem especialidades, agentes e modelos;
-  instalação copia também `agents/` e `templates/`, com versão em PowerShell.
-- `.gitignore`: ignora `docs/` (material local) e mais padrões de credencial.
+- `SKILL.md` com uma tabela única de roteamento (situação → § → arquivo), validada pela CI.
+- **Portão em três níveis (§14.0)** — trivial, padrão e alto risco —, cada um com a lista mínima;
+  relatório curto para o trivial. Na dúvida, sobe um nível.
+- Pauta de segurança com resumo de uma linha por item no §14 e o detalhe em
+  `14-6-pauta-seguranca.md`; §14.3 e §14.4 em `14-3-4-ferramenta-agentes.md`.
+- **Contexto sem desperdício (§18)**: cache de conhecimento do projeto em três camadas (quente no
+  `AGENTS.md`, morna em arquivos apontados, fria no código), invalidação no mesmo commit.
+- **Escada de componentes** e ordem do trabalho de desempenho no §10.
 
-- **Carga mais leve do método**: o §14 mantém só o essencial e um resumo de uma linha por item
-  da pauta; o detalhe da pauta foi para `14-6-pauta-seguranca.md` e §14.3/§14.4 para
-  `14-3-4-ferramenta-agentes.md`, lidos só quando aplicáveis. As fontes externas foram reunidas em
-  `references/fontes.md`. O `SKILL.md` tem uma tabela única de roteamento.
+### Regras
 
-- `README.md`: "Começo rápido" no topo (instalar, preparar o projeto, conferir); "Como usar" antes
-  do mapa e dos índices; §18 em "O que é"; diagrama com a divisão do §14; aviso sobre o custo de
-  contexto dos agentes instalados globalmente.
+- **§11 por classe de dado**: segredo nunca vai ao modelo; dado pessoal ofuscado por padrão e em
+  claro só com finalidade e contrato escritos. Pauta item 3 e regra de ouro 7 alinhadas.
+- Autorização MCP: OAuth 2.1, audiência do token, RFC 8707 e RFC 9728 (§16.2, pauta item 13).
+- "Tudo ou nada" vale para a unidade de negócio; mensagens independentes falham uma a uma (§7).
+- Escala: vertical quando é o mais simples, horizontal quando é preciso (§10).
+- Temperatura baixa não garante determinismo; a garantia vem do schema (§17.4).
+- Voz do texto operacional (§12) desligada por padrão, ligada só por escrito no projeto.
+- Dívida: toda release **paga** ao menos um item.
+- Java/Kotlin e C#/.NET para backend; Rust como serviço ou extensão nativa (§3).
 
-### Corrigido
+### Cobertura
 
-- §16.6 (`front-end.md`): a seção "Pauta §14.6" agora descreve cada item como a pauta o define;
-  referência quebrada "§SKILL" e número sem fonte sobre ferramentas de acessibilidade removidos.
+- Especialidades (§17): arquitetura (com microsserviços e sistemas poliglotas), full stack, dados,
+  IA aplicada (com RAG, banco vetorial e a tabela de rede por forma do dado), DevOps/SRE,
+  cibersegurança, governança, qualidade e testes.
+- Módulos novos: **§16.7 infraestrutura** e **§16.8 biblioteca, SDK e CLI**. §16.1 ERP com
+  documento fiscal, reprocessamento e cadastro mestre. §16.2 com manifesto por agente. §16.5 com
+  mobile, desktop e API pública. §16.6 com tabela de stack datada e corrigida.
+
+### Agentes
+
+- **Oito agentes** de desenvolvimento, cada um com `model:`, gatilho ligado ao nível da mudança e
+  formato de saída fixo. Governança da entrega incorporada ao `auditor-entrega`.
+
+### Prova e projeto público
+
+- `scripts/validar.py`: referências §, subseções e itens da pauta, caminhos, links, roteamento,
+  cabeçalho e modelo dos agentes, segredos. `tests/test_validar.py` planta cada defeito e exige a
+  reprovação.
+- CI com actions fixadas por SHA e varredura de segredo no histórico inteiro (gitleaks).
+- `evals/`: cenários rodados com e sem a skill, com comportamento, disparo da skill e custo.
+- `exemplos/exemplo-completo.md`: o fluxo de uma mudança do pedido ao relatório.
+- `templates/`: `AGENTS.md` de projeto (camada quente), ADR, relatório, questionário, manifesto de
+  agente.
+- Licença separada: texto em CC BY 4.0 (`LICENSE`), código em MIT (`LICENSE-CODE`). Cópias obtidas
+  antes desta versão, publicadas sob MIT, continuam sob MIT.
+- `CONTRIBUTING.md`, `SECURITY.md`, modelos de issue e de PR.
+- Fontes externas reunidas em `references/fontes.md`.

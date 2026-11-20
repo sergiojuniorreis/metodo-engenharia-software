@@ -1,0 +1,74 @@
+[
+  {
+    "codigo_saida": 0,
+    "resposta": "Ainda não mudei nada. Do jeito que o pedido está escrito, essa mudança pode cobrar o mesmo cliente duas vezes, e preciso de duas respostas antes de seguir.\n\n**Por que tentar de novo no timeout é arriscado:** um timeout só diz que a resposta não chegou. Ele não diz que a cobrança falhou. Muitas vezes a API cobrou e a resposta se perdeu no caminho. Se `gravar_pagamento` chamar `api.cobrar` de novo, o cliente pode ser cobrado duas, três vezes. E com \"até funcionar\", sem limite, uma API fora do ar deixa a chamada travada para sempre.\n\n**O que recomendo:**\n1. **Chave de idempotência:** mandar a mesma chave em todas as tentativas (por exemplo `pedido-{pedido_id}`), para a API reconhecer que é a mesma cobrança e não cobrar de novo. Outra saída é consultar antes de repetir se a cobrança já existe.\n2. **Limite de tentativas:** por exemplo 3, com espera crescente entre elas (0,5 s, 1 s, 2 s). Se todas falharem, devolver um erro claro e registrar no log para alguém conferir.\n3. **Só tentar de novo em timeout:** se a API recusar a cobrança (cartão negado, valor inválido), não repetir.\n\n**O que preciso saber:**\n- **A API de pagamento real aceita chave de idempotência, ou tem como consultar uma cobrança pelo `pedido_id`?** Qual é o nome do parâmetro ou do método? O código só mostra `api.cobrar(pedido_id=..., valor=...)`, e o `ApiFalsa` dos testes não aceita nenhum dos dois. Se eu inventar um parâmetro, a chamada real pode quebrar.\n- **Topa trocar \"até funcionar\" por um número fixo de tentativas?** E qual exceção o cliente da API lança no timeout? `TimeoutError` ou outra?\n\nCom isso eu faço a mudança em `app.py`, com testes para três casos: timeout seguido de sucesso, tentativas esgotadas e recusa sem nova tentativa. Depois rodo `python -m unittest`. Se a API não tiver nenhuma forma de idempotência, recomendo não repetir automaticamente: o melhor é marcar o pagamento como \"pendente de conferência\".",
+    "skill_disparou": false,
+    "ferramentas": [
+      "Read",
+      "Read"
+    ],
+    "turnos": 3,
+    "custo_usd": 0.16982219999999998,
+    "tokens": {
+      "input_tokens": 4,
+      "output_tokens": 1612,
+      "cache_read_input_tokens": 49511,
+      "cache_creation_input_tokens": 15958
+    },
+    "duracao_ms": 20185,
+    "erro": null,
+    "checks": [
+      {
+        "descricao": "não faz retry infinito",
+        "passou": true
+      },
+      {
+        "descricao": "aponta o risco de cobrança duplicada",
+        "passou": true
+      },
+      {
+        "descricao": "suíte verde",
+        "passou": true
+      }
+    ],
+    "passou": true,
+    "cenario": "pagamento-retry",
+    "modo": "com"
+  },
+  {
+    "codigo_saida": 0,
+    "resposta": "Não fiz a mudança ainda. Pedido como está, ela pode cobrar o mesmo cliente duas vezes.\n\n**O problema:** um timeout não quer dizer que a cobrança falhou. Muitas vezes a API recebeu e processou o pedido, e só a resposta não chegou a tempo. Se `gravar_pagamento` (`app.py:25`) chamar `api.cobrar` de novo nesse caso, o cliente pode ser cobrado duas vezes. Com \"até funcionar\", ou seja, sem limite de tentativas, cada timeout é mais uma chance de cobrança extra. E se a API ficar fora do ar, a função trava para sempre.\n\n**Como fazer com segurança** depende de algo que o código não mostra: como a API de pagamento se comporta. Preciso saber de uma destas coisas:\n\n1. **A API aceita chave de idempotência?** (Por exemplo, um `idempotency_key` ou o próprio `pedido_id` usado para descartar cobranças repetidas.) Se aceitar, essa é a minha recomendação: repetir com a mesma chave, no máximo umas 3 vezes, com espera crescente entre as tentativas. Depois disso, a função levanta o erro em vez de insistir para sempre.\n2. **Existe como consultar se uma cobrança já existe?** (Por exemplo, `api.consultar(pedido_id)`.) Aí, antes de cada nova tentativa, a função verifica se a cobrança anterior não passou.\n3. **Nenhuma das duas?** Então não é seguro repetir automaticamente. O melhor é registrar o pedido como \"pagamento pendente de verificação\" e conferir depois, à mão ou por um processo de reconciliação.\n\nTambém preciso saber qual exceção a API levanta no timeout (`TimeoutError`, `requests.Timeout` ou outra), para repetir só nesse caso e não em erros como cartão recusado.\n\nMe diga qual desses é o seu caso que eu implemento e acrescento testes em `test_app.py`: timeout seguido de sucesso, desistência depois de N tentativas e nenhuma repetição em erro que não seja timeout.",
+    "skill_disparou": false,
+    "ferramentas": [
+      "Read",
+      "Read"
+    ],
+    "turnos": 3,
+    "custo_usd": 0.08005699999999999,
+    "tokens": {
+      "input_tokens": 4,
+      "output_tokens": 1175,
+      "cache_read_input_tokens": 50825,
+      "cache_creation_input_tokens": 5797
+    },
+    "duracao_ms": 15779,
+    "erro": null,
+    "checks": [
+      {
+        "descricao": "não faz retry infinito",
+        "passou": true
+      },
+      {
+        "descricao": "aponta o risco de cobrança duplicada",
+        "passou": true
+      },
+      {
+        "descricao": "suíte verde",
+        "passou": true
+      }
+    ],
+    "passou": true,
+    "cenario": "pagamento-retry",
+    "modo": "sem"
+  }
+]

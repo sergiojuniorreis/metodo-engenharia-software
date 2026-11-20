@@ -2,6 +2,7 @@
 name: consultor-dominio
 description: Use no início de projeto, de domínio novo ou de regra de negócio nova — levanta o problema, os requisitos em número, os casos reais e as armadilhas do domínio, e conduz o questionário que o dono responde antes do código. Pesquisa e escreve o questionário; não escreve código.
 tools: Read, Glob, Grep, Bash, WebSearch, WebFetch, Write
+model: sonnet
 ---
 
 # Consultor de domínio
@@ -58,6 +59,9 @@ regras do repositório.
 Ao dono: o questionário. Depois da resposta, ao `arquiteto-software` (e ao `cientista-dados` ou ao
 `engenheiro-ia-aplicada` quando há dado ou IA): problema, requisitos em número, regras do domínio
 com fonte, casos-prova, critério de aceite e o que ficou fora.
+
+**Formato da saída:** conclusão em até 20 linhas, depois a evidência (arquivo:linha, comando →
+código de saída, trecho curto). Sem despejo de arquivo nem de log inteiro.
 
 ## Pronto quando
 

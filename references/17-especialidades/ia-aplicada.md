@@ -19,11 +19,27 @@ Suba um degrau só quando o de baixo perdeu no corpus do projeto, com número:
 **O LLM nunca decide efeito financeiro, fiscal, legal ou cadastral** (regra de ouro 2): extrai,
 propõe, ranqueia ou veta com motivo; a regra decide.
 
+## Rede pela forma do dado (análise B do §3)
+
+Quem escolhe a rede é a forma do dado, não a moda. Toda candidata enfrenta a base simples no
+mesmo corpus (§3B):
+
+| Forma do dado | Primeira escolha | Base simples que ela precisa vencer |
+|---|---|---|
+| Tabela de negócio (linhas × colunas) | Árvores com *boosting* (ex.: XGBoost, LightGBM) ou floresta aleatória — em dado tabular de porte médio as árvores seguem à frente das redes; rede tabular só com ganho medido | Regressão linear ou logística |
+| Texto livre, documento, conversa | Transformer pré-treinado: LLM por API para extrair, classificar ou resumir; encoder pequeno ajustado (família BERT) quando volume e custo pedem | Regra e dicionário; TF-IDF com modelo linear |
+| Imagem, foto, documento escaneado | OCR pronto primeiro; para visão, CNN ou Vision Transformer pré-treinado e ajustado | OCR com regra |
+| Série temporal (demanda, preço, sensor) | Modelo estatístico (ETS, ARIMA) ou *boosting* com defasagens; LSTM, TCN ou Transformer temporal só se vencer | Sazonal ingênuo, média móvel |
+| Grafo (cliente × pedido × produto) | Rede neural de grafo (GNN) | Atributos de vizinhança num modelo tabular |
+| Anomalia sem rótulo | Autoencoder; sem rede, Isolation Forest | Limite estatístico (desvio, quantil) |
+| Busca semântica e RAG | Embeddings pré-treinados com índice vetorial, somados à busca por palavra | Busca por palavra (BM25) |
+
 ## Chamada de modelo
 
 - **Saída estruturada com schema validado** antes de qualquer uso (§6); resposta inválida → um
   retry seguro → conduta conservadora com revisão humana.
-- **Temperatura zero** em decisão e extração; variação só onde a tarefa é criativa.
+- **Temperatura baixa (zero onde o modelo aceita)** em decisão e extração. Nem assim a saída é
+  determinística: a garantia vem do schema, da citação conferida e da regra que decide.
 - **Modelo, versão e prompt fixados**; prompt versionado no repositório como código.
 - **Roteamento por custo**: modelo menor primeiro, maior só quando o menor titubeia (confiança baixa,
   schema inválido, citação não localizada).

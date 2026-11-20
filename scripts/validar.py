@@ -1,4 +1,4 @@
-"""Valida o repositório do método: referências §, caminhos citados, agentes e segredos.
+"""Valida o repositório do método: referências § e itens da pauta, caminhos, roteamento, agentes e segredos.
 
 Uso: python scripts/validar.py   (código de saída 0 = tudo certo; 1 = falhas listadas)
 Só biblioteca padrão. Roda igual local e na CI.
@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
+MODELOS = {"sonnet", "opus", "haiku", "inherit"}
 FERRAMENTAS = {"Read", "Glob", "Grep", "Bash", "Edit", "Write", "WebSearch", "WebFetch", "NotebookEdit"}
 PADROES_SEGREDO = [
     r"sk-[A-Za-z0-9_-]{20,}", r"ghp_[A-Za-z0-9]{20,}", r"github_pat_[A-Za-z0-9_]{20,}",
@@ -36,10 +37,10 @@ def secoes_definidas():
     definidas = set()
     for p in arquivos({".md"}):
         for linha in ler(p).splitlines():
-            m = re.match(r"#{1,3} §(\d+(?:\.\d+)?)\b", linha)
+            m = re.match(r"#{1,3} §(\d+(?:\.\d+)*)\b", linha)
             if m:
                 definidas.add(m.group(1))
-            m = re.match(r"## (\d+(?:\.\d+)?)\.?\s", linha)
+            m = re.match(r"## (\d+(?:\.\d+)*)\.?\s", linha)
             if m:
                 definidas.add(m.group(1))
             if p.name.startswith("03-"):
@@ -53,19 +54,29 @@ def secoes_definidas():
     return definidas
 
 
+def itens_da_pauta():
+    texto = ler(RAIZ / "references" / "14-6-pauta-seguranca.md")
+    return {int(n) for n in re.findall(r"^(\d+)\. \*\*", texto, flags=re.M)}
+
+
 def checar_referencias():
     definidas = secoes_definidas()
+    itens = itens_da_pauta()
     for p in arquivos({".md"}):
         for n, linha in enumerate(ler(p).splitlines(), 1):
-            for ref in re.findall(r"§(\d+(?:\.\d+)?[A-Z]?)", linha):
+            for ref in re.findall(r"§(\d+(?:\.\d+)*[A-Z]?)", linha):
                 if ref not in definidas:
                     falhas.append(f"{p.relative_to(RAIZ)}:{n}: §{ref} não existe")
+            for grupo in re.findall(r"§14\.6[:*,\s]+(?:itens|item)\s+((?:\d+(?:,\s*|\s+e\s+)?)+)", linha):
+                for num in re.findall(r"\d+", grupo):
+                    if int(num) not in itens:
+                        falhas.append(f"{p.relative_to(RAIZ)}:{n}: item {num} da pauta §14.6 não existe")
 
 
 def checar_caminhos():
     for p in arquivos({".md"}):
         for n, linha in enumerate(ler(p).splitlines(), 1):
-            for cam in re.findall(r"`((?:references|agents|templates|scripts)/[^`*<>\s]+\.(?:md|py|ya?ml))`", linha):
+            for cam in re.findall(r"`((?:references|agents|templates|scripts|exemplos|evals|tests)/[^`*<>\s]+\.(?:md|py|ya?ml))`", linha):
                 if not (RAIZ / cam).exists():
                     falhas.append(f"{p.relative_to(RAIZ)}:{n}: caminho citado não existe: {cam}")
             for cam in re.findall(r"\]\(([^)#:]+)\)", linha):
@@ -102,6 +113,9 @@ def checar_agentes():
         desconhecidas = {t.strip() for t in c.get("tools", "").split(",")} - FERRAMENTAS
         if desconhecidas:
             falhas.append(f"{rel}: ferramentas desconhecidas: {sorted(desconhecidas)}")
+        modelo = c.get("model", "")
+        if modelo not in MODELOS and not modelo.startswith("claude-"):
+            falhas.append(f"{rel}: model ausente ou desconhecido: '{modelo}'")
         if f"`{p.stem}`" not in ler(RAIZ / "agents" / "README.md"):
             falhas.append(f"{rel}: agente não listado em agents/README.md")
     c = cabecalho(RAIZ / "SKILL.md") or {}

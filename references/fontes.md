@@ -30,6 +30,45 @@ ele serve para conferir de onde vem uma regra.
 - Richardson, C. Padrões *Transactional outbox* e *Saga*
   (microservices.io/patterns/data/transactional-outbox e …/saga).
 
+## §7 — Ferramentas, MCP e limite de estrago
+
+- Model Context Protocol. *Specification* e *Authorization* (modelcontextprotocol.io/specification).
+- Nygard, M. *Release It!*, 2ª ed. Pragmatic Bookshelf, 2018 — circuit breaker, timeout, bulkhead.
+- Amazon Builders' Library. *Timeouts, retries, and backoff with jitter* (aws.amazon.com/builders-library).
+- IETF RFC 9110, *HTTP Semantics* — `Retry-After` e métodos idempotentes.
+
+## §10 — Ferramenta por necessidade e escala
+
+- Kleppmann, M. *Designing Data-Intensive Applications*. O'Reilly, 2017 — cache, réplicas,
+  particionamento, filas.
+- Beyer, B. et al. *Site Reliability Engineering*. O'Reilly/Google, 2016 — RPO, RTO, capacidade.
+
+## §11 — Dados pessoais e fronteira de confiança
+
+- Brasil. Lei nº 13.709/2018 (LGPD), especialmente arts. 6º (princípios), 11 (dado sensível),
+  20 (decisão automatizada) e 48 (comunicação de incidente).
+- União Europeia. Regulamento (UE) 2016/679 (GDPR).
+- OWASP. *Top 10 for LLM Applications 2025* — injeção de instrução e vazamento de dado sensível.
+
+## §14 — Portão e pauta de segurança
+
+- OWASP. *Application Security Verification Standard (ASVS)* e *Top 10* (owasp.org).
+- OWASP. *Mobile Application Security Verification Standard (MASVS)*.
+- OpenSSF. *SLSA* (slsa.dev); gitleaks (github.com/gitleaks/gitleaks) — segredo no histórico.
+- IETF RFC 9700, *Best Current Practice for OAuth 2.0 Security*; RFC 8707, *Resource Indicators*;
+  RFC 9728, *OAuth 2.0 Protected Resource Metadata*.
+- NIST SP 800-63B — autenticação e senhas.
+
+## §16 — Módulos por tipo de projeto
+
+- W3C. *Web Content Accessibility Guidelines (WCAG) 2.2*; web.dev, *Core Web Vitals*.
+- Chrome for Developers. *Manifest V3* e políticas da Chrome Web Store.
+- OWASP MASVS — aplicativos móveis.
+- HashiCorp. *Terraform: state, plan and drift* (developer.hashicorp.com) — infraestrutura como
+  código.
+- Semantic Versioning 2.0.0 (semver.org) — bibliotecas e CLIs.
+- Google. *Shell Style Guide* (google.github.io/styleguide/shellguide.html).
+
 ## §17.1 — Arquitetura e desenho de sistema
 
 - Ford, N.; Richards, M.; Sadalage, P.; Dehghani, Z. *Software Architecture: The Hard Parts*.
@@ -44,14 +83,10 @@ ele serve para conferir de onde vem uma regra.
 - Conway, M. *How Do Committees Invent?* Datamation, 1968 — a lei de Conway.
 - Protocol Buffers e gRPC (protobuf.dev, grpc.io); PyO3 (pyo3.rs) — Rust chamado pelo Python.
 
-## §17.6 — Cibersegurança
+## §17.2 — Desenvolvimento full stack
 
-- OWASP. *Top 10* (web), *ASVS*, *Top 10 for LLM Applications 2025*, *Cheat Sheet Series*
-  (cheatsheetseries.owasp.org).
-- Microsoft. *Threat modeling*, Microsoft Learn — STRIDE.
-- NIST. *Secure Software Development Framework (SSDF)*, SP 800-218.
-- OpenSSF. *SLSA* (slsa.dev) — níveis de integridade da cadeia de build; *Scorecard*.
-- CycloneDX e SPDX — formatos de SBOM.
+- OWASP. *Application Security Verification Standard (ASVS)* — requisitos verificáveis por camada.
+- Fowler, M. *Refactoring*, 2ª ed. Addison-Wesley, 2018.
 
 ## §17.3 — Ciência e engenharia de dados
 
@@ -61,29 +96,6 @@ ele serve para conferir de onde vem uma regra.
 - Hyndman, R.; Athanasopoulos, G. *Forecasting: Principles and Practice*, 3ª ed. (otexts.com/fpp3).
 - Mitchell, M. et al. *Model Cards for Model Reporting*. FAT\* 2019.
 - Sculley, D. et al. *Hidden Technical Debt in Machine Learning Systems*. NeurIPS 2015.
-
-## §17.5 — DevOps e confiabilidade (SRE)
-
-- Beyer, B. et al. *Site Reliability Engineering*. O'Reilly/Google, 2016 (sre.google/books) —
-  SLO, orçamento de erro, alertas, postmortem.
-- Forsgren, N.; Humble, J.; Kim, G. *Accelerate*. IT Revolution, 2018 — métricas DORA.
-- Humble, J.; Farley, D. *Continuous Delivery*. Addison-Wesley, 2010.
-- The Twelve-Factor App (12factor.net) — configuração por ambiente, paridade entre ambientes.
-- OpenTelemetry (opentelemetry.io) — padrão aberto de rastreamento, métrica e log.
-
-## §17.2 — Desenvolvimento full stack
-
-- OWASP. *Application Security Verification Standard (ASVS)* — requisitos verificáveis por camada.
-- Fowler, M. *Refactoring*, 2ª ed. Addison-Wesley, 2018.
-
-## §17.7 — Governança de software, dados e IA
-
-- Brasil. *Lei Geral de Proteção de Dados Pessoais* — Lei nº 13.709/2018; ANPD (gov.br/anpd).
-- União Europeia. *Regulamento Geral sobre a Proteção de Dados (GDPR)* — Regulamento (UE)
-  2016/679; *AI Act* — Regulamento (UE) 2024/1689.
-- NIST. *AI Risk Management Framework (AI RMF 1.0)*, 2023.
-- ISO/IEC 42001:2023 — sistema de gestão de IA; ISO/IEC 27001:2022 — segurança da informação.
-- Nygard, M. *Documenting Architecture Decisions*, 2011.
 
 ## §17.4 — Engenharia de IA aplicada
 
@@ -95,6 +107,33 @@ ele serve para conferir de onde vem uma regra.
 - Anthropic. *Building effective agents*, 2024 (anthropic.com/engineering/building-effective-agents).
 - OWASP. *Top 10 for LLM Applications 2025*.
 - Liu, N. et al. *Lost in the Middle: How Language Models Use Long Contexts*. TACL, 2024.
+
+## §17.5 — DevOps e confiabilidade (SRE)
+
+- Beyer, B. et al. *Site Reliability Engineering*. O'Reilly/Google, 2016 (sre.google/books) —
+  SLO, orçamento de erro, alertas, postmortem.
+- Forsgren, N.; Humble, J.; Kim, G. *Accelerate*. IT Revolution, 2018 — métricas DORA.
+- Humble, J.; Farley, D. *Continuous Delivery*. Addison-Wesley, 2010.
+- The Twelve-Factor App (12factor.net) — configuração por ambiente, paridade entre ambientes.
+- OpenTelemetry (opentelemetry.io) — padrão aberto de rastreamento, métrica e log.
+
+## §17.6 — Cibersegurança
+
+- OWASP. *Top 10* (web), *ASVS*, *Top 10 for LLM Applications 2025*, *Cheat Sheet Series*
+  (cheatsheetseries.owasp.org).
+- Microsoft. *Threat modeling*, Microsoft Learn — STRIDE.
+- NIST. *Secure Software Development Framework (SSDF)*, SP 800-218.
+- OpenSSF. *SLSA* (slsa.dev) — níveis de integridade da cadeia de build; *Scorecard*.
+- CycloneDX e SPDX — formatos de SBOM.
+
+## §17.7 — Governança de software, dados e IA
+
+- Brasil. *Lei Geral de Proteção de Dados Pessoais* — Lei nº 13.709/2018; ANPD (gov.br/anpd).
+- União Europeia. *Regulamento Geral sobre a Proteção de Dados (GDPR)* — Regulamento (UE)
+  2016/679; *AI Act* — Regulamento (UE) 2024/1689.
+- NIST. *AI Risk Management Framework (AI RMF 1.0)*, 2023.
+- ISO/IEC 42001:2023 — sistema de gestão de IA; ISO/IEC 27001:2022 — segurança da informação.
+- Nygard, M. *Documenting Architecture Decisions*, 2011.
 
 ## §17.8 — Qualidade e testes
 

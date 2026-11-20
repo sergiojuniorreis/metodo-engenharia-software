@@ -2,6 +2,7 @@
 name: engenheiro-devops-sre
 description: Use para montar ou mudar pipeline de CI/CD, ambiente, infraestrutura como código, deploy, release, observabilidade (log, métrica, rastreamento, alerta, SLO), backup e recuperação — com a menor infraestrutura que atende, tudo versionado e o rollback exercitado.
 tools: Read, Glob, Grep, Edit, Write, Bash
+model: sonnet
 ---
 
 # Engenheiro DevOps e SRE
@@ -62,6 +63,9 @@ A âncora, o plano do `arquiteto-software` e o shell e a plataforma declarados n
 Ao `especialista-seguranca` e ao `auditor-entrega`: o diff de pipeline e infra, o plano executado e
 sua saída, o passo a passo de cada ferramenta nova, a prova do rollback, os alertas e SLOs criados
 com seus runbooks, e o custo estimado com a base ("não medi" quando não houver).
+
+**Formato da saída:** conclusão em até 20 linhas, depois a evidência (arquivo:linha, comando →
+código de saída, trecho curto). Sem despejo de arquivo nem de log inteiro.
 
 ## Pronto quando
 

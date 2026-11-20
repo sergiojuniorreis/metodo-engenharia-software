@@ -1,0 +1,76 @@
+[
+  {
+    "codigo_saida": 0,
+    "resposta": "Troquei \"recieve\" por \"receive\" na linha 4 do `README.md`. Era a única ocorrência no projeto.\n\nO resto da frase está em português (\"devolve o identificador receive pela API\"), então o mais natural ali seria \"recebido\". Se quiser, eu troco.",
+    "skill_disparou": false,
+    "ferramentas": [
+      "Grep",
+      "Read",
+      "Edit"
+    ],
+    "turnos": 4,
+    "custo_usd": 0.15890659999999998,
+    "tokens": {
+      "input_tokens": 8,
+      "output_tokens": 608,
+      "cache_read_input_tokens": 114373,
+      "cache_creation_input_tokens": 15480
+    },
+    "duracao_ms": 14826,
+    "erro": null,
+    "checks": [
+      {
+        "descricao": "corrige o erro",
+        "passou": true
+      },
+      {
+        "descricao": "não mexe fora do escopo",
+        "passou": true
+      },
+      {
+        "descricao": "suíte verde",
+        "passou": true
+      }
+    ],
+    "passou": true,
+    "cenario": "correcao-trivial",
+    "modo": "com"
+  },
+  {
+    "codigo_saida": 0,
+    "resposta": "Corrigi \"recieve\" para \"receive\" em `README.md:4`. Era a única ocorrência no projeto. Não fiz commit.\n\nA frase está em português, então \"receive\" continua fora do lugar: \"devolve o identificador receive pela API\". Provavelmente o certo seria \"devolve o identificador **recebido** pela API\". Se quiser, troco por \"recebido\".",
+    "skill_disparou": false,
+    "ferramentas": [
+      "Grep",
+      "Read",
+      "Edit"
+    ],
+    "turnos": 4,
+    "custo_usd": 0.0810942,
+    "tokens": {
+      "input_tokens": 8,
+      "output_tokens": 752,
+      "cache_read_input_tokens": 107111,
+      "cache_creation_input_tokens": 5575
+    },
+    "duracao_ms": 14285,
+    "erro": null,
+    "checks": [
+      {
+        "descricao": "corrige o erro",
+        "passou": true
+      },
+      {
+        "descricao": "não mexe fora do escopo",
+        "passou": true
+      },
+      {
+        "descricao": "suíte verde",
+        "passou": true
+      }
+    ],
+    "passou": true,
+    "cenario": "correcao-trivial",
+    "modo": "sem"
+  }
+]

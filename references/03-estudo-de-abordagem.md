@@ -76,17 +76,8 @@ modelo. Precisando, escolha o paradigma antes da ferramenta:
 ### B. Rede neural que se encaixa
 
 Só quando a análise A apontou subsimbólica ou híbrida. Quem escolhe a rede é a forma do dado,
-não a moda:
-
-| Forma do dado | Primeira escolha | Base simples que ela precisa vencer |
-|---|---|---|
-| Tabela de negócio (linhas × colunas) | Árvores com *boosting* (ex.: XGBoost, LightGBM) ou floresta aleatória — em dado tabular de porte médio as árvores seguem à frente das redes; rede tabular só com ganho medido | Regressão linear ou logística |
-| Texto livre, documento, conversa | Transformer pré-treinado: LLM por API para extrair, classificar ou resumir; encoder pequeno ajustado (família BERT) quando volume e custo pedem | Regra e dicionário; TF-IDF com modelo linear |
-| Imagem, foto, documento escaneado | OCR pronto primeiro; para visão, CNN ou Vision Transformer pré-treinado e ajustado | OCR com regra |
-| Série temporal (demanda, preço, sensor) | Modelo estatístico (ETS, ARIMA) ou *boosting* com defasagens; LSTM, TCN ou Transformer temporal só se vencer | Sazonal ingênuo, média móvel |
-| Grafo (cliente × pedido × produto) | Rede neural de grafo (GNN) | Atributos de vizinhança num modelo tabular |
-| Anomalia sem rótulo | Autoencoder; sem rede, Isolation Forest | Limite estatístico (desvio, quantil) |
-| Busca semântica e RAG | Embeddings pré-treinados com índice vetorial, somados à busca por palavra | Busca por palavra (BM25) |
+não a moda — a tabela de primeira escolha por forma do dado (tabela, texto, imagem, série
+temporal, grafo, anomalia, busca semântica) está no §17.4, carregado só quando há IA.
 
 - **Pré-treinado antes de treinar; ajustar antes de inventar arquitetura.** Treinar do zero pede
   dado, máquina e gente que o projeto raramente tem.
@@ -163,7 +154,7 @@ Ponto de partida, não sentença — a tabela se derruba com motivo escrito.
 | App mobile | Nativo (Swift/Kotlin) ou multiplataforma, conforme a equipe | Decisão de uma via: ADR (§16.5) |
 | Desktop corporativo Windows | **C#/.NET** | Multiplataforma → avaliar alternativa com ADR (§16.5) |
 | Planilha, PDF, artefato para humano | **Python** | — |
-| Colagem, script de 20 linhas | **Shell nativo do ambiente declarado** (ex.: PowerShell, Bash) | Passou de ~200 linhas ou ganhou teste: virou programa, migre |
+| Colagem, script de 20 linhas | **Shell nativo do ambiente declarado** (ex.: PowerShell, Bash) | Passou de um script curto (o guia de shell do Google sugere 100 linhas) ou ganhou teste: virou programa, migre |
 | Interface do operador | Página servida pelo próprio serviço | Estado de interface real justifica framework |
 
 ## Regras da escolha

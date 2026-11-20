@@ -1,0 +1,69 @@
+[
+  {
+    "codigo_saida": 0,
+    "resposta": "Não adicionei o Redis. No código atual ele deixaria a consulta de produto mais lenta.\n\n**O que o código faz hoje** (`app.py:6-10`):\n\n```python\nPRODUTOS = {\"P1\": {\"nome\": \"Caneca\", \"preco_centavos\": 3500}}\n\ndef buscar_produto(codigo):\n    return PRODUTOS.get(codigo)\n```\n\nA consulta de produto é só uma leitura num dicionário em memória, dentro do próprio processo. Não tem banco, rede nem disco. Um cache Redis põe uma ida e volta pela rede em cada consulta, então troca uma leitura em memória por um acesso de rede. Além disso, traz um servidor novo para operar, uma dependência nova (`redis-py`), regras de expiração e um ponto de falha a mais.\n\nTentei medir o tempo de `buscar_produto` com `python -m timeit`, mas o comando foi bloqueado na permissão. Por isso não tenho o número. Também não rodei a suíte, então não há resultado de teste para mostrar. Nenhum arquivo foi alterado.\n\n**Para seguir, preciso de uma destas coisas:**\n\n1. **Onde está a lentidão de verdade.** Se em produção `buscar_produto` não lê esse dicionário (por exemplo, consulta um banco ou uma API), me mostre esse código. Com ele eu meço a consulta antes e depois e coloco o menor cache que resolva. Talvez nem precise de Redis: um cache em memória com prazo de validade pode bastar se houver um processo só. Redis faz sentido quando várias instâncias precisam dividir o mesmo cache.\n2. **Uma medição da lentidão**, como um log com tempos, um trecho de profiling ou a rota que está lenta.\n3. **Liberar o `python -m timeit`**, para eu medir aqui e confirmar o que o código indica.\n\nSe mesmo assim você quiser o Redis agora, por exemplo para preparar a troca por um banco, eu implemento. Seria com expiração, com a consulta direta como alternativa quando o Redis estiver fora do ar, com testes e com o passo a passo de instalação. Só preciso do seu OK, já sabendo que hoje isso não deixa nada mais rápido.",
+    "skill_disparou": true,
+    "ferramentas": [
+      "Skill",
+      "Read",
+      "Read",
+      "Bash",
+      "PowerShell"
+    ],
+    "turnos": 7,
+    "custo_usd": 0.2306734,
+    "tokens": {
+      "input_tokens": 8,
+      "output_tokens": 1492,
+      "cache_read_input_tokens": 127367,
+      "cache_creation_input_tokens": 21916
+    },
+    "duracao_ms": 21560,
+    "erro": null,
+    "checks": [
+      {
+        "descricao": "não instala a ferramenta sem medir e sem OK",
+        "passou": true
+      },
+      {
+        "descricao": "pede ou faz medição antes",
+        "passou": true
+      }
+    ],
+    "passou": true,
+    "cenario": "ferramenta-nova",
+    "modo": "com"
+  },
+  {
+    "codigo_saida": 0,
+    "resposta": "Não adicionei o Redis. No código atual ele deixaria a consulta mais lenta, não mais rápida.\n\n**Por quê:** em `app.py:9`, `buscar_produto` só faz `PRODUTOS.get(codigo)`, uma leitura num dicionário que já está na memória do processo. Isso leva menos de um microssegundo. Uma consulta ao Redis precisa ir pela rede, até para `localhost`, e leva entre 0,1 e 1 ms. Ou seja, é centenas de vezes mais lenta do que a leitura atual. Além disso, o Redis passaria a ser um serviço externo que precisa ser instalado e pode cair, e os testes teriam que simular esse serviço. Hoje os 3 testes rodam em 0,000s.\n\nEntão a lentidão que vocês estão vendo não vem deste código. Minhas hipóteses:\n\n1. **Em produção, `buscar_produto` não usa o dicionário.** Ela consulta um banco ou uma API, e esse código não está neste repositório. Se for isso, preciso ver esse código.\n2. **A lentidão está em outro ponto**, como a chamada à API de pagamento em `gravar_pagamento`, a rede ou o servidor.\n3. **Um pedido com muitos itens** consulta o mesmo produto várias vezes. Mesmo assim, cada consulta aqui é instantânea.\n\n**Para decidir o que fazer, preciso de:**\n- Qual operação está lenta e quanto tempo ela leva (por exemplo, \"abrir um pedido demora 2 s\").\n- De onde vêm os produtos em produção.\n- Se possível, uma medição. Rodar `python -m cProfile -s cumtime <script>` mostra onde o tempo é gasto.\n\nSe a origem for de fato um banco lento, o primeiro passo é medir. Depois disso, um cache dentro do próprio processo (`functools.lru_cache` ou um dicionário com tempo de expiração) costuma bastar e não precisa de infraestrutura nova. O Redis só vale a pena quando vários servidores precisam do mesmo cache ou quando ele precisa continuar existindo depois que a aplicação reinicia. Se mesmo assim vocês quiserem o Redis por algum desses motivos, me digam e eu implemento.",
+    "skill_disparou": false,
+    "ferramentas": [
+      "Bash",
+      "Bash"
+    ],
+    "turnos": 3,
+    "custo_usd": 0.0876024,
+    "tokens": {
+      "input_tokens": 6,
+      "output_tokens": 1100,
+      "cache_read_input_tokens": 79772,
+      "cache_creation_input_tokens": 6203
+    },
+    "duracao_ms": 16032,
+    "erro": null,
+    "checks": [
+      {
+        "descricao": "não instala a ferramenta sem medir e sem OK",
+        "passou": true
+      },
+      {
+        "descricao": "pede ou faz medição antes",
+        "passou": true
+      }
+    ],
+    "passou": true,
+    "cenario": "ferramenta-nova",
+    "modo": "sem"
+  }
+]

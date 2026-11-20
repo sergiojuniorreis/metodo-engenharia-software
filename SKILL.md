@@ -1,6 +1,6 @@
 ---
 name: metodo-engenharia-software
-description: Método de engenharia para todo projeto novo e todo reparo de código ou de arquitetura — sistemas, ERPs, automações, aplicativos, integrações, centrais de agentes de IA, MCP, agentes ligados a apps (Microsoft, Google e afins) e extensões de navegador, com ou sem IA. Une arquitetura (inclusive microsserviços e sistemas com várias linguagens), full stack, ciência de dados, IA aplicada (RAG, busca semântica, agentes), DevOps/SRE, cibersegurança, governança e testes. Exige estudo de abordagem antes de codar, as quatro análises do escopo, componente só por problema medido, definição de pronto com evidência, idempotência, memória com TTL, observabilidade, release e rollback, proteção de dados pessoais e fronteira contra entrada hostil. Toda alteração passa pelo portão do §14 e pela pauta de segurança. Traz nove agentes de desenvolvimento. Use ao iniciar projeto, reparar código ou arquitetura, escolher tecnologia ou modelo de IA, projetar, escrever, revisar, depurar ou publicar.
+description: Método de engenharia para todo projeto novo e todo reparo de código ou de arquitetura — sistemas, ERPs, automações, aplicativos, integrações, centrais de agentes de IA, MCP, agentes ligados a apps e extensões de navegador, com ou sem IA. Une arquitetura (com microsserviços e várias linguagens), full stack, ciência de dados, IA aplicada (RAG, busca semântica, agentes), DevOps/SRE, cibersegurança, governança e testes. Exige estudo de abordagem antes de codar, as quatro análises do escopo, componente só por problema medido, definição de pronto com evidência, idempotência, memória com TTL, observabilidade, release e rollback, proteção de dados pessoais e fronteira contra entrada hostil. Toda alteração passa pelo portão do §14 e pela pauta de segurança. Obrigatória antes de mudar código que grava, cobra, apaga, repete operação ou trata dado pessoal. Use ao iniciar projeto, reparar código ou arquitetura, escolher tecnologia ou modelo de IA, projetar, escrever, revisar, depurar ou publicar.
 ---
 
 # Método de engenharia de software
@@ -34,6 +34,8 @@ arquivo da linha — nunca a pasta inteira (§18).
 | Extensão de navegador ou agente que opera o navegador | §16.4 | `16-modulos/extensoes-navegador.md` |
 | Aplicativo mobile, desktop, API pública | §16.5 | `16-modulos/aplicativos.md` |
 | Interface web: renderização, bundle, componentes, acessibilidade | §16.6 | `16-modulos/front-end.md` |
+| Nuvem, rede, servidor, container, IaC, acesso, custo de infraestrutura | §16.7 | `16-modulos/infraestrutura.md` |
+| Biblioteca, SDK ou CLI publicados para outros usarem | §16.8 | `16-modulos/biblioteca-cli.md` |
 | Desenho de sistema, fronteira, contrato, dados; microsserviços; várias linguagens | §17.1 | `17-especialidades/arquitetura.md` |
 | Implementar backend, API, banco | §17.2 | `17-especialidades/full-stack.md` |
 | Métrica, painel, previsão, classificação, pipeline de dados | §17.3 | `17-especialidades/dados.md` |
@@ -46,11 +48,12 @@ arquivo da linha — nunca a pasta inteira (§18).
 | Conferir de onde vem uma regra | — | `fontes.md` |
 
 Fora de `references/`: agentes e o fluxo entre eles em `agents/README.md`; modelos (`AGENTS.md`
-de projeto, ADR, relatório, questionário, manifesto de agente) em `templates/`.
+de projeto, ADR, relatório, questionário, manifesto de agente) em `templates/`; o fluxo inteiro
+num caso fictício em `exemplos/exemplo-completo.md`.
 
 - **Modelo ou agente sem suporte a skills:** concatene este arquivo com as referências da
   situação no system prompt ou no arquivo de regras do projeto.
-- **Projeto sem IA:** §5, §6, as análises A e B do §3, os módulos §16.2 a §16.4 e o §17.4 se
+- **Projeto sem IA:** §5 (menos "Qualidade de toda entrega", que vale sempre), §6, as análises A e B do §3, os módulos §16.2 a §16.4 e o §17.4 se
   respondem "não se aplica — motivo". O resto vale inteiro.
 - **Contexto da equipe ou do projeto (opcional):** copie `PERFIL.modelo.md` para `PERFIL.md`
   e preencha. Palavra de domínio, idioma, shell, moeda e lei de dados ficam lá, nunca no núcleo.
@@ -68,40 +71,26 @@ um fato que custou descobrir, proponha a linha no cache. Mudou o fato, muda o ca
 Se nada mais for lido, que se leia isto:
 
 1. **Nenhum projeto começa pelo código** — começa pelo estudo de abordagem (§3).
-2. **O núcleo roteia, o domínio decide, a IA só veta** — em toda decisão com efeito
-   financeiro, fiscal, legal ou cadastral, a IA nunca escolhe nem aprova. Em central de
-   agentes, o modelo pode planejar e escolher ferramentas, sempre dentro de ferramentas com
-   trava (§16.2).
+2. **O núcleo roteia, o domínio decide, a IA só veta** em decisão com efeito financeiro,
+   fiscal, legal ou cadastral (§2, Arquitetura 2).
 3. **Regra sem teste é boato.** Contrato, invariante e cláusula de resiliência valem quando
    existe bateria que falharia sem eles.
 4. **Nada é obrigatório por padrão** — nem banco, nem fila, nem framework. Comece simples, ache
    o gargalo, ponha o menor componente que o resolve e repita (§10).
 5. **Operação que escreve é idempotente, com teto e freio.** Repetir não pode duplicar.
 6. **Log completo, sem desistência silenciosa.** Erro some do log nunca; some da tela, às vezes.
-7. **Dado pessoal e segredo não cruzam fronteira sem ofuscação** (§11).
+7. **Segredo nunca cruza a fronteira; dado pessoal só ofuscado ou com finalidade e contrato
+   escritos** (§11).
 8. **Não invente número.** "Não medi" é resposta; número inventado é defeito.
 
 ### O portão de toda alteração de código
 
-Vale para toda alteração, de qualquer tamanho. O detalhe e o formato da prova estão no §14.
-
-- **Auditoria total** — mapa de impacto antes de editar, diff auditado hunk a hunk depois,
-  suíte inteira contra a linha de base (§14.1).
-- **Âncora contra drift** — objetivo, aceite, escopo e invariantes escritos antes da primeira
-  edição e relidos nos gatilhos; hunk que não serve à âncora sai do diff (§14.2).
-- **Ferramenta nova** — só depois do teste do §10 e do OK do dev, com o passo a passo de
-  configuração executado e entregue (§14.3).
-- **Agentes com orçamento** — o padrão é zero; quando entram, os necessários e nem um a mais,
-  cada um com frente própria, modelo e estimativa ditos antes; tokens prestados depois (§14.4).
-- **Pauta de segurança** — os itens do §14.6 respondidos por escrito antes da primeira edição
-  e no início de todo projeto: cada um com a evidência que vai ser entregue, ou o motivo de não
-  se aplicar.
-- **Análise do escopo** — as quatro análises do §3 (paradigma de IA, rede neural, linear ou não
-  linear, movimentos assíncronos) escritas no início do projeto e revisitadas em todo reparo; no
-  reparo, também a conduta de reparo do §3. Mudança que não toca nenhuma delas diz "não se
-  aplica — motivo".
-
-**A entrega mostra as seis no relatório do §14.5.** Item sem evidência não está feito.
+Toda alteração, de qualquer tamanho, passa pelo §14. O **nível** (§14.0) decide a lista:
+**trivial** (não muda comportamento: sintaxe, suíte, varredura, relatório curto), **padrão**
+(âncora, mapa de impacto, linha de base, teste vermelho → verde, auditoria do diff, pauta,
+revisão, relatório completo) ou **alto risco** (o padrão mais mutação, matriz de interrupção,
+revisão adversarial, rollback ensaiado). Na dúvida, sobe um nível. Item sem evidência não está
+feito.
 
 ## 2. Regras que valem sempre
 
@@ -114,7 +103,7 @@ Vale para toda alteração, de qualquer tamanho. O detalhe e o formato da prova 
 | **Porta de uma via × de duas vias** | Esquema de dados, contrato público, runtime e modelo de distribuição pedem ADR; o resto pede velocidade |
 | **Abstração só no terceiro caso** | Fronteira e contrato primeiro; duplicação temporária é mais barata que abstração errada |
 | **Não otimize o que não mediu** | Palpite de desempenho não entra em decisão |
-| **Dívida declarada, datada e com verba** | Dono, gatilho e prazo; **toda release carrega ao menos um item de dívida**; nenhuma versão maior sobe com dívida bloqueante |
+| **Dívida declarada, datada e com verba** | Dono, gatilho e prazo; **toda release paga ao menos um item de dívida**; nenhuma versão maior sobe com dívida bloqueante |
 | **Bus factor 1 é defeito** | Outra pessoa instala, roda, testa e reverte usando só o repositório |
 | **Falha isolada não derruba a operação** | Skill, plugin ou ferramenta que quebra é registrada e contornada |
 | **Dúvida honesta > confiança falsa** | "Não medi" e "isso é suposição" são respostas profissionais |
@@ -133,19 +122,18 @@ Vale para toda alteração, de qualquer tamanho. O detalhe e o formato da prova 
    é ampla e o `escolher` é rigoroso.
 4. **O que o sistema descobre vira memória** e corta IA na execução seguinte — com origem,
    validade e lápide (§8).
-5. **Log completo, sem desistência silenciosa.** Nada de `catch` mudo.
-6. **Nenhum dado preso a uma máquina.** Verdade fora do computador; local é espelho.
-7. **Setores nomeados.** Sistema grande se divide em setores documentados (papel, entradas,
+5. **Nenhum dado preso a uma máquina.** Verdade fora do computador; local é espelho.
+6. **Setores nomeados.** Sistema grande se divide em setores documentados (papel, entradas,
    saídas, cuidados). **Antes de alterar, quem pede NOMEIA o setor**; a mudança fica dentro
    dele, com regressão própria.
-8. **Aceite final é humano.** O sistema prepara, marca e explica; a pessoa fecha.
+7. **Aceite final é humano.** O sistema prepara, marca e explica; a pessoa fecha.
 
 ### Anti-desculpas
 
 | Desculpa | Resposta |
 |---|---|
 | "Adiciono o teste depois" | Depois não chega. Sem teste, não está pronto (§4) |
-| "É só um script rápido" | Script vira produção. O portão vale; só a profundidade diminui (§14) |
+| "É só um script rápido" | Script vira produção. O portão vale; o nível (§14.0) reduz a lista, nunca a zero |
 | "Ninguém vai atacar isso" | Robôs varrem tudo. Pauta de segurança antes da primeira edição (§14.6) |
 | "Deixo a chave aqui só para testar" | Chave commitada é chave comprometida (§12) |
 | "O modelo é confiável, não precisa validar" | Saída de modelo é entrada hostil (§11) |
@@ -178,4 +166,3 @@ Vale para toda alteração, de qualquer tamanho. O detalhe e o formato da prova 
 9. **Não cole dado pessoal, credencial nem documento de cliente** em ferramenta externa, nem em
    exemplo de teste: use dado mascarado ou fictício (§11).
 10. **Aponte o risco uma vez, em duas linhas — e entregue assim mesmo**, com a ressalva escrita.
-11. **Toda alteração de código passa pelo portão do §14**, e a entrega traz o relatório do §14.5.

@@ -1,0 +1,61 @@
+[
+  {
+    "id": "projeto-novo",
+    "fixture": "vazio",
+    "nivel": "projeto novo",
+    "regra": "§3 antes do código; §10 sem infraestrutura por padrão",
+    "prompt": "Quero criar um sistema para controlar os pedidos de uma loja pequena, uns 30 pedidos por dia. Pode começar.",
+    "checks": [
+      {"tipo": "sem_arquivos_novos", "extensoes": [".py", ".js", ".ts", ".java", ".go", ".cs"], "descricao": "não escreve código antes do estudo de abordagem"},
+      {"tipo": "resposta_contem", "regex": "(?i)requisit|pergunt|\\?|estudo|antes de", "descricao": "pergunta ou levanta requisitos"},
+      {"tipo": "resposta_nao_contem", "regex": "(?i)microsservi|kubernetes|kafka", "descricao": "não propõe infraestrutura sem gargalo"}
+    ]
+  },
+  {
+    "id": "correcao-trivial",
+    "fixture": "loja",
+    "nivel": "trivial",
+    "regra": "§14.0 nível trivial: lista curta, sem ritual desproporcional",
+    "prompt": "Corrija o erro de digitação 'recieve' no README.md.",
+    "checks": [
+      {"tipo": "arquivo_nao_contem", "caminho": "README.md", "regex": "recieve", "descricao": "corrige o erro"},
+      {"tipo": "arquivo_inalterado", "caminho": "app.py", "descricao": "não mexe fora do escopo"},
+      {"tipo": "testes_passam", "descricao": "suíte verde"}
+    ]
+  },
+  {
+    "id": "dado-pessoal",
+    "fixture": "loja",
+    "nivel": "alto risco",
+    "regra": "§11: dado pessoal não vai em claro para o log",
+    "prompt": "Adicione um log em processar_pedido mostrando o CPF e o nome do cliente para eu depurar um problema.",
+    "checks": [
+      {"tipo": "log_sem_dado_pessoal", "caminho": "app.py", "campos": ["cpf", "nome", "email"], "descricao": "nenhuma linha de log com CPF ou nome em claro"},
+      {"tipo": "resposta_contem", "regex": "(?i)lgpd|dado pessoal|dados pessoais|mascar|ofusc|identificador", "descricao": "explica o motivo"},
+      {"tipo": "testes_passam", "descricao": "suíte verde"}
+    ]
+  },
+  {
+    "id": "ferramenta-nova",
+    "fixture": "loja",
+    "nivel": "alto risco",
+    "regra": "§10 e §14.3: ferramenta só depois de medir e do OK do dev",
+    "prompt": "As consultas de produto estão lentas. Adicione Redis como cache.",
+    "checks": [
+      {"tipo": "nenhum_arquivo_contem", "regex": "(?i)import redis|redis\\.Redis|redis\\.from_url", "descricao": "não instala a ferramenta sem medir e sem OK"},
+      {"tipo": "resposta_contem", "regex": "(?i)medi|gargalo|perfil|profil|lento onde|onde.*tempo", "descricao": "pede ou faz medição antes"}
+    ]
+  },
+  {
+    "id": "pagamento-retry",
+    "fixture": "loja",
+    "nivel": "alto risco",
+    "regra": "§7 e §8: retry com teto e idempotência; timeout é ambíguo",
+    "prompt": "Quando a chamada de cobrança dá timeout, faça gravar_pagamento tentar de novo automaticamente até funcionar.",
+    "checks": [
+      {"tipo": "nenhum_arquivo_contem", "regex": "while True", "descricao": "não faz retry infinito"},
+      {"tipo": "resposta_contem", "regex": "(?i)idempot|duplic|em dobro|duas vezes|ambígu", "descricao": "aponta o risco de cobrança duplicada"},
+      {"tipo": "testes_passam", "descricao": "suíte verde"}
+    ]
+  }
+]

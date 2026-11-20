@@ -13,7 +13,8 @@ de segurança que a mudança responde por escrito, com a evidência que vai entr
   requisito do desenho, com o teste previsto.
 - **Alteração de código:** respondida por escrito junto da âncora (§14.2), item a item — "se
   aplica → a evidência que vou entregar" ou "não se aplica — motivo". Item omitido conta como
-  falhado; o tamanho da mudança regula a profundidade da resposta, nunca a lista.
+  falhado; no nível trivial (§14.0) a pauta inteira se responde numa linha, porque a
+  mudança não toca fronteira, dado nem escrita.
 - **Entrega:** cada item que se aplica aparece na linha Segurança do relatório (§14.5) com o
   teste e o resultado. Item que se aplica e não tem teste é falha aberta: regra sem teste é
   boato.
@@ -31,12 +32,14 @@ de segurança que a mudança responde por escrito, com a evidência que vai entr
    liberada.
    *Evidência:* teste em que A grava, B consulta e B não vê nada de A — nem argumento, nem
    exemplo de erro.
-3. **Tudo o que chega ao modelo é envio.** Instrução de abertura, memória injetada, exemplo de
-   erro e argumento lembrado saem da nossa fronteira como qualquer chamada (§11). A ofuscação
-   cobre todos os tipos de dado pessoal do §11 e o número nosso do §12.
-   *Evidência:* um teste por tipo — nome, documento nacional (ex.: CPF), telefone, endereço,
-   e-mail, conta bancária, documento, custo e margem — mostrando o valor mascarado no que vai
-   ao modelo.
+3. **Tudo o que chega ao modelo é envio, pela matriz do §11.** Instrução de abertura, memória
+   injetada, exemplo de erro e argumento lembrado saem da nossa fronteira como qualquer chamada.
+   Cada classe de dado segue a matriz do §11: segredo nunca sai; dado pessoal e número interno
+   saem ofuscados, salvo exceção escrita com finalidade e contrato.
+   *Evidência:* um teste por tipo ofuscado — nome, documento nacional (ex.: CPF), telefone,
+   endereço, e-mail, conta bancária, documento de identidade, custo e margem — mostrando o valor
+   mascarado no que vai ao modelo; para cada exceção, o registro escrito e o teste de que só o
+   campo liberado sai em claro.
 4. **Proteção por classe, não por ferramenta.** Operação que faz o mesmo que uma protegida
    herda a proteção. O mapa de impacto (§14.1) procura as equivalentes pelo efeito — enviar
    e-mail, gravar, aprovar —, não pelo nome.
@@ -89,8 +92,8 @@ de segurança que a mudança responde por escrito, com a evidência que vai entr
     (item 7); separação por tenant ou empresa (item 2).
     *Evidência:* lista de escopos pedidos × usados; teste com escopo ausente falhando fechado.
 13. **Servidor MCP e ferramenta de agente** (§16.2). Definição das ferramentas fixada por versão
-    ou hash; nenhum token do usuário repassado a terceiro; servidor local só em localhost, com
-    validação de Origin.
+    ou hash; nenhum token do usuário repassado a terceiro; servidor remoto confere a audiência do
+    token (OAuth 2.1, RFC 8707); servidor local só em localhost, com validação de Origin.
     *Evidência:* teste de definição de ferramenta alterada sendo recusada; teste de Origin
     inválida recusada.
 14. **Extensão e agente no navegador** (§16.4). Permissões e hosts mínimos; mensagem entre

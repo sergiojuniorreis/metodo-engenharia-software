@@ -64,9 +64,9 @@ executa.
   JavaScript inicial. Mede-se em laboratório (perfil de dispositivo e rede) e em campo (usuários
   reais). Número de campo manda; laboratório orienta.
 - **Importe direto, fuja de barris.** Arquivo-índice que reexporta tudo (`export * from ...`)
-  arrasta milhares de módulos não usados — centenas de ms por carregamento a frio e build lento,
-  e *tree-shaking* não salva. Importe do arquivo-fonte, ou use a otimização de importação do
-  framework quando houver.
+  pode arrastar módulos não usados para o build e para o carregamento, e o *tree-shaking* nem
+  sempre os elimina (efeito colateral, CommonJS). Importe do arquivo-fonte, ou use a otimização
+  de importação do framework, e confira no relatório de bundle.
 - **Código pesado entra sob demanda.** Componente grande, editor, gráfico, mapa: carregamento
   dinâmico, só quando a funcionalidade é ativada. Pré-carregue no `hover`/`focus` para a
   interação parecer instantânea.
@@ -152,7 +152,8 @@ captura comparada por commit. Entra por necessidade, como toda ferramenta (§10)
 
 ## §16.6.8 — Stack de referência (entra por necessidade, nunca por padrão)
 
-O §10 manda: nada é obrigatório. A lista abaixo é o repertório de uma equipe sênior; cada item
+**Tabela perecível: conferida em 2026-11; revise a cada versão do método.** O §10 manda: nada
+é obrigatório. A lista abaixo é o repertório de uma equipe sênior; cada item
 entra com motivo escrito e sai do projeto que não precisa dele. Troque livremente por
 equivalente que a equipe domine — a regra do repositório vence esta ("Como carregar", no
 `SKILL.md`).
@@ -161,7 +162,7 @@ equivalente que a equipe domine — a regra do repositório vence esta ("Como ca
 |---|---|---|
 | Linguagem | **TypeScript** em modo estrito | Sempre que o projeto passa de um script; tipo é contrato conferido no build |
 | Framework de UI | React, ou Svelte/SvelteKit, Vue/Nuxt, Astro (site de conteúdo), SolidJS | Pela natureza do projeto; SPA não é padrão — site de conteúdo pede renderização estática |
-| Meta-framework | Next.js, SvelteKit, Nuxt, Astro, Remix | Quando precisa de rota, renderização no servidor, ou SSG — não para uma página só |
+| Meta-framework | Next.js, SvelteKit, Nuxt, Astro, React Router (modo framework, sucessor do Remix) | Quando precisa de rota, renderização no servidor, ou SSG — não para uma página só |
 | Estilo | **Tailwind CSS**, CSS Modules, ou CSS puro com tokens de design | Tailwind para iterar rápido com consistência; tokens quando há tema ou marca |
 | Componentes | Primitivos acessíveis (Radix UI, Headless UI), shadcn/ui, React Aria | Quando acessibilidade de menu, diálogo e combobox precisa ser correta sem reinventar |
 | Dados no cliente | TanStack Query, SWR | Cache, deduplicação e revalidação de requisição; dispensa estado manual de `loading`/`error` |
@@ -169,7 +170,7 @@ equivalente que a equipe domine — a regra do repositório vence esta ("Como ca
 | Formulário | React Hook Form (ou equivalente) + **Zod** | Formulário com validação; o mesmo esquema Zod valida no cliente e no servidor |
 | API / contrato | tRPC (monorepo TS ponta a ponta), REST tipado, ou GraphQL | tRPC quando cliente e servidor são TS; GraphQL quando há muitos consumidores |
 | Banco e ORM | **PostgreSQL** com Prisma ou Drizzle; Postgres gerenciado (Neon, RDS) ou próprio | Quando o projeto persiste dado; o ORM dá migração versionada e consulta tipada |
-| Autenticação | Auth.js (NextAuth), Lucia, ou um provedor OIDC/Keycloak | Quando há login; sessão e autorização sempre validadas no servidor (§16.6.6) |
+| Autenticação | Auth.js, Better Auth, ou um provedor OIDC (ex.: Keycloak) | Quando há login; sessão e autorização sempre validadas no servidor (§16.6.6) |
 | Build e qualidade | Vite ou Turbopack; ESLint + Prettier, ou Biome | Sempre; lint e formatação no `pre-commit` e no CI |
 | Teste | Vitest/Jest, Testing Library, Playwright | Pela camada (§16.6.7) |
 | Observabilidade | Core Web Vitals de campo, OpenTelemetry, rastreador de erro (ex.: Sentry) | Em produção com usuário real; métrica de front é medida, não adivinhada (§9) |

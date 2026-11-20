@@ -8,7 +8,7 @@ o menor peso possível**: saber quem decidiu o quê, com que base, e conseguir p
 
 - **Registro de decisões (ADR)** numerado no repositório (§2, §3): contexto, escolhido, descartado,
   consequência, gatilho de revisão. ADR superado não se apaga; ganha o número do que o substitui.
-- **Dívida declarada** com dono, gatilho e prazo; toda release carrega ao menos um item (§2).
+- **Dívida declarada** com dono, gatilho e prazo; toda release paga ao menos um item (§2).
 - **Exceção à regra é decisão do dono**, escrita, com prazo de validade.
 - **Mudança de escopo é decisão do dono**; o que ficou de fora é relatado (§13).
 
