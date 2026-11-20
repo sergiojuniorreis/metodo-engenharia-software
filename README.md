@@ -64,7 +64,7 @@ início). Vai para `~/.claude/`: a skill, o kit e os quatro comandos. Os agentes
 **Linux, macOS, Codespaces:**
 
 ```bash
-git clone --depth 1 --branch v1.2.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes
+git clone --depth 1 --branch v1.2.1 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes
 S=~/.claude/skills/metodo-engenharia-software
 mkdir -p "$S/scripts" ~/.claude/commands
 cp -r /tmp/mes/SKILL.md /tmp/mes/PERFIL.modelo.md /tmp/mes/references /tmp/mes/agents       /tmp/mes/templates /tmp/mes/exemplos "$S/"
@@ -77,7 +77,7 @@ rm -rf /tmp/mes
 
 ```powershell
 $tmp = Join-Path $env:TEMP 'mes'
-git clone --depth 1 --branch v1.2.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git $tmp
+git clone --depth 1 --branch v1.2.1 https://github.com/sergiojuniorreis/metodo-engenharia-software.git $tmp
 $skill = Join-Path $HOME '.claude\skills\metodo-engenharia-software'
 $cmds = Join-Path $HOME '.claude\commands'
 New-Item -ItemType Directory -Force "$skill\scripts", $cmds | Out-Null
@@ -87,7 +87,7 @@ Copy-Item -Force "$tmp\commands\*.md" $cmds
 Remove-Item -Recurse -Force $tmp
 ```
 
-A instalação usa a **versão marcada** (`--branch v1.2.0`), não a ponta do `main`; para atualizar,
+A instalação usa a **versão marcada** (`--branch v1.2.1`), não a ponta do `main`; para atualizar,
 troque pela versão mais recente em
 [Releases](https://github.com/sergiojuniorreis/metodo-engenharia-software/releases) e repita.
 
