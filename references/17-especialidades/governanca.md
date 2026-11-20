@@ -66,11 +66,5 @@ o menor peso possível**: saber quem decidiu o quê, com que base, e conseguir p
 - Licenças conferidas para toda dependência nova.
 - Release com pacote de evidência anexado.
 
-## Fontes externas
 
-- Brasil. *Lei Geral de Proteção de Dados Pessoais* — Lei nº 13.709/2018; ANPD (gov.br/anpd).
-- União Europeia. *Regulamento Geral sobre a Proteção de Dados (GDPR)* — Regulamento (UE)
-  2016/679; *AI Act* — Regulamento (UE) 2024/1689.
-- NIST. *AI Risk Management Framework (AI RMF 1.0)*, 2023.
-- ISO/IEC 42001:2023 — sistema de gestão de IA; ISO/IEC 27001:2022 — segurança da informação.
-- Nygard, M. *Documenting Architecture Decisions*, 2011.
+Fontes desta seção: `references/fontes.md`, §17.7.

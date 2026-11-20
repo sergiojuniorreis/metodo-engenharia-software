@@ -121,13 +121,5 @@ Medir separado, porque o defeito mora em lugares diferentes:
 - Agente com teto, trava de escrita e teste de injeção vinda de conteúdo lido.
 - Custo por item visível ao lado do acerto.
 
-## Fontes externas
 
-- Lewis, P. et al. *Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks*. NeurIPS 2020.
-- Robertson, S.; Zaragoza, H. *The Probabilistic Relevance Framework: BM25 and Beyond*, 2009.
-- Reimers, N.; Gurevych, I. *Sentence-BERT*. EMNLP 2019 — bi-encoder; Nogueira, R.; Cho, K.
-  *Passage Re-ranking with BERT*, 2019 — cross-encoder.
-- Cormack, G. et al. *Reciprocal Rank Fusion*. SIGIR 2009 — fusão de busca por palavra e vetor.
-- Anthropic. *Building effective agents*, 2024 (anthropic.com/engineering/building-effective-agents).
-- OWASP. *Top 10 for LLM Applications 2025*.
-- Liu, N. et al. *Lost in the Middle: How Language Models Use Long Contexts*. TACL, 2024.
+Fontes desta seção: `references/fontes.md`, §17.4.

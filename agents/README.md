@@ -88,7 +88,9 @@ coordenação:
 ## Ao acionar um agente
 
 O pedido leva, por escrito: a âncora, a entrega do agente anterior, a linha de base da suíte, as
-regras do projeto que a tarefa toca e o formato da saída. Subagente pode não ter a ferramenta de
+regras do projeto que a tarefa toca e o formato da saída. Leva também os **caminhos e trechos já
+localizados** (arquivo:linha), para o agente não refazer a busca, e cada agente começa pelo
+`AGENTS.md` do projeto — o cache quente (§18) — antes de explorar. Subagente pode não ter a ferramenta de
 skill; por isso o agente lê os arquivos da skill direto pelo caminho.
 
 Antes de lançar, a sessão diz ao dev quantos agentes, a frente de cada um, o modelo e a estimativa

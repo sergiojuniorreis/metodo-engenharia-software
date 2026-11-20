@@ -111,6 +111,19 @@ def checar_agentes():
         falhas.append("SKILL.md: description vazia ou acima de 1024 caracteres")
 
 
+def checar_roteamento():
+    """Todo arquivo de references/ está na tabela "Como carregar" do SKILL.md, e vice-versa."""
+    texto = ler(RAIZ / "SKILL.md")
+    inicio = texto.index("## Como carregar")
+    tabela = texto[inicio:]
+    roteados = set(re.findall(r"\| `([^`]+\.md)` \|$", tabela, flags=re.M))
+    existentes = {p.relative_to(RAIZ / "references").as_posix() for p in (RAIZ / "references").rglob("*.md")}
+    for f in sorted(roteados - existentes):
+        falhas.append(f"SKILL.md: tabela aponta para references/{f}, que não existe")
+    for f in sorted(existentes - roteados):
+        falhas.append(f"references/{f}: não está na tabela 'Como carregar' do SKILL.md")
+
+
 def checar_segredos():
     regex = re.compile("|".join(PADROES_SEGREDO))
     for p in arquivos({".md", ".py", ".yml", ".yaml", ".json", ".txt"}):
@@ -124,10 +137,11 @@ def checar_segredos():
 checar_referencias()
 checar_caminhos()
 checar_agentes()
+checar_roteamento()
 checar_segredos()
 
 if falhas:
     print("\n".join(falhas))
     print(f"\n{len(falhas)} falha(s).")
     sys.exit(1)
-print("ok: referências, caminhos, agentes e varredura de segredo")
+print("ok: referências, caminhos, roteamento, agentes e varredura de segredo")

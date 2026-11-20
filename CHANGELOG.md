@@ -26,6 +26,10 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). Versão: [
   `templates/agente-produto.modelo.yaml`.
 - **§16.5 aprofundado**: mobile (versão antiga em uso, loja, offline, permissões, assinatura),
   desktop (atualização assinada, multiplataforma, dado local) e API pública.
+- **Contexto sem desperdício (§18)**: cache de conhecimento do projeto em três camadas — quente
+  (`AGENTS.md`), morna (arquivos apontados) e fria (código) — com invalidação no mesmo commit e
+  regras de leitura sem desperdício. `templates/AGENTS.modelo.md` reescrito como camada quente.
+- Validador confere que todo arquivo de `references/` está roteado no `SKILL.md`, e vice-versa.
 - `CHANGELOG.md`.
 - Campos de norma exigida e de provedores de IA autorizados no `PERFIL.modelo.md`; termos novos no
   vocabulário (§15).
@@ -40,6 +44,11 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). Versão: [
 - `README.md`: badges, mapa, estrutura e índices cobrem especialidades, agentes e modelos;
   instalação copia também `agents/` e `templates/`, com versão em PowerShell.
 - `.gitignore`: ignora `docs/` (material local) e mais padrões de credencial.
+
+- **Carga mais leve do método**: o §14 mantém só o essencial e um resumo de uma linha por item
+  da pauta; o detalhe da pauta foi para `14-6-pauta-seguranca.md` e §14.3/§14.4 para
+  `14-3-4-ferramenta-agentes.md`, lidos só quando aplicáveis. As fontes externas foram reunidas em
+  `references/fontes.md`. O `SKILL.md` tem uma tabela única de roteamento.
 
 ### Corrigido
 

@@ -1,51 +1,61 @@
-# <Nome do projeto> — regras para os agentes
+<!--
+Modelo de AGENTS.md — a camada quente do projeto (§18). Copie para a raiz como AGENTS.md e crie
+um CLAUDE.md com uma única linha: @AGENTS.md
+Este arquivo entra inteiro em TODA sessão: só fatos que a maioria das tarefas usa, curto, sem
+explicação (o porquê mora no ADR) e sem copiar regras do método. Apague este comentário.
+-->
 
-Copie para a raiz do projeto como `AGENTS.md` (e, no Claude Code, crie um `CLAUDE.md` com a linha
-`@AGENTS.md`). Preencha os campos `<…>` e apague o que não se aplica. Este arquivo é mais específico
-que o método: onde ele divergir, ele vence — e a divergência é dita em voz alta.
+# <Projeto> — regras para os agentes
 
-## O que o projeto é
+<Uma frase: o que o projeto faz e para quem.> Método: skill `metodo-engenharia-software`
+(portão §14 em toda alteração). Este arquivo vence o método onde divergir — e a divergência é dita.
 
-<Uma frase: o que faz, para quem.> Versão vigente, mapa das pastas e como reverter: `README.md`.
-Todo agente carrega a skill `metodo-engenharia-software` (com o `PERFIL.md`) antes de propor,
-escrever ou revisar código.
+## Não pode quebrar
 
-## O que não pode quebrar
+- <invariante 1 — e o teste que o protege>
+- <invariante 2>
+- <invariante 3>
 
-- <Invariante 1 — ex.: regra de negócio que nunca se viola, com o teste que a protege>
-- <Invariante 2 — ex.: contrato público, formato de saída, caminho que outro sistema lê>
-- <Invariante 3 — ex.: limite de uso de API externa, controle único de consumo>
+## Comandos
 
-## Setores
+| Para | Comando |
+|---|---|
+| Validar tudo (vale o código de saída) | `<comando>` |
+| Rodar um teste | `<comando>` |
+| Subir local | `<comando>` |
 
-Sistema grande se altera por setor nomeado (§2). Índice: `<caminho do documento de setores>`.
-Sem setor nomeado, nenhum agente edita: apresenta o índice e espera.
+## Mapa
 
-## Testar
+| Caminho | O que é |
+|---|---|
+| `<src/núcleo/>` | <núcleo genérico — zero palavra de domínio> |
+| `<src/domínio/>` | <um arquivo por domínio> |
+| `<testes/>` | <baterias> |
+| `<docs/setores.md>` | <índice de setores — sem setor nomeado, ninguém edita o núcleo> |
 
-- Comando único que valida tudo: `<comando>` — vale pelo código de saída.
-- Onde a CI está: `<caminho do workflow>`. Antes do push, roda inteira numa cópia limpa.
-- <Armadilhas conhecidas: variável que faz o teste ler o repositório e não a versão instalada,
-  arquivos que a suíte regrava, etc.>
+Caminhos que outros sistemas leem (mudam só junto com quem lê): `<lista>`.
 
-## Versão e entrega
+## Armadilhas conhecidas
 
-- <Onde fica a versão, onde se arquiva a release, o que tem de mudar no mesmo commit.>
-- Nada sobe sem suíte verde, commit, push e README na versão nova no mesmo commit.
+- <fato verificado que já custou retrabalho — ex.: a suíte precisa de VAR=1 senão lê a versão instalada>
+- <ex.: a suíte regrava arquivos em X; restaurar antes do commit>
 
 ## Segredos e dados
 
-- Segredo só em `<cofre ou pasta fora do git>`. Arquivos de caminho fixo: `<lista>`.
-- Dado pessoal tratado: `<quais, finalidade, retenção>` (§11).
-- Texto que vai a terceiro: `<regras de voz e do que nunca sai>` (§12).
+Segredo só em `<cofre ou caminho fora do git>`. Dado pessoal: `<quais>` — nunca em log nem ao
+modelo sem ofuscação. Texto que vai a terceiro: `<regra>`.
 
-## Agentes usados neste projeto
+## Leia quando precisar (camada morna)
 
-<Liste os agentes de `agents/` que se aplicam e o que cada um precisa saber daqui. Os que não se
-aplicam ficam fora — os necessários, nem um a mais.>
+| Assunto | Arquivo |
+|---|---|
+| Detalhe dos setores | `<docs/setores.md>` |
+| Decisões de arquitetura | `<docs/adr/>` |
+| Processo de versão e release | `<docs/release.md>` |
+| <processo raro: criar módulo, migrar dado> | `<docs/…>` |
 
 ## Regras do dono
 
-- Idioma: <…>. Não inventar número: "não medi" é resposta.
+- <idioma>; não inventar número ("não medi" é resposta).
 - Apagar arquivo ou mexer fora do projeto: listar caminho e motivo e esperar o "sim".
-- Relatar o que ficou de fora e por quê: reduzir escopo é decisão do dono.
+- Commit e push só com a ordem do dono.

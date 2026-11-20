@@ -125,8 +125,12 @@ metodo-engenharia-software/
 │   ├── 08-estado-memoria.md
 │   ├── 09-10-observabilidade-ferramentas.md
 │   ├── 11-12-dados-seguranca-ritual.md
-│   ├── 14-portao.md
+│   ├── 14-portao.md                 ← portão + resumo da pauta
+│   ├── 14-3-4-ferramenta-agentes.md
+│   ├── 14-6-pauta-seguranca.md      ← detalhe da pauta, por item
 │   ├── 15-vocabulario.md
+│   ├── 18-contexto-cache.md         ← cache de conhecimento do projeto
+│   ├── fontes.md                    ← todas as fontes externas
 │   ├── 16-modulos/
 │   │   ├── erp.md
 │   │   ├── orquestracao-mcp.md
@@ -175,8 +179,12 @@ metodo-engenharia-software/
 | §8 | [`08-estado-memoria.md`](references/08-estado-memoria.md) | Dado compartilhado, retomada, cache, memória do sistema | Escrita condicional · máquina de estados explícita · cinco cortes de retomada · memória com origem, versão da regra, TTL e lápide |
 | §9 · §10 | [`09-10-observabilidade-ferramentas.md`](references/09-10-observabilidade-ferramentas.md) | Log, métrica, alerta, custo · vai entrar banco, fila, cache, container · desempenho | Identificador por execução · custo como métrica · tabela "entra quando × não entra, use isto" · **escada de componentes** · ordem do trabalho de desempenho · dimensionamento por gatilho medido |
 | §11 · §12 | [`11-12-dados-seguranca-ritual.md`](references/11-12-dados-seguranca-ritual.md) | Dado pessoal, documento de cliente, entrada de fora · produção, release, incidente | Minimização · ofuscação antes do modelo · entrada hostil (inclusive a saída do modelo) · ritual de mudança |
-| §14 | [`14-portao.md`](references/14-portao.md) | **Toda alteração de código, antes da primeira edição** | Auditoria total (mapa de impacto + diff hunk a hunk) · âncora contra drift · ferramenta nova · agentes com orçamento · relatório da entrega · **pauta de segurança (15 itens)** |
+| §14 | [`14-portao.md`](references/14-portao.md) | **Toda alteração de código, antes da primeira edição** | Auditoria total (mapa de impacto + diff hunk a hunk) · âncora contra drift · relatório da entrega · **resumo da pauta de segurança (15 itens)** |
+| §14.3 · §14.4 | [`14-3-4-ferramenta-agentes.md`](references/14-3-4-ferramenta-agentes.md) | A mudança traz ferramenta nova ou se cogita usar agentes | Teste de necessidade e passo a passo de configuração · agentes com orçamento |
+| §14.6 | [`14-6-pauta-seguranca.md`](references/14-6-pauta-seguranca.md) | Itens da pauta que se aplicam à mudança | Detalhe e evidência exigida de cada item |
 | §15 | [`15-vocabulario.md`](references/15-vocabulario.md) | Dúvida sobre um termo | Núcleo, skill, setor, corpus, bateria, veto, lápide, ADR, drift, outbox, saga, RAG, embedding, SLO, entre outros |
+| §18 | [`18-contexto-cache.md`](references/18-contexto-cache.md) | Preparar o `AGENTS.md` do projeto; tarefa gastando contexto com o que já se sabe | Cache de conhecimento em três camadas (quente, morna, fria) · invalidação · leitura sem desperdício |
+| — | [`fontes.md`](references/fontes.md) | Conferir de onde vem uma regra | Todas as fontes externas, por seção |
 
 ### Módulos por tipo de projeto (`references/16-modulos/`)
 
@@ -395,6 +403,10 @@ que mais pegam defeito com menos esforço.
 - **Regra do repositório vence a do método.** Se o seu projeto tem convenção própria, ela
   prevalece, e a divergência deve ser dita em voz alta, não resolvida no silêncio. Use o
   [`templates/AGENTS.modelo.md`](templates/AGENTS.modelo.md) para escrevê-la.
+- **O `AGENTS.md` é o cache quente do projeto** (§18): curto, só fatos que quase toda tarefa
+  usa, carregado em toda sessão pelo `CLAUDE.md` (`@AGENTS.md`). O detalhe fica em arquivos
+  apontados por ele, lidos só quando o assunto aparece. Assim o agente não redescobre o que o
+  projeto já sabe e não paga contexto pelo que a tarefa não usa.
 - **Contexto vai no `PERFIL.md`, não no núcleo.** Palavras de domínio, idioma, moeda e lei de
   dados (LGPD, GDPR ou outra) ficam no perfil. Assim o núcleo continua genérico e pode ser
   atualizado sem conflito.

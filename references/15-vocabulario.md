@@ -54,4 +54,5 @@
 | **Monólito distribuído** | Serviços separados que dividem banco ou exigem deploy conjunto — o defeito que a separação queria evitar |
 | **Sistema poliglota** | Sistema com mais de uma linguagem, cada uma atrás de um contrato (§17.1) |
 | **FFI** | Chamada direta entre linguagens dentro do mesmo processo (ex.: Rust chamado pelo Python) |
+| **Camada quente / morna / fria** | O que entra em toda sessão (`AGENTS.md`) / o que se lê quando o assunto aparece / o código, lido por busca e trecho (§18) |
 | **Manifesto de agente** | Arquivo próprio de cada agente do produto: função, schemas, ferramentas, permissões e tetos (§16.2) |

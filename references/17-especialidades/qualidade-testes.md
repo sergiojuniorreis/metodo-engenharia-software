@@ -63,11 +63,5 @@ diff inteiro e roda a suíte — não aprova pelo resumo.
 - Suíte inteira sem vermelho novo contra a linha de base.
 - Nenhum teste desligado, pulado ou instável sem dívida datada.
 
-## Fontes externas
 
-- Feathers, M. *Working Effectively with Legacy Code*. Prentice Hall, 2004.
-- Winters, T.; Manshreck, T.; Wright, H. *Software Engineering at Google*. O'Reilly, 2020 — tamanhos
-  de teste, testes instáveis.
-- Fowler, M. *The Practical Test Pyramid* (martinfowler.com).
-- Claessen, K.; Hughes, J. *QuickCheck*. ICFP 2000 — teste baseado em propriedade.
-- Jia, Y.; Harman, M. *An Analysis and Survey of the Development of Mutation Testing*. IEEE TSE, 2011.
+Fontes desta seção: `references/fontes.md`, §17.8.

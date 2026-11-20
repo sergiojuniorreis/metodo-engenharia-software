@@ -71,7 +71,5 @@ e depois.
 - Todo estado da interface tratado; nenhuma ação sem retorno ao usuário.
 - Ganho de desempenho alegado tem o número antes e depois.
 
-## Fontes externas
 
-- OWASP. *Application Security Verification Standard (ASVS)* — requisitos verificáveis por camada.
-- Fowler, M. *Refactoring*, 2ª ed. Addison-Wesley, 2018.
+Fontes desta seção: `references/fontes.md`, §17.2.

@@ -131,16 +131,5 @@ Antes de aprovar, o desenho responde por escrito:
 - Como se reverte cada mudança de uma via?
 - O que outra pessoa precisa para operar isto sozinha (bus factor, §2)?
 
-## Fontes externas
 
-- Ford, N.; Richards, M.; Sadalage, P.; Dehghani, Z. *Software Architecture: The Hard Parts*.
-  O'Reilly, 2021.
-- Kleppmann, M. *Designing Data-Intensive Applications*. O'Reilly, 2017.
-- Nygard, M. *Documenting Architecture Decisions*, 2011 (cognitect.com/blog) — o formato ADR.
-- Martin, R. C. *Clean Architecture*. Prentice Hall, 2017 — a regra da dependência.
-- Fowler, M. *MonolithFirst* e *MicroservicePrerequisites* (martinfowler.com/bliki).
-- Newman, S. *Building Microservices*, 2ª ed. O'Reilly, 2021.
-- Richardson, C. *Microservices Patterns*. Manning, 2018; padrão *Database per service*
-  (microservices.io/patterns/data/database-per-service).
-- Conway, M. *How Do Committees Invent?* Datamation, 1968 — a lei de Conway.
-- Protocol Buffers e gRPC (protobuf.dev, grpc.io); PyO3 (pyo3.rs) — Rust chamado pelo Python.
+Fontes desta seção: `references/fontes.md`, §17.1.

@@ -82,11 +82,5 @@ Medidas para enxergar a saúde do processo, nunca para comparar pessoas:
 - Cada alerta tem severidade, dono e runbook; cada SLO tem indicador, objetivo e janela.
 - Restauração de backup testada com data registrada.
 
-## Fontes externas
 
-- Beyer, B. et al. *Site Reliability Engineering*. O'Reilly/Google, 2016 (sre.google/books) —
-  SLO, orçamento de erro, alertas, postmortem.
-- Forsgren, N.; Humble, J.; Kim, G. *Accelerate*. IT Revolution, 2018 — métricas DORA.
-- Humble, J.; Farley, D. *Continuous Delivery*. Addison-Wesley, 2010.
-- The Twelve-Factor App (12factor.net) — configuração por ambiente, paridade entre ambientes.
-- OpenTelemetry (opentelemetry.io) — padrão aberto de rastreamento, métrica e log.
+Fontes desta seção: `references/fontes.md`, §17.5.

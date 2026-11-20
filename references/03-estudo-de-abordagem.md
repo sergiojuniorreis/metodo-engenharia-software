@@ -206,31 +206,5 @@ Reparo começa pelo entendimento, não pelo conserto. Antes da primeira edição
 7. **Reparo de arquitetura refaz as quatro análises do escopo.** O paradigma de IA, a rede, a
    linearidade e os movimentos assíncronos podem ter mudado desde o desenho original.
 
-## Fontes externas
 
-As condutas e análises desta seção se apoiam nestas referências:
-
-- Klein, G. *Performing a Project Premortem*. Harvard Business Review, set. 2007
-  (hbr.org/2007/09/performing-a-project-premortem) — pre-mortem.
-- Microsoft. *Threat modeling framework*, Microsoft Learn — STRIDE por elemento.
-- OWASP. *Top 10 for LLM Applications 2025* — injeção de instrução (LLM01) e agência excessiva
-  (LLM06).
-- Ford, N.; Parsons, R.; Kua, P.; Sadalage, P. *Building Evolutionary Architectures*, 2ª ed.,
-  O'Reilly — funções de aptidão.
-- Feathers, M. *Working Effectively with Legacy Code*. Prentice Hall — testes de caracterização.
-- Chesterton, G. K. *The Thing*, 1929 — a cerca.
-- Wright, H. Lei de Hyrum (hyrumslaw.com); Winters, T. et al. *Software Engineering at Google*.
-- Fowler, M. *Strangler Fig Application* e *Parallel Change* (martinfowler.com).
-- Google. *Site Reliability Engineering*, cap. 15, *Postmortem Culture: Learning from Failure*
-  (sre.google/sre-book/postmortem-culture) — causas contribuintes, sem culpa.
-- Zinkevich, M. *Rules of Machine Learning*, Google
-  (developers.google.com/machine-learning/guides/rules-of-ml) — sem ML quando não é preciso;
-  primeiro modelo simples.
-- Grinsztajn, L.; Oyallon, E.; Varoquaux, G. *Why do tree-based models still outperform deep
-  learning on typical tabular data?* NeurIPS 2022 (arxiv.org/abs/2207.08815).
-- d'Avila Garcez, A.; Lamb, L. *Neurosymbolic AI: the 3rd wave*. Artificial Intelligence
-  Review 56, 2023 (arxiv.org/abs/2012.05876).
-- Kautz, H. *The Third AI Summer*. AAAI Engelmore Lecture, 2020; AI Magazine, 2022 — os seis
-  tipos de sistema neurossimbólico.
-- Richardson, C. Padrões *Transactional outbox* e *Saga*
-  (microservices.io/patterns/data/transactional-outbox e …/saga).
+Fontes desta seção: `references/fontes.md`, §3.

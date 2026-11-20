@@ -78,11 +78,5 @@ nas análises A a C do §3.
 - Os testes de qualidade do dado rodam a cada carga e param o pipeline quando falham.
 - Custo e latência aparecem ao lado do acerto.
 
-## Fontes externas
 
-- Zinkevich, M. *Rules of Machine Learning*, Google
-  (developers.google.com/machine-learning/guides/rules-of-ml).
-- Kaufman, S. et al. *Leakage in Data Mining: Formulation, Detection, and Avoidance*. ACM TKDD, 2012.
-- Hyndman, R.; Athanasopoulos, G. *Forecasting: Principles and Practice*, 3ª ed. (otexts.com/fpp3).
-- Mitchell, M. et al. *Model Cards for Model Reporting*. FAT\* 2019.
-- Sculley, D. et al. *Hidden Technical Debt in Machine Learning Systems*. NeurIPS 2015.
+Fontes desta seção: `references/fontes.md`, §17.3.

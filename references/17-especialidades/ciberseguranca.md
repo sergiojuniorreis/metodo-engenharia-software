@@ -82,11 +82,5 @@ varridos antes do envio: nada de segredo, dado pessoal fora da finalidade, nem n
 - Auditoria de dependências sem achado crítico no commit atual.
 - Nenhum valor de segredo aparece em relatório, log ou mensagem.
 
-## Fontes externas
 
-- OWASP. *Top 10* (web), *ASVS*, *Top 10 for LLM Applications 2025*, *Cheat Sheet Series*
-  (cheatsheetseries.owasp.org).
-- Microsoft. *Threat modeling*, Microsoft Learn — STRIDE.
-- NIST. *Secure Software Development Framework (SSDF)*, SP 800-218.
-- OpenSSF. *SLSA* (slsa.dev) — níveis de integridade da cadeia de build; *Scorecard*.
-- CycloneDX e SPDX — formatos de SBOM.
+Fontes desta seção: `references/fontes.md`, §17.6.
