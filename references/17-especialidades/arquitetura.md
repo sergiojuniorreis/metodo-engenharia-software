@@ -64,6 +64,62 @@ análises ficam no §3, e a **escada de componentes** no §10.
 | Avisar outros sistemas de um fato | Outbox + relé (§3D) | Muitos assinantes → barramento de eventos |
 | Processo longo com desvio e compensação | Máquina de estados escrita (§8) | Muitos fluxos assim → motor de workflow |
 
+## Microsserviços
+
+**Quando separar** — só com pelo menos um destes motivos medidos e escritos no ADR:
+
+- times diferentes que travam um ao outro no mesmo código ou no mesmo deploy;
+- partes com ritmo de entrega, escala ou requisito de disponibilidade muito diferentes;
+- isolamento exigido (falha, segurança, conformidade) que o módulo não consegue dar;
+- uma parte precisa de outra linguagem ou runtime (ver "Sistemas poliglotas").
+
+**Antes de separar**, o monólito já tem: módulos com fronteira testada, deploy automatizado,
+observabilidade com rastreamento e contratos escritos. Separar sem isso distribui a bagunça.
+
+**Depois de separar**, as regras:
+
+- **Cada serviço é dono do próprio dado.** Nenhum serviço lê ou escreve o banco de outro; integra
+  pelo contrato. Banco compartilhado entre serviços é monólito distribuído — o pior dos dois.
+- **Fronteira pelo domínio, não pela camada técnica**: serviço de "pedidos", não serviço de
+  "banco de dados".
+- **Contrato versionado e testado dos dois lados** (teste de contrato, §17.8); mudança de contrato
+  em três tempos (expandir, migrar, contrair).
+- **Chamada síncrona entre serviços com timeout, retry com teto e circuit breaker** (§7);
+  cadeia longa de chamadas síncronas é sinal de fronteira errada.
+- **Consistência entre serviços por saga e outbox** (§3D), nunca transação distribuída por padrão.
+- **Identificador da execução atravessa todos os serviços** (§9); sem rastreamento distribuído
+  não há operação.
+- **Deploy independente de verdade**: subir um serviço não exige subir outro junto. Se exige, a
+  fronteira está errada.
+- **Peças de plataforma** (malha de serviços, gateway, barramento de eventos) só por gargalo
+  medido (§10).
+
+## Sistemas poliglotas
+
+Mais de uma linguagem no mesmo sistema é legítimo quando cada uma ganha no seu trecho — por
+exemplo, Python onde o peso é IA e dado, JVM onde o peso é transação de vida longa, Rust onde a CPU
+é o gargalo medido. O custo é real: cada runtime é uma CI, um deploy, uma cadeia de dependências e
+gente que o domine (§3).
+
+- **Uma linguagem por serviço ou por processo**, nunca misturada dentro do mesmo módulo.
+- **A fronteira entre linguagens é um contrato escrito**, de onde se gera código para os dois lados:
+  OpenAPI (HTTP), Protocol Buffers (gRPC) ou schema de evento. Tipo definido à mão em cada lado
+  diverge.
+- **Formas de ligar, da mais simples à mais acoplada:**
+
+  | Forma | Quando | Cuidado |
+  |---|---|---|
+  | Fila ou evento | Trabalho assíncrono, desacoplado | Idempotência e ordem (§3D) |
+  | HTTP ou gRPC | Pedido e resposta entre serviços | Timeout, retry com teto, versão do contrato |
+  | Subprocesso | Ferramenta em outra linguagem chamada de vez em quando | Entrada e saída por formato validado; código de saída conferido |
+  | Extensão nativa (FFI, ex.: Rust chamado pelo Python) | Trecho quente medido dentro de um processo | Falha nativa derruba o processo; build por plataforma; teste nos dois lados |
+
+- **Um comando valida tudo** (§5), em todas as linguagens: a CI roda as suítes de todas e os testes
+  de contrato entre elas.
+- **Observabilidade comum**: o mesmo formato de log, o mesmo identificador de execução e o mesmo
+  padrão de rastreamento (ex.: OpenTelemetry) em todas as linguagens.
+- **Linguagem nova entra pelo §14.3** com gatilho medido e quem a mantém nomeado.
+
 ## Revisão de um desenho
 
 Antes de aprovar, o desenho responde por escrito:
@@ -82,4 +138,9 @@ Antes de aprovar, o desenho responde por escrito:
 - Kleppmann, M. *Designing Data-Intensive Applications*. O'Reilly, 2017.
 - Nygard, M. *Documenting Architecture Decisions*, 2011 (cognitect.com/blog) — o formato ADR.
 - Martin, R. C. *Clean Architecture*. Prentice Hall, 2017 — a regra da dependência.
-- Fowler, M. *MonolithFirst* (martinfowler.com/bliki/MonolithFirst.html).
+- Fowler, M. *MonolithFirst* e *MicroservicePrerequisites* (martinfowler.com/bliki).
+- Newman, S. *Building Microservices*, 2ª ed. O'Reilly, 2021.
+- Richardson, C. *Microservices Patterns*. Manning, 2018; padrão *Database per service*
+  (microservices.io/patterns/data/database-per-service).
+- Conway, M. *How Do Committees Invent?* Datamation, 1968 — a lei de Conway.
+- Protocol Buffers e gRPC (protobuf.dev, grpc.io); PyO3 (pyo3.rs) — Rust chamado pelo Python.

@@ -1,6 +1,6 @@
 ---
 name: metodo-engenharia-software
-description: Método de engenharia para todo projeto novo e todo reparo de código ou de arquitetura — sistemas, ERPs, automações, aplicativos, integrações, centrais de agentes de IA, MCP, agentes ligados a apps (Microsoft, Google e afins) e extensões de navegador, com ou sem IA. Une arquitetura, full stack, ciência de dados, IA aplicada (RAG, busca semântica, agentes), DevOps/SRE, cibersegurança, governança e testes. Exige estudo de abordagem antes de codar, as quatro análises do escopo, componente só por problema medido, definição de pronto com evidência, idempotência, memória com TTL, observabilidade, release e rollback, proteção de dados pessoais e fronteira contra entrada hostil. Toda alteração passa pelo portão do §14 e pela pauta de segurança. Traz nove agentes de desenvolvimento. Use ao iniciar projeto, reparar código ou arquitetura, escolher tecnologia ou modelo de IA, projetar, escrever, revisar, depurar ou publicar.
+description: Método de engenharia para todo projeto novo e todo reparo de código ou de arquitetura — sistemas, ERPs, automações, aplicativos, integrações, centrais de agentes de IA, MCP, agentes ligados a apps (Microsoft, Google e afins) e extensões de navegador, com ou sem IA. Une arquitetura (inclusive microsserviços e sistemas com várias linguagens), full stack, ciência de dados, IA aplicada (RAG, busca semântica, agentes), DevOps/SRE, cibersegurança, governança e testes. Exige estudo de abordagem antes de codar, as quatro análises do escopo, componente só por problema medido, definição de pronto com evidência, idempotência, memória com TTL, observabilidade, release e rollback, proteção de dados pessoais e fronteira contra entrada hostil. Toda alteração passa pelo portão do §14 e pela pauta de segurança. Traz nove agentes de desenvolvimento. Use ao iniciar projeto, reparar código ou arquitetura, escolher tecnologia ou modelo de IA, projetar, escrever, revisar, depurar ou publicar.
 ---
 
 # Método de engenharia de software
@@ -42,12 +42,12 @@ quando a situação pede. Toda referência "§n" aponta para o arquivo desta tab
 | §17.7 Governança de software, dados e IA | `references/17-especialidades/governanca.md` |
 | §17.8 Qualidade e testes | `references/17-especialidades/qualidade-testes.md` |
 | Agentes de desenvolvimento e o fluxo entre eles | `agents/README.md` |
-| Modelos: `AGENTS.md` de projeto, ADR, relatório da entrega, questionário ao dono | `templates/` |
+| Modelos: `AGENTS.md` de projeto, ADR, relatório da entrega, questionário ao dono, manifesto de agente | `templates/` |
 
 - **Modelo ou agente sem suporte a skills:** concatene este arquivo com as referências da
   situação no system prompt, no `AGENTS.md` ou no arquivo de regras do projeto.
-- **Projeto sem IA:** §5, §6, as análises A e B do §3 e os módulos §16.2 a §16.4 se respondem
-  "não se aplica — motivo". O resto vale inteiro.
+- **Projeto sem IA:** §5, §6, as análises A e B do §3, os módulos §16.2 a §16.4 e o §17.4 se
+  respondem "não se aplica — motivo". O resto vale inteiro.
 - **Especialidades (§17):** cada setor diz como fazer bem uma disciplina e aponta para as regras
   do núcleo, sem repeti-las. Carregue só o setor que a tarefa toca.
 - **Agentes (`agents/`):** nove especialistas prontos para o Claude Code, um por frente, com o fluxo
@@ -78,6 +78,8 @@ quando a situação pede. Toda referência "§n" aponta para o arquivo desta tab
 | Aplicativo web, mobile ou desktop | §16.5 |
 | Interface web: tela, desempenho no navegador, acessibilidade, componentes, bundle | §16.6 |
 | Desenhar sistema, fronteira, contrato ou modelo de dados | §17.1 |
+| Separar em microsserviços ou usar mais de uma linguagem no mesmo sistema | §17.1 |
+| Definir os agentes de um produto, cada um com sua função | §16.2 e `templates/agente-produto.modelo.yaml` |
 | Implementar backend, API, banco ou interface | §17.2 |
 | Métrica, painel, previsão, classificação, pipeline de dados | §17.3 |
 | LLM, RAG, banco vetorial, busca semântica, agente de IA | §17.4 |

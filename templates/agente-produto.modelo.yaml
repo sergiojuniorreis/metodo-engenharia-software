@@ -1,0 +1,56 @@
+# Manifesto de agente do produto (§16.2 — "Um agente, uma função, um arquivo").
+# Um arquivo por agente. O orquestrador lê, valida na partida e aplica; o prompt não amplia nada
+# do que está aqui. Preencha os campos <…> e apague os comentários que não servirem.
+
+nome: <classificador-de-documentos>
+versao: 1.0.0
+dono: <pessoa ou equipe responsável>
+
+funcao: >
+  <Uma frase com a única responsabilidade do agente.
+   Ex.: lê um documento recebido e devolve o tipo e os campos extraídos, com citação.>
+
+entrada:
+  schema: <schemas/classificador-entrada.json>   # validada antes de o agente rodar
+saida:
+  schema: <schemas/classificador-saida.json>     # validada antes de virar ação (§6)
+
+modelo:
+  provedor: <provedor>          # adaptador de provedor: a regra de negócio não conhece o fornecedor
+  nome: <modelo e versão fixados>
+  temperatura: 0
+  prompt: <prompts/classificador.v1.md>   # arquivo próprio, versionado
+  escalonamento: <modelo maior só quando o menor titubeia, ou "nenhum">
+
+ferramentas:
+  - nome: <buscar_documento>
+    efeito: leitura
+  - nome: <registrar_classificacao>
+    efeito: escrita
+    idempotente: true
+    aceite_humano: false          # true quando age em nome de alguém (§14.6 item 5)
+
+permissoes:
+  escopos: [<documentos:leitura>, <classificacao:escrita>]   # mínimo necessário (§14.6 item 12)
+  dados_pessoais: ofuscados       # nada sai sem ofuscação (§11)
+
+tetos:
+  passos: <10>
+  tokens: <20000>
+  custo_por_execucao: <valor na moeda do projeto>
+  tempo_segundos: <60>
+
+delegacao:
+  pode_chamar: []                 # agentes para os quais pode delegar; vazio = nenhum
+  profundidade_maxima: 0
+
+memoria:
+  usa: <false | true>
+  ttl: <prazo e razão escrita (§8)>
+
+falha:
+  resposta_invalida: um_retry_depois_revisao_humana   # §6
+  teto_estourado: parar_com_aviso
+  dependencia_fora: <caminho seguro e registro do desvio (§7)>
+
+testes: <testes/agentes/test_classificador.py>   # bateria própria do agente

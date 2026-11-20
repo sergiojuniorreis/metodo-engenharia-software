@@ -65,7 +65,7 @@ def checar_referencias():
 def checar_caminhos():
     for p in arquivos({".md"}):
         for n, linha in enumerate(ler(p).splitlines(), 1):
-            for cam in re.findall(r"`((?:references|agents|templates|scripts)/[^`*<>\s]+\.(?:md|py))`", linha):
+            for cam in re.findall(r"`((?:references|agents|templates|scripts)/[^`*<>\s]+\.(?:md|py|ya?ml))`", linha):
                 if not (RAIZ / cam).exists():
                     falhas.append(f"{p.relative_to(RAIZ)}:{n}: caminho citado não existe: {cam}")
             for cam in re.findall(r"\]\(([^)#:]+)\)", linha):

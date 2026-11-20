@@ -40,7 +40,8 @@ casos reais disponível.
 5. **RAG, quando houver**: recorte pela estrutura do documento, busca híbrida (palavra + vetor),
    filtro por permissão dentro da consulta, versão do embedding em cada vetor, banco vetorial por
    necessidade, recuperação e fidelidade medidas separadamente.
-6. **Agente, quando houver**: ferramentas como verbos com trava, teto de passos, tokens, custo e
+6. **Agente, quando houver**: um manifesto por agente com uma função só (§16.2,
+   `templates/agente-produto.modelo.yaml`), ferramentas como verbos com trava, teto de passos, tokens, custo e
    tempo, aceite humano conferido pelo servidor para ação em nome de alguém (§14.6 item 5).
 7. **Assíncrono e resiliência**: paralelo com teto respeitando os limites do provedor, cache por
    hash da entrada, memória com TTL e lápide (§8), um retry seguro e depois conduta conservadora.

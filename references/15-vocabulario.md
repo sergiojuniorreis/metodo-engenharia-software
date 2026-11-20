@@ -50,3 +50,8 @@
 | **Matriz de interrupção** | O mesmo cenário rodado em cada parada possível, conferindo o estado final |
 | **Ficha do modelo** | Dado de treino, métricas, limites, dono e como voltar de um modelo |
 | **Deriva** | Mudança, com o tempo, na entrada ou no acerto de um modelo |
+| **Microsserviço** | Serviço com deploy e dado próprios, separado por motivo medido (§17.1) |
+| **Monólito distribuído** | Serviços separados que dividem banco ou exigem deploy conjunto — o defeito que a separação queria evitar |
+| **Sistema poliglota** | Sistema com mais de uma linguagem, cada uma atrás de um contrato (§17.1) |
+| **FFI** | Chamada direta entre linguagens dentro do mesmo processo (ex.: Rust chamado pelo Python) |
+| **Manifesto de agente** | Arquivo próprio de cada agente do produto: função, schemas, ferramentas, permissões e tetos (§16.2) |

@@ -18,6 +18,14 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). Versão: [
   questionário ao dono.
 - **Validação do repositório** (`scripts/validar.py` e CI): referências §, caminhos citados,
   cabeçalho dos agentes e varredura de segredo.
+- **Microsserviços e sistemas poliglotas** no §17.1: quando separar, regras depois de separar,
+  contrato entre linguagens e formas de ligá-las (fila, HTTP/gRPC, subprocesso, extensão nativa).
+- **Java/Kotlin e C#/.NET** para backend na tabela de linguagens do §3; Rust também como extensão
+  nativa do Python no trecho quente medido.
+- **Manifesto de agente do produto** (§16.2, "Um agente, uma função, um arquivo") e o modelo
+  `templates/agente-produto.modelo.yaml`.
+- **§16.5 aprofundado**: mobile (versão antiga em uso, loja, offline, permissões, assinatura),
+  desktop (atualização assinada, multiplataforma, dado local) e API pública.
 - `CHANGELOG.md`.
 - Campos de norma exigida e de provedores de IA autorizados no `PERFIL.modelo.md`; termos novos no
   vocabulário (§15).
@@ -33,8 +41,7 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). Versão: [
   instalação copia também `agents/` e `templates/`, com versão em PowerShell.
 - `.gitignore`: ignora `docs/` (material local) e mais padrões de credencial.
 
-### Dívida conhecida
+### Corrigido
 
-- §16.6 (`front-end.md`), seção "Pauta §14.6": a descrição ao lado dos números dos itens não bate
-  com a pauta (ex.: item 2 é isolamento por dono, item 6 é a mesma régua em todos os modos).
-  Corrigir na próxima versão.
+- §16.6 (`front-end.md`): a seção "Pauta §14.6" agora descreve cada item como a pauta o define;
+  referência quebrada "§SKILL" e número sem fonte sobre ferramentas de acessibilidade removidos.

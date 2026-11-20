@@ -153,8 +153,9 @@ Ponto de partida, não sentença — a tabela se derruba com motivo escrito.
 | Automação dentro de sistema de terceiro (navegador) | **JavaScript/TypeScript** (userscript ou extensão) | Não há escolha: é a única língua que roda lá dentro |
 | Extensão de navegador | **TypeScript** + o padrão de manifesto exigido pela loja do navegador alvo (hoje Manifest V3 no Chrome e no Edge) | Lógica pesada ou segredo → serviço próprio chamado pela extensão (§16.4) |
 | Serviço, API, integração, orquestração de IA | **Python** com framework web maduro (ex.: FastAPI) quando o peso é dado, documento ou IA; **TypeScript/Node** quando o contrato é web e o time já é JS | Concorrência muito alta; necessidade de binário único |
+| Backend transacional de vida longa, equipe grande, ecossistema corporativo | **Java ou Kotlin** na JVM, com framework maduro (ex.: Spring Boot, Quarkus); **C#/.NET** onde a casa é Microsoft | Script curto, função com partida a frio crítica, equipe sem experiência na plataforma |
 | Agente em máquina alheia, concorrência alta, distribuição simples | **Go** | Ecossistema de IA/dados menor; escrita mais lenta |
-| Latência dura, CPU cara, processamento pesado | **Rust** | Só com **gatilho medido**; custo de escrita e de contratação é real |
+| Latência dura, CPU cara, processamento pesado | **Rust** — serviço próprio, ou extensão nativa chamada pelo Python só no trecho quente (ex.: PyO3) | Só com **gatilho medido**; custo de escrita e de contratação é real |
 | Consulta, agregação, integridade, relatório | **SQL** — ex.: PostgreSQL com banco, SQLite/DuckDB local | Regra de conjunto se resolve em SQL, não em laço; mas dado pequeno de um dono só dispensa banco (§10) |
 | Customização de ERP | **Linguagem oficial do ERP** nos pontos de extensão (ex.: ABAP no SAP, AdvPL/TLPP no Protheus, X++ no Dynamics) | Integração externa → API oficial + serviço próprio (§16.1) |
 | Add-in de Office / Microsoft 365 | **Office.js (TypeScript)**; Microsoft Graph para dados | Automação interna simples → low-code da plataforma, se a empresa já usa (§16.3) |
@@ -172,7 +173,10 @@ Ponto de partida, não sentença — a tabela se derruba com motivo escrito.
 - **Adequação primeiro, manutenção depois, gosto nunca.** "Está na moda" e "é o que eu já sei"
   não sustentam decisão sozinhos.
 - **Uma linguagem por camada.** Cada runtime a mais é uma CI, um deploy, um conjunto de
-  dependências e uma dor de troubleshooting a mais.
+  dependências e uma dor de troubleshooting a mais. Sistema com mais de uma linguagem segue as
+  regras de fronteira do §17.1.
+- **Robustez vem de contrato, teste e operação, não da linguagem.** Linguagem com tipo forte e
+  ecossistema maduro ajuda; não substitui o portão (§14).
 - **Ferramenta não entra por padrão** (§10). Projeto que não precisa de banco, fila ou
   provisionamento não os leva — e isso se diz no estudo.
 - **Protótipo descartável é bem-vindo para desempatar**, desde que nasça marcado como

@@ -23,6 +23,27 @@ projeto cria ou consome servidores MCP. (Agentes usados para desenvolver seguem 
 - **Framework de agentes só por necessidade** (§10): um modelo com poucas ferramentas dispensa
   orquestrador.
 
+## Um agente, uma função, um arquivo
+
+Cada agente do produto é declarado em **arquivo próprio** — o manifesto — separado do código do
+orquestrador e do prompt. O manifesto é a fonte da verdade sobre o que o agente pode fazer; o
+orquestrador o lê, valida e aplica. Modelo: `templates/agente-produto.modelo.yaml`.
+
+- **Uma responsabilidade por agente**, escrita numa frase. Agente que "também faz" outra coisa vira
+  dois agentes.
+- **O manifesto declara:** nome e versão, função, entrada e saída em schema, ferramentas permitidas
+  (com leitura × escrita), permissões e escopos, modelo e versão do prompt, tetos (passos, tokens,
+  custo, tempo), para quem pode delegar e o que faz quando falha.
+- **Validado na partida**: manifesto inválido, ferramenta não listada ou escopo além do declarado
+  impedem o agente de subir (falha fechada, §14.6 item 1).
+- **O orquestrador aplica o manifesto, não o prompt.** Ferramenta fora da lista é recusada pelo
+  código, ainda que o modelo a peça.
+- **Prompt em arquivo próprio e versionado**, referenciado pelo manifesto; troca de prompt ou modelo
+  sobe a versão do agente e roda o corpus de regressão (§5, passo 9).
+- **Cada agente tem bateria própria**: entrada válida e inválida, ferramenta proibida recusada,
+  teto estourado parando com aviso, injeção vinda de conteúdo lido.
+- **Agente novo é arquivo novo**, nunca `if` novo no orquestrador (§2, núcleo genérico).
+
 ## MCP — servidor
 
 - Uma ferramenta = um verbo (§7); marque se é só leitura ou destrutiva.

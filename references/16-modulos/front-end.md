@@ -115,8 +115,8 @@ São dimensões de "pronto" (§4), com prova:
   ambiente (`Intl`), nunca formatação na mão.
 
 **Prova:** varredura automática de acessibilidade (ex.: axe) sem violação crítica **mais** um
-roteiro manual de teclado e leitor de tela nos fluxos principais. Ferramenta automática pega
-cerca de um terço; o resto é teste manual.
+roteiro manual de teclado e leitor de tela nos fluxos principais. Ferramenta automática pega só
+parte dos problemas; o resto é teste manual.
 
 ## §16.6.6 — Fronteira e segurança no cliente
 
@@ -154,7 +154,8 @@ captura comparada por commit. Entra por necessidade, como toda ferramenta (§10)
 
 O §10 manda: nada é obrigatório. A lista abaixo é o repertório de uma equipe sênior; cada item
 entra com motivo escrito e sai do projeto que não precisa dele. Troque livremente por
-equivalente que a equipe domine — a regra do repositório vence esta (§SKILL "Como carregar").
+equivalente que a equipe domine — a regra do repositório vence esta ("Como carregar", no
+`SKILL.md`).
 
 | Camada | Opções de referência | Quando entra |
 |---|---|---|
@@ -179,7 +180,19 @@ abstração errada (§2); dependência nova passa pelo teste do §10 e pelo §14
 
 ## Pauta §14.6
 
-Itens que costumam se aplicar ao front-end: **2** (entrada validada), **6** (sem `catch` mudo),
-**7** (dado sensível não vaza para o cliente nem para log), **8** (dependência nova auditada),
-**10** e **11** (acessibilidade, dado pessoal na interface) e **15**. Responda cada um com a
-evidência que será entregue, ou o motivo de não se aplicar.
+Itens que costumam se aplicar ao front-end:
+
+- **2 — Isolamento por dono:** cache do cliente, estado global e armazenamento local não mostram
+  dado de um usuário a outro (troca de conta, sessão compartilhada).
+- **6 — A mesma régua em todos os modos:** CSP, CORS e validação não afrouxam em desenvolvimento
+  ou homologação.
+- **7 — Segredo só no cofre:** nenhuma chave no bundle, em variável pública de build nem no
+  armazenamento do navegador (§16.6.6).
+- **8 — O artefato leva só o que deve:** lista do que sobe conferida — sem source map público
+  sem decisão, sem `.env`, sem dado de teste.
+- **10 — Segurança clássica:** XSS, CSRF, CSP, cabeçalhos de segurança.
+- **11 — Autenticação e autorização:** decididas no servidor, nunca escondendo botão.
+- **15 — Cadeia de suprimentos:** lockfile, auditoria de pacotes na CI.
+- **3** quando a tela mostra ou envia conteúdo de modelo de IA.
+
+Responda cada um com a evidência que será entregue, ou o motivo de não se aplicar.

@@ -101,7 +101,7 @@ flowchart TD
     end
 
     AG["agents/<br/>9 agentes de desenvolvimento"]
-    TP["templates/<br/>AGENTS.md · ADR · relatório · questionário"]
+    TP["templates/<br/>AGENTS.md · ADR · relatório · questionário · manifesto de agente"]
 
     N --> REF
     N --> MOD
@@ -144,7 +144,7 @@ metodo-engenharia-software/
 │       ├── governanca.md
 │       └── qualidade-testes.md
 ├── agents/                          ← 9 agentes + README com o fluxo
-├── templates/                       ← AGENTS.md de projeto, ADR, relatório, questionário
+├── templates/                       ← AGENTS.md de projeto, ADR, relatório, questionário, manifesto de agente
 ├── scripts/validar.py               ← validação do repositório (roda na CI)
 ├── .github/workflows/validar.yml
 ├── CHANGELOG.md
@@ -186,7 +186,7 @@ metodo-engenharia-software/
 | §16.2 | [`orquestracao-mcp.md`](references/16-modulos/orquestracao-mcp.md) | O produto tem vários agentes coordenados, um orquestrador, ou cria/consome servidores MCP |
 | §16.3 | [`apps-microsoft-google.md`](references/16-modulos/apps-microsoft-google.md) | O agente lê ou escreve em e-mail, calendário, documentos, chat ou arquivos de uma suíte de escritório |
 | §16.4 | [`extensoes-navegador.md`](references/16-modulos/extensoes-navegador.md) | O projeto é uma extensão, um userscript ou um agente que navega e clica |
-| §16.5 | [`aplicativos.md`](references/16-modulos/aplicativos.md) | O projeto tem interface para usuário final ou API pública |
+| §16.5 | [`aplicativos.md`](references/16-modulos/aplicativos.md) | O projeto tem interface para usuário final ou API pública: mobile (versão antiga que vive para sempre, loja, offline), desktop (atualização assinada, multiplataforma) e API pública |
 | §16.6 | [`front-end.md`](references/16-modulos/front-end.md) | O projeto tem interface web: renderização, orçamento de bundle, Core Web Vitals, arquitetura de componentes, acessibilidade e a stack de referência |
 
 ### Especialidades (`references/17-especialidades/`)
@@ -195,7 +195,7 @@ Cada setor diz **como fazer bem uma disciplina** e aponta para as regras do núc
 
 | § | Arquivo | Carregue quando |
 |---|---|---|
-| §17.1 | [`arquitetura.md`](references/17-especialidades/arquitetura.md) | Desenhar sistema, fronteira, contrato, API ou modelo de dados |
+| §17.1 | [`arquitetura.md`](references/17-especialidades/arquitetura.md) | Desenhar sistema, fronteira, contrato, API ou modelo de dados; microsserviços; sistemas com mais de uma linguagem |
 | §17.2 | [`full-stack.md`](references/17-especialidades/full-stack.md) | Implementar backend, API, banco ou a ligação com a interface |
 | §17.3 | [`dados.md`](references/17-especialidades/dados.md) | Métrica, painel, previsão, classificação, pipeline de dados |
 | §17.4 | [`ia-aplicada.md`](references/17-especialidades/ia-aplicada.md) | LLM, RAG, banco vetorial, busca semântica, agentes, avaliação e custo de IA |
@@ -232,6 +232,7 @@ responsável com a evidência. Fluxo, devoluções e coordenação em [`agents/R
 | [`adr.md`](templates/adr.md) | Registro de decisão com alternativas, consequências e gatilho de revisão |
 | [`relatorio-entrega.md`](templates/relatorio-entrega.md) | O relatório do §14.5, pronto para preencher |
 | [`questionario-dono.md`](templates/questionario-dono.md) | Perguntas ao dono do domínio, com o padrão "sem resposta, vale X" |
+| [`agente-produto.modelo.yaml`](templates/agente-produto.modelo.yaml) | Manifesto de um agente do produto: função, schemas, ferramentas, permissões, tetos (§16.2) |
 
 ---
 
