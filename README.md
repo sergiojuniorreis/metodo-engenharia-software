@@ -35,7 +35,7 @@ o código, seja gente ou modelo.
   contrário.
 - **Contexto sem desperdício**: o `AGENTS.md` do projeto vira um cache curto; o detalhe se lê só
   quando a tarefa pede.
-- **Oito especialidades e oito agentes de desenvolvimento**: arquitetura, full stack, dados, IA
+- **Nove especialidades e oito agentes de desenvolvimento**: arquitetura, full stack, dados, IA
   aplicada, DevOps/SRE, cibersegurança, governança, qualidade e testes.
 
 > De um projeto para outro muda o domínio, não o método.
@@ -162,6 +162,7 @@ flowchart LR
 | §17.6 | [`ciberseguranca.md`](references/17-especialidades/ciberseguranca.md) | Ameaça, varredura, dependências |
 | §17.7 | [`governanca.md`](references/17-especialidades/governanca.md) | ADR, dívida, LGPD, IA, evidência |
 | §17.8 | [`qualidade-testes.md`](references/17-especialidades/qualidade-testes.md) | Que teste prova o quê, mutação, revisão |
+| §17.9 | [`ferramentas-por-linguagem.md`](references/17-especialidades/ferramentas-por-linguagem.md) | Qual comando roda cada prova, por linguagem |
 
 ### Agentes (`agents/`)
 

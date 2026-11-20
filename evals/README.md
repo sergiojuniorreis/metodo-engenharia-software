@@ -96,18 +96,57 @@ semente 529371636, `claude-opus-5-5`, hash da skill `7749b173585d3c83`. Dados br
 
 - **`/estudo` resolve o problema de aplicabilidade no início de projeto**, com custo igual: sem
   ele, o agente escreveu código nas três execuções e só uma vez apontou o risco de cobrança dupla.
+  **Atenção ao que isso mede:** o comando diz "não escreva código nesta tarefa" e o pedido em texto
+  livre diz "pode começar". O critério "não escreve código" mede, em boa parte, essa instrução — que
+  é justamente o que o comando entrega —, não o método por si. Os critérios de risco (isolamento,
+  cobrança duplicada, dado de saúde) são independentes da instrução. Falta medir com uma linha de
+  base de instrução equivalente e um modo "skill sem comando".
 - **`/mudanca` num conserto pequeno custa 3 vezes mais** sem melhorar o acerto: o ganho é o
   processo registrado (nível, âncora, reversão), não a correção. Para conserto pequeno e bem
   descrito, use-o quando o registro valer o custo; em alto risco, o roteiro com parada antes da
   edição é o que protege.
+
+## 4. Projeto real em produção (privado)
+
+Um sistema real e privado do autor — motor de automação com cerca de 1,4 MB de código, dezenas de
+módulos de domínio e **439 baterias de teste**, que **já usa o método pelo próprio `AGENTS.md`**.
+O código, as tarefas, os testes ocultos e o resultado bruto ficam **fora deste repositório**
+(`.gitignore`); aqui só os números.
+
+- **Tarefas:** 3, escritas a partir de casos reais do projeto por um agente que **não leu o
+  método** — 2 de alto risco (decisão de cotar entre módulos; quantidade gravada no sistema
+  externo) e 1 padrão; 2 com armadilha (o conserto óbvio passa no teste mais próximo e quebra
+  outra bateria ou uma regra do projeto).
+- **Juiz:** teste oculto **mais as 439 baterias** do projeto. Validade conferida: o oculto falha
+  no original e passa na correção de referência, com a suíte inteira verde.
+- **Rodada de 2026-11-20:** 3 tarefas × 2 modos × 2 repetições, semente 995049396,
+  `claude-opus-5-5`, hash da skill `42f16fc31020cd5d`. Custo total US$ 17,63.
+
+| Tarefa | `/mudanca` | Texto livre (sem a skill) |
+|---|---|---|
+| Alto risco — decisão entre módulos (com armadilha) | 2/2 | 2/2 |
+| Alto risco — quantidade gravada (com armadilha) | **0/2** — parou antes de editar e pediu aprovação, com o diagnóstico certo | 2/2 |
+| Padrão — unidade num módulo | 2/2 | 2/2 |
+| Custo médio · turnos | US$ 1,60 · 37 | US$ 1,34 · 25 |
+
+**Repetição da tarefa de quantidade com a aprovação no pedido** ("pode aplicar sem me consultar",
+**a mesma frase nos dois modos**; semente 257836890, US$ 5,30): `/mudanca` **2/2**, texto livre
+**2/2** (US$ 1,49 · 42 turnos contra US$ 1,17 · 33). A falha anterior era só a parada: com o "sim"
+do dono, o método corrige tão bem quanto sem ele.
+
+- **Nas duas armadilhas, os dois modos corrigiram no ponto certo**; nenhum conserto ingênuo.
+- **Os dois modos declararam o nível da mudança em 6 de 6**: o `AGENTS.md` do projeto já carrega
+  o portão. Num projeto com um bom `AGENTS.md`, o método age por ele (§18); a skill e os comandos
+  acrescentam a parada no alto risco e cerca de 20% de custo.
 
 ## Conclusão
 
 O ganho medido do método está **no processo, não na correção pontual**: em projeto novo, com o
 `/estudo`, o agente parou nas decisões do dono e apontou os riscos certos em 3 de 3 execuções;
 sem ele, construiu às cegas em 3 de 3. Em defeitos pequenos e bem descritos, o modelo já acerta
-sem o método, e o `/mudanca` custa mais pelo registro. Falta medir onde ele deveria ganhar mais:
-**mudanças de alto risco em sistema existente e trabalho de várias sessões**.
+sem o método, e o `/mudanca` custa mais pelo registro. Num projeto real que já tem o método no
+`AGENTS.md`, a qualidade veio dele; o `/mudanca` acrescentou a parada antes de gravar em alto
+risco. Falta medir o **trabalho de várias sessões**.
 
 ## Limitações
 
@@ -115,7 +154,8 @@ sem o método, e o `/mudanca` custa mais pelo registro. Falta medir onde ele dev
 - "Sem a skill" desliga a ferramenta de skill inteira, não só esta skill; a diferença de custo
   inclui a lista de todas as skills instaladas.
 - O ambiente não é isolado de configurações globais do usuário (`CLAUDE.md` global, outras skills).
-- Os cenários reais são pequenos (até ~70 linhas); não medem projeto grande.
+- Os cenários de `reais/` são pequenos (até ~70 linhas); o projeto real da seção 4 mede o porte
+  grande, mas é um só e n = 2 por modo.
 
 ## Rodar
 
@@ -125,7 +165,7 @@ python -I evals/rodar.py --conjunto heuristico --cenario projeto-novo
 python -I evals/rodar.py --teto-usd 0.50                                 # teto por execução
 ```
 
-Requer o Claude Code (`claude`) e a skill em `~/.claude/skills/`. Cada execução consome tokens
+Requer o Claude Code (`claude`), Python 3.12 ou mais novo e a skill em `~/.claude/skills/`. Cada execução consome tokens
 da sua conta; o teto limita o gasto. Os mesmos comandos de teste ficam liberados no Bash e no
 PowerShell, para que a escolha do shell não favoreça um modo (uma rodada piloto foi descartada
 por isso: `resultados/descartados/`).

@@ -160,6 +160,25 @@ def checar_tamanho():
         falhas.append("SKILL.md: não manda ler o PERFIL.md")
 
 
+# Definições que moram só no §14.0. Reescrevê-las em outro arquivo já gerou contradição duas vezes.
+REDEFINICOES = [
+    (r"Mudança que grava, remove", "redefine 'alto risco' fora do §14.0 — aponte para o §14.0"),
+    (r"Item omitido conta como\s+falhado", "regra antiga da pauta 'item a item' — a pauta é por gatilho (§14.0)"),
+    (r"(?i)pauta[^\n]{0,30}item a item", "pauta 'item a item' — a pauta é por gatilho (§14.0)"),
+]
+
+
+def checar_redefinicoes():
+    for p in arquivos({".md"}):
+        if p.name in ("CHANGELOG.md",):
+            continue
+        texto = ler(p)
+        for padrao, motivo in REDEFINICOES:
+            for m in re.finditer(padrao, texto):
+                n = texto.count("\n", 0, m.start()) + 1
+                falhas.append(f"{p.relative_to(RAIZ)}:{n}: {motivo}")
+
+
 def checar_controle():
     """Caractere de controle num texto quebra comando copiado (ex.: \r, \a, \t vindos de escape errado)."""
     regex = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f]")
@@ -185,6 +204,7 @@ checar_agentes()
 checar_comandos()
 checar_roteamento()
 checar_tamanho()
+checar_redefinicoes()
 checar_controle()
 checar_segredos()
 

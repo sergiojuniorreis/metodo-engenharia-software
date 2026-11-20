@@ -11,10 +11,9 @@ de segurança que a mudança responde por escrito, com a evidência que vai entr
 
 - **Projeto novo:** é a 8ª pergunta do estudo de abordagem (§3); cada item que se aplica vira
   requisito do desenho, com o teste previsto.
-- **Alteração de código:** respondida por escrito junto da âncora (§14.2), item a item — "se
-  aplica → a evidência que vou entregar" ou "não se aplica — motivo". Item omitido conta como
-  falhado; no nível trivial (§14.0) a pauta inteira se responde numa linha, porque a
-  mudança não toca fronteira, dado nem escrita.
+- **Alteração de código:** respondida junto da âncora (§14.2) pelos gatilhos da tabela do §14.0:
+  cada item de um gatilho tocado, com a evidência que vai entregar. Gatilho tocado sem resposta
+  conta como falhado; no nível trivial, uma linha basta.
 - **Entrega:** cada item que se aplica aparece na linha Segurança do relatório (§14.5) com o
   teste e o resultado. Item que se aplica e não tem teste é falha aberta: regra sem teste é
   boato.

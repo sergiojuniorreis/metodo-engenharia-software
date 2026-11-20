@@ -45,6 +45,18 @@ class Kit(unittest.TestCase):
                 self.assertIn("gitleaks", ci)
                 self.assertIn("fetch-depth: 0", ci)
 
+    def test_python_nasce_com_teste_de_fumaca(self):
+        self.assertEqual(rodar(self.pasta, "--nome", "A", "--linguagem", "python").returncode, 0)
+        self.assertTrue((self.pasta / "tests" / "test_fumaca.py").exists())
+        self.assertIn("pytest==", (self.pasta / ".github/workflows/ci.yml").read_text(encoding="utf-8"))
+
+    def test_outra_linguagem_avisa_sem_arquivo_do_projeto(self):
+        pasta = Path(self._tmp.name) / "go"
+        self.assertEqual(rodar(pasta, "--nome", "B", "--linguagem", "go").returncode, 0)
+        ci = (pasta / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        self.assertIn("if ls go.mod", ci)
+        self.assertIn("::notice::", ci)
+
     def test_nao_sobrescreve(self):
         self.pasta.mkdir(parents=True)
         (self.pasta / "AGENTS.md").write_text("meu conteúdo", encoding="utf-8")

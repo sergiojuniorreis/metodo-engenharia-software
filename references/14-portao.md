@@ -62,7 +62,7 @@ toca, em qualquer nível; quando não tocam, o relatório diz "não se aplica" n
 | Antes da primeira edição | Âncora escrita, pauta de segurança respondida, análise do escopo, mapa de impacto, linha de base da suíte, teste vermelho; no reparo, reprodução e teste de caracterização; plano de agentes, se houver | §14.2, §14.6, §3, §14.1, §14.4 |
 | Durante | Passo pequeno, hunk conferido contra a âncora, re-ancoragem nos gatilhos | §14.2 |
 | Entrou ferramenta nova | Teste do §10, OK do dev, passo a passo executado | §14.3 |
-| Antes de entregar | Auditoria do diff, suíte inteira, varreduras, pauta conferida item a item, revisão em cinco eixos (§5), relatório | §14.1, §14.6, §14.5 |
+| Antes de entregar | Auditoria do diff, suíte inteira, varreduras, pauta conferida pelos gatilhos, revisão em cinco eixos (§5), relatório | §14.1, §14.6, §14.5 |
 
 ## Anti-desculpas
 
@@ -200,7 +200,7 @@ Revisão       cinco eixos (§5) · Crítico/Importante pendentes: 0
 Drift         hunks fora da âncora · mudanças de rumo · Fora (vi e não mexi)
 Ferramenta    nenhuma / nome e versão + onde está o passo a passo
 Agentes       0 / quantos, modelo, tokens, o que mudaram
-Segurança     pauta do §14.6, item a item → teste e resultado, ou não se aplica — motivo
+Segurança     pauta do §14.6, cada item dos gatilhos tocados → teste e resultado
 Análise       as quatro do §3 → decisão de cada uma, ou não se aplica — motivo; no reparo,
               reprodução, cerca de Chesterton e teste de caracterização
 Módulo §16    qual se aplica → itens conferidos, ou não se aplica — motivo
@@ -209,11 +209,10 @@ Reverter      comando ou commit
 
 ## 14.6 Pauta de segurança — resumo
 
-Nos níveis padrão e alto risco (no trivial, uma linha basta), respondida por escrito antes da
-primeira edição e no início de todo projeto: cada item com
-"se aplica → a evidência que vou entregar" ou "não se aplica — motivo". Item omitido conta como
-falhado. **O detalhe e a evidência exigida de cada item estão em
-`references/14-6-pauta-seguranca.md`: leia lá só os itens que se aplicam.**
+Respondida **pelos gatilhos** (tabela do §14.0) antes da primeira edição e no início de todo
+projeto: cada item de um gatilho tocado, com a evidência que vai ser entregue. Gatilho tocado sem
+resposta conta como falhado. No nível trivial, uma linha basta. **O detalhe e a evidência exigida
+de cada item estão em `references/14-6-pauta-seguranca.md`.**
 
 | # | Item | Pergunta |
 |---|---|---|

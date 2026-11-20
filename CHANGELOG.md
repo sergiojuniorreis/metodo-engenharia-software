@@ -6,6 +6,41 @@ muda) sobe o primeiro número.
 
 ## [Não lançado]
 
+## [1.2.1] — 2026-11-20
+
+### Adicionado
+
+- **Evals em projeto real privado** (seção 4 de `evals/README.md`): 3 tarefas de um sistema em
+  produção com 439 baterias, escritas por agente que não leu o método, julgadas por teste oculto
+  mais a suíte inteira. Código, tarefas e resultado bruto ficam fora do repositório; só os números.
+- Executor (`evals/rodar.py`): conjunto `projeto-real` lido de um caminho privado
+  (`EVAL_PROJETO_REAL`), oráculo por comandos do próprio projeto, testes ocultos em subpasta.
+
+### Alterado
+
+- gitleaks-action 2.3.9 → 3.0.0 na CI (PR do Dependabot) e no kit `/iniciar`.
+
+### Corrigido
+
+- **Pauta com uma regra só** — por gatilho (§14.0) —, sem o "item a item" que sobrava no §14,
+  no detalhe da pauta, no agente de segurança e no modelo de relatório.
+- **"Alto risco" definido só no §14.0**; qualidade e testes, auditor e full stack apontam para lá.
+  O validador reprova quem voltar a redefinir (com teste).
+- Exemplo completo: o limite exato agora é testado (item criado só no teste) e o mutante `>=`
+  morre; não há mais dívida do tipo "teste depois".
+- Kit: CI verde no primeiro push (teste de fumaça em Python, pytest com versão travada; nas outras
+  linguagens a CI avisa que falta o arquivo do projeto). Comandos sem `~`, que o PowerShell 5.1
+  não expande; `/mudanca` grava a âncora em arquivo no alto risco.
+- `Promise.all` é paralelo, não "1 ida e volta"; "itens 10 a 15" → 10 e 11; README com o §17.9 e
+  "nove especialidades"; "catch mudo" aponta para a regra de ouro 6.
+- Evals: o viés do `/estudo` (o comando instrui "não escreva código") declarado no relatório;
+  Python 3.12+ documentado para o executor.
+- Executor: grava o resultado **a cada execução** (uma interrupção por falta de memória apagou as
+  execuções concluídas); a limpeza da pasta temporária falhava em silêncio no Windows (objetos do
+  git somente leitura) e deixou ~75 pastas no disco — agora tira o atributo e apaga, sem
+  `ignore_errors`; cópia de projeto grande usa link físico para arquivo de dado acima de 50 MB;
+  `node` liberado igualmente nos dois modos.
+
 ## [1.2.0] — 2026-11-20
 
 Aplicabilidade: do "o que deve ser verdade" para o "como se faz".

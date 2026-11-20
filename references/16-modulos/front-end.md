@@ -38,7 +38,7 @@ inteira de uma ida e volta.
   const posts = await fetchPosts();
   const comments = await fetchComments();
 
-  // Certo — 1 ida e volta
+  // Certo — as três em paralelo: o tempo é o da mais lenta
   const [user, posts, comments] = await Promise.all([
     fetchUser(), fetchPosts(), fetchComments(),
   ]);

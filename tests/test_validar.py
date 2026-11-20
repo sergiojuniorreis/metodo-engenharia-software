@@ -99,6 +99,14 @@ class Validador(unittest.TestCase):
         self.trocar("commands/estudo.md", "description: ", "descricao: ")
         self.reprova("comando sem cabeçalho")
 
+    def test_redefinicao_de_alto_risco_fora_do_portao(self):
+        self.acrescentar("agents/README.md", "\nMudança que grava, remove ou mexe em lote é alto risco.\n")
+        self.reprova("redefine 'alto risco'")
+
+    def test_pauta_item_a_item(self):
+        self.acrescentar("agents/README.md", "\nResponda a pauta do §14.6 item a item.\n")
+        self.reprova("a pauta é por gatilho")
+
     def test_caractere_de_controle(self):
         self.acrescentar("README.md", "\nCopy-Item \"$tmp\x07gents\"\n")
         self.reprova("caractere de controle")

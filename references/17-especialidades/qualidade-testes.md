@@ -42,7 +42,7 @@ Carregue ao escrever, revisar ou auditar testes, e antes de toda entrega. O port
 
 ## Mudança de alto risco
 
-Mudança que grava, remove, mexe em lote, em retomada ou no controle de uma execução só sobe com:
+Mudança de **alto risco** (definição única no §14.0) só sobe com:
 
 1. **Mutação de cada guarda nova** com vermelho comprovado.
 2. **Matriz de interrupção**: o cenário roda em cada parada possível — freio, circuito aberto,

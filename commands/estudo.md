@@ -4,7 +4,7 @@ argument-hint: <descrição do projeto ou da mudança de rumo>
 ---
 
 Carregue a skill `metodo-engenharia-software` (sem a ferramenta de skill, leia
-`~/.claude/skills/metodo-engenharia-software/SKILL.md` e `references/03-estudo-de-abordagem.md`).
+`$HOME/.claude/skills/metodo-engenharia-software/SKILL.md` e `references/03-estudo-de-abordagem.md`).
 Leia o `AGENTS.md` do projeto e o `PERFIL.md` da skill, se existirem.
 
 Pedido: $ARGUMENTS

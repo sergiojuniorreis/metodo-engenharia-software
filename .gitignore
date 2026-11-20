@@ -27,3 +27,6 @@ desktop.ini
 *.swp
 *~
 __pycache__/
+
+# Evals em projeto real privado: o resultado bruto cita código e dados do projeto — nunca publicar
+evals/resultados/*projeto-real*.json

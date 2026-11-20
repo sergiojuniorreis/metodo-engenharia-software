@@ -25,7 +25,7 @@ padrão: mutação da guarda nova, revisão adversarial e rollback ensaiado.
 | Aceite | `python -m unittest` → código 0, com o teste novo de desconto vermelho antes e verde depois |
 | Escopo | `app.py` (`processar_pedido`) e `test_app.py` |
 | Invariantes | Total em centavos inteiros; pedido até 20000 centavos sem mudança; erro de produto inexistente igual |
-| Fora | Teste do limite exato de 20000 (não atingível com o catálogo atual) — vira dívida datada |
+| Fora | Nenhum |
 
 **Pergunta ao dono antes de codar**, porque a regra é ambígua: "acima de R$ 200" inclui exatamente
 R$ 200? E o arredondamento de centavos? Resposta (fictícia): não inclui; arredonda para baixo.
@@ -48,6 +48,7 @@ R$ 200? E o arredondamento de centavos? Resposta (fictícia): não inclui; arred
 Teste novo (vermelho antes da mudança):
 
 ```python
+# em test_app.py, que já importa processar_pedido; acrescente: import app; from unittest import mock
 def test_desconto_acima_de_200(self):
     self.assertEqual(processar_pedido({}, [("P1", 6)]), 18900)  # 21000 - 10%
 
@@ -56,6 +57,11 @@ def test_sem_desconto_abaixo_do_limite(self):
 
 def test_pedido_vazio(self):
     self.assertEqual(processar_pedido({}, []), 0)
+
+def test_limite_exato_sem_desconto(self):
+    # o catálogo não tem item que some 20000; o teste cria um, só durante o teste
+    with mock.patch.dict(app.PRODUTOS, {"P20": {"nome": "Kit", "preco_centavos": 20000}}):
+        self.assertEqual(processar_pedido({}, [("P20", 1)]), 20000)  # > é exclusivo
 ```
 
 Mudança mínima em `processar_pedido`, depois do laço:
@@ -65,21 +71,19 @@ Mudança mínima em `processar_pedido`, depois do laço:
         total -= total // 10  # 10%, arredondado para baixo (decisão do dono)
 ```
 
-Depois: `python -m unittest` → 6 testes, código 0.
+Depois: `python -m unittest` → 7 testes, código 0.
 
 ## 7. Auditoria do diff (§14.1) e revisão (§5)
 
 `git diff --stat`: 2 arquivos, os do Escopo. Cada hunk serve à âncora. Releitura fria das bordas:
-exatamente 20000 não é atingível com o catálogo fictício (caneca a 3500), então o limite exclusivo
-fica garantido pela comparação `>` e registrado no Fora como dívida; centavos (arredonda para
-baixo, coberto por `test_desconto_acima_de_200`); pedido vazio (total 0, sem desconto — teste
-`test_pedido_vazio` acrescentado). Revisão em cinco eixos: nenhum Crítico nem Importante.
+exatamente 20000 (sem desconto: `test_limite_exato_sem_desconto`, com um item criado só no teste);
+centavos (arredonda para baixo, coberto por `test_desconto_acima_de_200`); pedido vazio (total 0,
+sem desconto, `test_pedido_vazio`).
 
 ## 8. O que o alto risco acrescenta
 
 - **Mutação da guarda nova:** sem o `if total > 20000`, `test_desconto_acima_de_200` falha ✔.
-  Trocando `>` por `>=`, nenhum teste falha — o limite exato não é atingível com o catálogo; fica
-  no Fora como dívida (já registrado).
+  Trocando `>` por `>=`, `test_limite_exato_sem_desconto` falha ✔.
 - **Revisão adversarial:** um segundo leitor tenta quebrar a regra — pedido vazio (total 0, sem
   desconto, coberto por `test_pedido_vazio`); desconto aplicado duas vezes num reprocessamento
   (impossível: a função é pura e não grava). Nenhum achado novo.
@@ -89,13 +93,13 @@ baixo, coberto por `test_desconto_acima_de_200`); pedido vazio (total 0, sem des
 
 ```text
 Âncora        desconto de 10% acima de 20000 centavos — atendido
-Aceite        python -m unittest → 0 (6 testes) · vermelho antes: test_desconto_acima_de_200 falhou
-Invariantes   centavos inteiros → test_total · abaixo do limite → test_sem_desconto_abaixo_do_limite ·
+Aceite        python -m unittest → 0 (7 testes) · vermelho antes: test_desconto_acima_de_200 falhou
+Invariantes   centavos inteiros → test_total · abaixo do limite → test_sem_desconto_abaixo_do_limite · limite exato → test_limite_exato_sem_desconto ·
               erro de produto → test_produto_inexistente
 Auditoria     app.py, test_app.py · chamadores: só testes · cópias: nenhuma · sintaxe:
-              py_compile → ok · suíte antes 3/0, depois 6/0 · varreduras limpas · fim de linha igual
+              py_compile → ok · suíte antes 3/0, depois 7/0 · varreduras limpas · fim de linha igual
 Revisão       cinco eixos + adversarial · mutação da guarda: sentida · Crítico/Importante: 0
-Drift         hunks fora da âncora: 0 · mudanças de rumo: 0 · Fora: teste do limite exato (dívida datada)
+Drift         hunks fora da âncora: 0 · mudanças de rumo: 0 · Fora: nenhum
 Ferramenta    nenhuma
 Agentes       0
 Segurança     pauta 1–15: não se aplica — não guarda, registra nem envia; sem dado pessoal

@@ -36,7 +36,7 @@ Revisão       cinco eixos + adversarial · mutação das guardas: <sentida> · 
 Drift         hunks fora da âncora: <0 / quais> · mudanças de rumo: <…> · Fora: <vi e não mexi>
 Ferramenta    nenhuma / <nome e versão> + passo a passo em <caminho>
 Agentes       0 / <quantos, modelo, tokens, o que mudaram>
-Segurança     pauta §14.6, item a item → <teste e resultado> ou não se aplica — motivo
+Segurança     pauta §14.6, cada item dos gatilhos tocados → <teste e resultado>
 Análise       A paradigma: <…> · B rede: <…> · C linear: <…> · D assíncronos: <…>
               reparo: reprodução <…> · cerca de Chesterton <…> · caracterização <…>
 Módulo §16    <qual> → <itens conferidos> ou não se aplica — motivo

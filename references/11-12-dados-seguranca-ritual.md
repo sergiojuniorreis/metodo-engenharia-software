@@ -59,7 +59,7 @@
   sem parar a operação.
 - **Dependência travada por versão**, com licença conferida e origem conhecida. Atualizar
   dependência é mudança: passa por teste.
-- **Segurança clássica de aplicação e autenticação:** pauta §14.6, itens 10 a 15.
+- **Segurança clássica de aplicação e autenticação:** pauta §14.6, itens 10 e 11.
 
 ## Conduta
 

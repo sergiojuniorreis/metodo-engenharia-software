@@ -47,7 +47,7 @@ A âncora, o setor nomeado, o plano do `arquiteto-software` e, quando há, o des
 ## Antes de entregar ao auditor
 
 - **Mutação de cada guarda nova**: tire a condição, rode a suíte, veja o vermelho, devolva a condição.
-- **Mudança que grava, remove, mexe em lote ou em retomada** roda a matriz de interrupção e estende a
+- **Mudança de alto risco** (§14.0) roda a matriz de interrupção e estende a
   bateria de invariantes no mesmo commit (§17.8).
 - **Arquivo regravado pela suíte** é restaurado antes do commit; nunca entra no diff.
 

@@ -32,7 +32,8 @@ projeto, o desenho do `arquiteto-software`.
 
 1. **Modelagem de ameaça** no início de projeto ou de mudança de fronteira: fluxo de dados,
    fronteiras de confiança, STRIDE por elemento e, havendo IA, injeção e agência excessiva (§17.6).
-2. **Pauta do §14.6 item a item**: "se aplica → evidência" ou "não se aplica — motivo".
+2. **Pauta pelos gatilhos (§14.0)**: cada item de um gatilho tocado → evidência; o detalhe do
+   item em `references/14-6-pauta-seguranca.md`.
 3. **Varredura de segredo pelo formato** no diff, na árvore, no que ainda pode entrar
    (`git ls-files --others --exclude-standard`) e no histórico inteiro, com a raiz conferida antes
    (`git rev-parse --show-toplevel`).

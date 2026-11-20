@@ -13,7 +13,7 @@ sempre passa pelo portão do §14; este setor diz **como escrever bem cada camad
 - **Função curta com um propósito**, nome que diz o efeito, efeito colateral explícito no nome
   (`gravar…`, `enviar…`).
 - **Erro tratado onde se sabe o que fazer com ele**; nos outros pontos, propaga com contexto. Nada
-  de `catch` mudo (§2).
+  de `catch` mudo (regra de ouro 6).
 
 ## Backend e API
 

@@ -4,7 +4,7 @@ argument-hint: (opcional) objetivo da entrega
 ---
 
 Carregue a skill `metodo-engenharia-software` (sem a ferramenta de skill, leia
-`~/.claude/skills/metodo-engenharia-software/references/14-portao.md`).
+`$HOME/.claude/skills/metodo-engenharia-software/references/14-portao.md`).
 
 Objetivo informado: $ARGUMENTS
 

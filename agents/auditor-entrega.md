@@ -63,7 +63,7 @@ Confere, e devolve quem falta — não escreve o registro:
 
 ## Mudança de alto risco
 
-Mudança que grava, remove, mexe em lote, em retomada ou no controle de execução passa também por
+Mudança de alto risco (definição única no §14.0) passa também por
 (§17.8): mutação de cada guarda nova, matriz de interrupção, bateria de invariantes estendida e
 revisão adversarial independente com cada achado reproduzido por um segundo verificador. Faltou
 um, **DEVOLVE**.

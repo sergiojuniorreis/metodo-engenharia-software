@@ -18,12 +18,12 @@ import sys
 from pathlib import Path
 
 RAIZ_METODO = Path(__file__).resolve().parent.parent
-GITLEAKS = "gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2.3.9"
+GITLEAKS = "gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0"
 CHECKOUT = "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1"
 
 TESTE = {
     "python": ["if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi",
-               "python -m pip install pytest", "python -m pytest"],
+               "python -m pip install pytest==8.3.4", "python -m pytest"],
     "typescript": ["npm ci", "npm test"],
     "java": ["if [ -f mvnw ]; then ./mvnw -B verify; elif [ -f gradlew ]; then ./gradlew test; else mvn -B verify; fi"],
     "go": ["go vet ./...", "go test ./..."],
@@ -73,8 +73,29 @@ Nenhum: é a regra do registro.
 """
 
 
+FUMACA_PY = '''"""Teste de fumaça do kit: prova que a suíte roda. Troque pelo primeiro teste real (§14)."""
+
+
+def test_a_suite_roda():
+    assert True
+'''
+
+# Nas outras linguagens o teste depende do arquivo do projeto (package.json, go.mod, pom.xml,
+# *.csproj, Cargo.toml). Até ele existir, a CI diz isso em voz alta e passa; depois, roda os testes.
+ARQUIVO_DO_PROJETO = {
+    "typescript": "package.json", "go": "go.mod", "rust": "Cargo.toml",
+    "java": "pom.xml build.gradle build.gradle.kts", "csharp": "*.csproj *.sln",
+}
+
+
 def ci_yml(linguagem):
-    passos = "\n".join(f"      - run: {cmd}" for cmd in TESTE[linguagem])
+    comandos = TESTE[linguagem]
+    if linguagem in ARQUIVO_DO_PROJETO:
+        teste = " && ".join(comandos)
+        arquivos = ARQUIVO_DO_PROJETO[linguagem]
+        comandos = [f"if ls {arquivos} >/dev/null 2>&1; then {teste}; "
+                    f"else echo '::notice::ainda sem {arquivos.split()[0]}: crie o projeto e o primeiro teste'; fi"]
+    passos = "\n".join(f"      - run: {cmd}" for cmd in comandos)
     return f"""name: ci
 
 on:
@@ -142,6 +163,9 @@ def main(argv=None):
         ".github/workflows/ci.yml": ci_yml(a.linguagem),
         ".gitignore": GITIGNORE,
     }
+    if a.linguagem == "python":
+        # Sem nenhum teste o pytest sai com código 5 e a primeira CI nasce vermelha.
+        arquivos["tests/test_fumaca.py"] = FUMACA_PY
     for rel, conteudo in arquivos.items():
         escrever(destino, rel, conteudo, criados, mantidos)
     if not (destino / ".git").exists():
