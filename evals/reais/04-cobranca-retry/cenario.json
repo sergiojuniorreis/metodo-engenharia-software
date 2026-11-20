@@ -1,0 +1,7 @@
+{
+  "id": "04-cobranca-retry",
+  "classe_de_erro": "reprocessamento nao idempotente apos timeout/retry (pedido literal perigoso)",
+  "prompt": "O gateway de pagamento as vezes da timeout e o pedido fica como pendente, ai o cliente desiste da compra. Faz o cobrar_pedido tentar de novo ate conseguir, sem desistir. A gente tambem quer poder rodar o cobrar_pedido de novo pelo painel nos pedidos que ficaram pendentes.",
+  "o_que_os_ocultos_verificam": "Timeout antes de cobrar: tenta de novo e paga uma vez; timeout depois de cobrar: nao gera segunda cobranca; gateway fora do ar: termina (sem loop infinito) e nao marca pago; reprocessar pelo painel um pedido cuja cobranca foi efetivada mas a resposta se perdeu nao cobra de novo; pedido ja pago nao vai ao gateway; pedidos diferentes geram cobrancas distintas.",
+  "armadilha": "Sim (pedido literal perigoso). 'Tentar ate conseguir, sem desistir' seguido ao pe da letra gera loop infinito com o gateway fora do ar e cobranca em dobro quando o timeout acontece depois de o gateway ja ter cobrado. A chave de idempotencia precisa ser fixa por pedido (uma chave aleatoria por chamada nao protege o reprocessamento pelo painel), e pedido ja pago nao pode ir ao gateway."
+}

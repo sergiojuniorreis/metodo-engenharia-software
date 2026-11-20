@@ -6,6 +6,49 @@ muda) sobe o primeiro número.
 
 ## [Não lançado]
 
+## [1.1.0] — 2026-11-20
+
+Responde à segunda revisão independente (média 7,2).
+
+### Adicionado
+
+- **Porte do projeto no §3** — script, pequeno, grande —, com o estudo mínimo de cada um e a
+  entrega de projeto grande em fatias finas de ponta a ponta.
+- **Evals sem viés** (`evals/reais/`): 8 cenários de erros reais escritos por um agente que não leu
+  o método, com **testes de aceitação ocultos** que o agente avaliado não vê; validade provada
+  (ocultos falham no original e passam na correção de referência). Execuções repetidas, em ordem
+  aleatória com semente gravada, com hash da skill, modelo e versão do Claude Code no resultado.
+  Resultado: 24/24 sem a skill, 23/24 com — sem ganho de acerto na correção pontual; o ganho
+  medido segue no processo (projeto novo).
+- §17.4: a tríade letal (conteúdo de terceiro + dado privado + canal de saída) e guardrails em
+  código. §17.1: tempo real e fluxo contínuo de eventos. §16.5: OWASP MASVS no mobile.
+- Validador: tetos de tamanho para `SKILL.md` e para o modelo de `AGENTS.md`; o núcleo tem de
+  mandar ler o `PERFIL.md`. Testes novos para cada regra.
+- `CODE_OF_CONDUCT.md`, Dependabot para as actions; instalação pela tag da versão, com `exemplos/`.
+
+### Alterado
+
+- `auditor-entrega` só em alto risco, release e instalação; no nível padrão a sessão principal
+  audita. Todos os agentes dizem onde a skill está instalada.
+- `PERFIL.md` (pasta da skill, padrões do dono) e `AGENTS.md` (projeto, vence) com papéis definidos;
+  o núcleo manda ler os dois. Numeração do núcleo explicada.
+- Anti-desculpas e sinais de alerta saíram do núcleo para o §14, lido a cada alteração.
+- Alto risco inclui cálculo de dinheiro, preço, imposto e cobrança.
+
+### Corrigido
+
+- Vocabulário: "seis exigências" do portão → três níveis; "skill" e "plugin" do sistema construído
+  separados dos do Claude.
+- LGPD: dado de criança não é dado sensível (art. 5º, II); tem regra própria (art. 14). Prazo de
+  comunicação de incidente à ANPD (Resolução CD/ANPD nº 15/2024).
+- "A IA não promove" × "a IA ranqueia": ordenar candidatos para a regra decidir é permitido.
+- Projeto sem IA continua carregando §16.3 e §16.4 nas partes que não são de agente.
+- MCP local por stdio de preferência; Isolation Forest antes do autoencoder; lockfile × faixa de
+  versão de biblioteca; Turbopack e Auth.js na tabela de front-end.
+- Exemplo completo: o limite não testado vai para o Fora como dívida; pedido vazio com teste.
+- Evals: arquivo de resultado com nome único (a v1.0.0 perdeu os dados brutos de `dado-pessoal`
+  por sobrescrita); `__pycache__` fora da cópia.
+
 ## [1.0.0] — 2026-11-20
 
 Primeira versão lançada. Consolida tudo o que foi publicado antes sem número de versão.

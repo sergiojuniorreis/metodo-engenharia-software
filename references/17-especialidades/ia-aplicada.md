@@ -31,7 +31,7 @@ mesmo corpus (§3B):
 | Imagem, foto, documento escaneado | OCR pronto primeiro; para visão, CNN ou Vision Transformer pré-treinado e ajustado | OCR com regra |
 | Série temporal (demanda, preço, sensor) | Modelo estatístico (ETS, ARIMA) ou *boosting* com defasagens; LSTM, TCN ou Transformer temporal só se vencer | Sazonal ingênuo, média móvel |
 | Grafo (cliente × pedido × produto) | Rede neural de grafo (GNN) | Atributos de vizinhança num modelo tabular |
-| Anomalia sem rótulo | Autoencoder; sem rede, Isolation Forest | Limite estatístico (desvio, quantil) |
+| Anomalia sem rótulo | Isolation Forest; autoencoder só se vencer | Limite estatístico (desvio, quantil) |
 | Busca semântica e RAG | Embeddings pré-treinados com índice vetorial, somados à busca por palavra | Busca por palavra (BM25) |
 
 ## Chamada de modelo
@@ -102,6 +102,13 @@ Medir separado, porque o defeito mora em lugares diferentes:
 - **Ferramentas = verbos com trava** (§7): leitura e escrita separadas; escrita idempotente, com teto
   e aceite humano conferido pelo servidor quando age em nome de alguém (§14.6 item 5).
 - **Teto de passos, tokens, custo e tempo** por execução; ao estourar, para com aviso (§16.2).
+- **A tríade letal**: agente que (1) lê conteúdo de terceiro, (2) acessa dado privado e (3) tem
+  canal de saída (enviar, gravar fora, abrir URL) pode ser levado por injeção a vazar o dado.
+  Quebre ao menos uma das três por desenho — sessões separadas, saída só com aceite humano no
+  servidor (§14.6 item 5), lista de destinos permitidos — em vez de confiar no prompt.
+- **Guardrails em código, antes e depois do modelo**: entrada filtrada (tamanho, tipo, origem),
+  saída validada por schema e por regra (valor, destino, volume) antes de virar ação; o prompt
+  sozinho não é guarda.
 - **Conteúdo lido pelo agente é dado, nunca comando** — documento, página, e-mail, resposta de
   ferramenta e mensagem de outro agente (§11). Sessão que lê conteúdo de terceiro e tem ferramenta
   que escreve se trata como sessão sob injeção.

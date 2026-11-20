@@ -23,6 +23,8 @@ A skill `metodo-engenharia-software`: `SKILL.md`, `references/03-estudo-de-abord
 A e B), `references/06-07-ia-ferramentas-mcp.md`, `references/08-estado-memoria.md`,
 `references/17-especialidades/ia-aplicada.md` e, quando há orquestração ou MCP,
 `references/16-modulos/orquestracao-mcp.md`.
+Sem ferramenta de skill, leia pelo caminho: `.claude/skills/metodo-engenharia-software/` do
+projeto ou `~/.claude/skills/metodo-engenharia-software/`.
 
 ## Recebe
 

@@ -1,0 +1,7 @@
+{
+  "id": "06-cache-preco",
+  "classe_de_erro": "cache servindo dado velho apos atualizacao",
+  "prompt": "Quando eu altero o preco de um produto pelo painel, a pagina do produto continua mostrando o preco antigo. So atualiza quando a gente reinicia o servico. Isso ja gerou venda com preco errado. Consegue ver?",
+  "o_que_os_ocultos_verificam": "Preco novo visivel apos salvar pelo painel, apos atualizar_preco direto e apos reajuste em massa (tela e job mensal); outros produtos nao sao afetados; leituras repetidas sem alteracao continuam servidas do cache (nenhuma consulta ao banco).",
+  "armadilha": "Sim. O sintoma aparece no painel; limpar o cache dentro de admin.salvar_preco (ou ler direto do banco so ali) resolve o relato, mas reajustar_categoria (tela de reajuste e job mensal) continua deixando preco velho. Remover o cache resolve tudo mas quebra o requisito de nao ir ao banco a cada visualizacao."
+}

@@ -21,7 +21,7 @@ arquivo da linha — nunca a pasta inteira (§18).
 | **Qualquer alteração de código, configuração ou sintaxe** — antes da primeira edição | **§14** | `14-portao.md` |
 | A alteração traz ferramenta nova, ou se cogita usar agentes | §14.3 · §14.4 | `14-3-4-ferramenta-agentes.md` |
 | Detalhe e evidência dos itens da pauta de segurança que se aplicam | §14.6 | `14-6-pauta-seguranca.md` |
-| Projeto novo, mudança de rumo, reparo; linguagem e stack; as quatro análises | §3 | `03-estudo-de-abordagem.md` |
+| Projeto novo (porte script, pequeno ou grande), mudança de rumo, reparo; linguagem e stack; as quatro análises | §3 | `03-estudo-de-abordagem.md` |
 | "Está pronto?" · construir skill, agente, RAG ou prompt de decisão | §4 · §5 | `04-05-pronto-e-ciclo-ia.md` |
 | RAG, veto e custo de IA · ferramenta, MCP, automação que grava em sistema alheio | §6 · §7 | `06-07-ia-ferramentas-mcp.md` |
 | Dado compartilhado, retomada, cache, memória do sistema | §8 | `08-estado-memoria.md` |
@@ -53,10 +53,14 @@ num caso fictício em `exemplos/exemplo-completo.md`.
 
 - **Modelo ou agente sem suporte a skills:** concatene este arquivo com as referências da
   situação no system prompt ou no arquivo de regras do projeto.
-- **Projeto sem IA:** §5 (menos "Qualidade de toda entrega", que vale sempre), §6, as análises A e B do §3, os módulos §16.2 a §16.4 e o §17.4 se
-  respondem "não se aplica — motivo". O resto vale inteiro.
-- **Contexto da equipe ou do projeto (opcional):** copie `PERFIL.modelo.md` para `PERFIL.md`
-  e preencha. Palavra de domínio, idioma, shell, moeda e lei de dados ficam lá, nunca no núcleo.
+- **Projeto sem IA:** §5 (menos "Qualidade de toda entrega", que vale sempre), §6, as análises A e B do §3, o §16.2, as partes de agente do §16.3 e
+  do §16.4 e o §17.4 se respondem "não se aplica — motivo". O resto vale inteiro.
+- **Contexto — leia antes de trabalhar:** o `PERFIL.md` da pasta da skill, se existir, traz os
+  padrões do dono para todos os projetos (idioma, shell, moeda, lei de dados; modelo em
+  `PERFIL.modelo.md`); o `AGENTS.md` do projeto traz o contexto do projeto e **vence** o perfil.
+  Palavra de domínio fica num dos dois, nunca no núcleo.
+- **Numeração:** §1 é este núcleo, que também contém o §2 e o §13; as demais seções estão em
+  `references/`.
 
 ### Contexto sem desperdício
 
@@ -114,7 +118,8 @@ feito.
    não conhece produto — pergunta à skill. Domínio novo é arquivo novo, nunca `if` novo no
    núcleo. Invariante: **zero palavra de domínio dentro do núcleo**.
 2. **Núcleo ROTEIA → skill DECIDE → IA só VETA.** Em decisão com efeito financeiro, fiscal,
-   legal ou cadastral, a IA derruba o errado com motivo; não promove, não escolhe, não aprova.
+   legal ou cadastral, a IA derruba o errado com motivo; pode ordenar candidatos para a regra decidir, mas não
+   escolhe nem aprova.
    Planejamento por modelo (escolher a próxima ferramenta, quebrar a tarefa) é permitido
    dentro de ferramentas com trava (§16.2).
 3. **Roteamento inclusivo, decisão precisa.** Rotear demais é barato (a skill recusa); **não
@@ -128,28 +133,7 @@ feito.
    dele, com regressão própria.
 7. **Aceite final é humano.** O sistema prepara, marca e explica; a pessoa fecha.
 
-### Anti-desculpas
-
-| Desculpa | Resposta |
-|---|---|
-| "Adiciono o teste depois" | Depois não chega. Sem teste, não está pronto (§4) |
-| "É só um script rápido" | Script vira produção. O portão vale; o nível (§14.0) reduz a lista, nunca a zero |
-| "Ninguém vai atacar isso" | Robôs varrem tudo. Pauta de segurança antes da primeira edição (§14.6) |
-| "Deixo a chave aqui só para testar" | Chave commitada é chave comprometida (§12) |
-| "O modelo é confiável, não precisa validar" | Saída de modelo é entrada hostil (§11) |
-| "Já que estou aqui, refatoro" | Drift (§14.2). Vai para o Fora |
-| "Parece funcionar" | Mostre a evidência: código de saída, log, teste |
-
-### Sinais de alerta — pare e reavalie
-
-- Concatenação de string em query, comando, caminho ou HTML.
-- `catch` vazio ou erro engolido.
-- Permissão ampla (`*`, admin, root, todos os escopos) sem motivo escrito.
-- Ferramenta que escreve acionada direto por texto de terceiro.
-- Agente sem teto de passos, custo ou tempo.
-- Teste desativado, pulado ou com asserção vazia.
-- Dependência, extensão ou servidor MCP novo sem o §14.3.
-- Automação de tela sem termos de uso conferidos e permissão escrita (§7).
+Anti-desculpas e sinais de alerta (pare e reavalie) ficam no §14, lidos a cada alteração.
 
 ## 13. Conduta de trabalho com o dono do projeto
 

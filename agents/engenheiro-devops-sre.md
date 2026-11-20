@@ -20,6 +20,8 @@ com a menor quantidade de peças que o volume medido exige.
 A skill `metodo-engenharia-software`: `SKILL.md`, `references/09-10-observabilidade-ferramentas.md`,
 `references/11-12-dados-seguranca-ritual.md` (ritual de mudança e incidente),
 `references/14-3-4-ferramenta-agentes.md` (§14.3, ferramenta nova) e `references/17-especialidades/devops-sre.md`.
+Sem ferramenta de skill, leia pelo caminho: `.claude/skills/metodo-engenharia-software/` do
+projeto ou `~/.claude/skills/metodo-engenharia-software/`.
 
 ## Recebe
 

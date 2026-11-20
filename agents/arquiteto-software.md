@@ -20,6 +20,8 @@ respeita, que contrato muda, e qual o menor desenho que atende os requisitos med
 A skill `metodo-engenharia-software`: `SKILL.md`, `references/03-estudo-de-abordagem.md`,
 `references/09-10-observabilidade-ferramentas.md` (escada de componentes) e
 `references/17-especialidades/arquitetura.md`. Mais o módulo do §16 que se aplica.
+Sem ferramenta de skill, leia pelo caminho: `.claude/skills/metodo-engenharia-software/` do
+projeto ou `~/.claude/skills/metodo-engenharia-software/`.
 
 ## Recebe
 

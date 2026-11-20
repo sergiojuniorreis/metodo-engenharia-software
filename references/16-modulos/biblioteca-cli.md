@@ -14,7 +14,8 @@ interno, SDK de uma API, ferramenta de linha de comando, plugin.
 - **Compatibilidade declarada**: versões de linguagem, sistemas e dependências suportadas, testadas
   na CI em matriz.
 - **Dependências mínimas e com faixa de versão larga** onde for seguro; cada dependência a mais é
-  imposta a quem usa.
+  imposta a quem usa. (Aplicação trava versão por lockfile, §12; biblioteca publicada declara faixa
+  e testa os extremos da faixa na CI.)
 
 ## Publicação
 

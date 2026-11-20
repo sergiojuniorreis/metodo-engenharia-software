@@ -20,6 +20,8 @@ A skill `metodo-engenharia-software`: `SKILL.md`, `references/11-12-dados-segura
 `references/14-portao.md` (resumo da pauta), `references/14-6-pauta-seguranca.md` (§14.6) e
 `references/17-especialidades/ciberseguranca.md`. Mais o módulo do §16 que se aplica, com os
 itens da pauta que ele aponta.
+Sem ferramenta de skill, leia pelo caminho: `.claude/skills/metodo-engenharia-software/` do
+projeto ou `~/.claude/skills/metodo-engenharia-software/`.
 
 ## Recebe
 

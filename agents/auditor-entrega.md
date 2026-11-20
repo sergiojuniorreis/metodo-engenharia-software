@@ -1,6 +1,6 @@
 ---
 name: auditor-entrega
-description: Use antes do push de mudança de nível padrão ou alto risco (§14.0), de release ou de instalação — roda a CI inteira em cópia limpa contra a linha de base, confere o portão §14, o relatório §14.5 e a governança da entrega (ADR, dívida, licenças, inventários de dados pessoais e de IA), exige mutação das guardas novas e a matriz de interrupção em mudança de alto risco, e devolve cada falha ao agente responsável. É o portão final; não conserta.
+description: Use antes do push de mudança de alto risco (§14.0), de release ou de instalação — roda a CI inteira em cópia limpa contra a linha de base, confere o portão §14, o relatório §14.5 e a governança da entrega (ADR, dívida, licenças, inventários de dados pessoais e de IA), exige mutação das guardas novas e a matriz de interrupção em mudança de alto risco, e devolve cada falha ao agente responsável. É o portão final; não conserta.
 tools: Read, Glob, Grep, Bash
 model: opus
 ---
@@ -19,6 +19,8 @@ cada item do portão com evidência.
 A skill `metodo-engenharia-software`: `SKILL.md`, `references/14-portao.md`,
 `references/04-05-pronto-e-ciclo-ia.md`, `references/17-especialidades/qualidade-testes.md` e
 `references/17-especialidades/governanca.md`.
+Sem ferramenta de skill, leia pelo caminho: `.claude/skills/metodo-engenharia-software/` do
+projeto ou `~/.claude/skills/metodo-engenharia-software/`.
 
 ## Recebe
 

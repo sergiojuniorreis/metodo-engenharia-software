@@ -13,7 +13,7 @@ baixo o que é de cima é defeito, achado na auditoria como qualquer outro.
 |---|---|---|
 | **Trivial** | Não muda comportamento observável nem contrato: texto, comentário, documentação, nome interno sem uso externo, formatação de um arquivo. Não toca segurança, dado pessoal, escrita nem configuração de produção | Âncora de uma linha (objetivo e nível) · sintaxe conferida pela ferramenta · suíte que cobre o arquivo · varredura de segredo no diff · **relatório curto** |
 | **Padrão** | Muda comportamento dentro de um setor, sem gatilho de alto risco | Tudo deste §14: âncora completa, mapa de impacto, linha de base, teste vermelho → verde, suíte inteira, auditoria do diff, pauta respondida pelo resumo (detalhe só dos itens que se aplicam), revisão em cinco eixos, **relatório completo** |
-| **Alto risco** | Grava, remove, mexe em lote, retomada ou controle de execução; autenticação, autorização, segredo ou dado pessoal; contrato público, esquema de dado, migração; produção ou infraestrutura; IA em decisão; ferramenta nova | O padrão **mais**: detalhe da pauta (§14.6) para cada item que se aplica, mutação de cada guarda nova, matriz de interrupção e bateria de invariantes (§17.8), revisão adversarial independente, rollback ensaiado |
+| **Alto risco** | Grava, remove, mexe em lote, retomada ou controle de execução; calcula dinheiro, preço, imposto ou cobrança; autenticação, autorização, segredo ou dado pessoal; contrato público, esquema de dado, migração; produção ou infraestrutura; IA em decisão; ferramenta nova | O padrão **mais**: detalhe da pauta (§14.6) para cada item que se aplica, mutação de cada guarda nova, matriz de interrupção e bateria de invariantes (§17.8), revisão adversarial independente, rollback ensaiado |
 
 **Relatório curto** (nível trivial):
 
@@ -33,6 +33,29 @@ toca, em qualquer nível; quando não tocam, o relatório diz "não se aplica" n
 | Durante | Passo pequeno, hunk conferido contra a âncora, re-ancoragem nos gatilhos | §14.2 |
 | Entrou ferramenta nova | Teste do §10, OK do dev, passo a passo executado | §14.3 |
 | Antes de entregar | Auditoria do diff, suíte inteira, varreduras, pauta conferida item a item, revisão em cinco eixos (§5), relatório | §14.1, §14.6, §14.5 |
+
+## Anti-desculpas
+
+| Desculpa | Resposta |
+|---|---|
+| "Adiciono o teste depois" | Depois não chega. Sem teste, não está pronto (§4) |
+| "É só um script rápido" | Script vira produção. O portão vale; o nível (§14.0) reduz a lista, nunca a zero |
+| "Ninguém vai atacar isso" | Robôs varrem tudo. Pauta de segurança antes da primeira edição (§14.6) |
+| "Deixo a chave aqui só para testar" | Chave commitada é chave comprometida (§12) |
+| "O modelo é confiável, não precisa validar" | Saída de modelo é entrada hostil (§11) |
+| "Já que estou aqui, refatoro" | Drift (§14.2). Vai para o Fora |
+| "Parece funcionar" | Mostre a evidência: código de saída, log, teste |
+
+## Sinais de alerta — pare e reavalie
+
+- Concatenação de string em query, comando, caminho ou HTML.
+- `catch` vazio ou erro engolido.
+- Permissão ampla (`*`, admin, root, todos os escopos) sem motivo escrito.
+- Ferramenta que escreve acionada direto por texto de terceiro.
+- Agente sem teto de passos, custo ou tempo.
+- Teste desativado, pulado ou com asserção vazia.
+- Dependência, extensão ou servidor MCP novo sem o §14.3.
+- Automação de tela sem termos de uso conferidos e permissão escrita (§7).
 
 ## 14.1 Auditoria total
 

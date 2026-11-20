@@ -138,6 +138,19 @@ def checar_roteamento():
         falhas.append(f"references/{f}: não está na tabela 'Como carregar' do SKILL.md")
 
 
+LIMITES = {"SKILL.md": 12000, "templates/AGENTS.modelo.md": 3000}
+
+
+def checar_tamanho():
+    """Função de aptidão: o que entra sempre no contexto tem teto (§18)."""
+    for rel, teto in LIMITES.items():
+        n = len(ler(RAIZ / rel))
+        if n > teto:
+            falhas.append(f"{rel}: {n} caracteres, acima do teto de {teto} (§18)")
+    if "`PERFIL.md`" not in ler(RAIZ / "SKILL.md"):
+        falhas.append("SKILL.md: não manda ler o PERFIL.md")
+
+
 def checar_segredos():
     regex = re.compile("|".join(PADROES_SEGREDO))
     for p in arquivos({".md", ".py", ".yml", ".yaml", ".json", ".txt"}):
@@ -152,6 +165,7 @@ checar_referencias()
 checar_caminhos()
 checar_agentes()
 checar_roteamento()
+checar_tamanho()
 checar_segredos()
 
 if falhas:

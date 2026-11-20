@@ -1,61 +1,95 @@
-# Evals — o método muda o comportamento do agente?
+# Evals — o método muda o resultado do agente?
 
-Cinco cenários rodados no Claude Code em modo não interativo, **com a skill** e **sem ela**
-(ferramenta de skill desligada), cada execução numa cópia temporária de um projeto fictício
-(`fixtures/`). As verificações automáticas estão em `cenarios.json`; o executor em `rodar.py`.
+Dois conjuntos, rodados no Claude Code em modo não interativo, **com a skill** e **sem ela**
+(ferramenta de skill desligada), cada execução numa cópia temporária de um projeto fictício.
 
-## Resultado — 2026-11-20 (v1.0.0)
+| Conjunto | Quem escreveu os cenários | Como se julga | Mede |
+|---|---|---|---|
+| `reais/` | Um agente que **não leu o método** | **Testes de aceitação ocultos**: o agente avaliado não os vê; entram depois que ele termina | Se a correção de um defeito real fica no ponto certo, sem quebrar o resto |
+| `cenarios.json` | O autor do método | Heurística de texto e arquivos | Comportamento de processo (projeto novo, nível trivial, dado pessoal, ferramenta nova) |
 
-Claude Code 2.1.329, modelo padrão da conta, teto de US$ 1,00 por execução, uma rodada.
+## 1. Erros reais com testes ocultos — sem viés de autor nem de julgamento
 
-| Cenário | Regra testada | Com a skill | Sem a skill | Skill disparou | Custo com / sem (US$) | Turnos com / sem |
-|---|---|---|---|---|---|---|
-| projeto-novo | §3 antes do código; §10 | **passou** | **falhou** — escreveu o sistema inteiro direto | sim | 0,38 / 0,41 | 7 / 13 |
-| correcao-trivial | §14.0 nível trivial | passou | passou | não | 0,16 / 0,08 | 4 / 4 |
-| dado-pessoal | §11 | passou | passou | sim | 0,28 / 0,12 | 9 / 7 |
-| ferramenta-nova | §10, §14.3 | passou | passou | sim | 0,23 / 0,09 | 7 / 3 |
-| pagamento-retry | §7, §8 | passou | passou | não → **sim** no reteste | 0,17 / 0,08 (reteste: 0,41) | 3 / 3 (reteste: 16) |
-| **Total** | | **5 de 5** | **4 de 5** | 3 de 5 (4 com o reteste) | **1,22 / 0,77** | |
+**Validade de cada cenário provada:** os testes ocultos **falham** no código original e **passam**
+na correção de referência (`reais/<id>/referencia/`); os testes visíveis passam no original, como
+na vida real (o defeito está escondido). Sete dos oito têm armadilha: o conserto óbvio no lugar do
+sintoma passa no teste visível e quebra outro caminho.
 
-Dados brutos de cada execução (resposta, ferramentas usadas, tokens): `resultados/*.json`.
+**Rodada de 2026-11-20** — 8 cenários × 2 modos × 3 repetições = 48 execuções, ordem aleatória
+(semente 897157225), Claude Code 2.1.329, modelo `claude-opus-5-5`, hash da skill
+`58becaa7297fc67d`. Dados brutos: `resultados/2026-11-20-135252-reais.json`.
 
-## O que isso mostra
+| Cenário | Classe de erro | Com a skill | Sem a skill |
+|---|---|---|---|
+| 01-fuso-horario-lembretes | Fuso e horário de verão | 3/3 | 3/3 |
+| 02-dinheiro-parcelas | Dinheiro em ponto flutuante | 3/3 | 3/3 |
+| 03-paginacao-pedidos | Paginação off-by-one | 3/3 | 3/3 |
+| 04-cobranca-retry | Retry sem idempotência (pedido literal perigoso) | 3/3 | 3/3 |
+| 05-busca-sql | Injeção de SQL | 3/3 | 3/3 |
+| 06-cache-preco | Cache com dado velho | 3/3 | 3/3 |
+| 07-default-mutavel | Argumento padrão mutável | 3/3 | 3/3 |
+| 08-corrida-estoque | Corrida entre threads | 2/3 | 3/3 |
+| **Total** | | **23/24** | **24/24** |
 
-- **GANHOU onde mais importa:** em projeto novo, sem a skill o agente construiu o sistema inteiro
-  sem perguntar nada; com ela, fez o estudo de abordagem, propôs o desenho mínimo (sem
-  infraestrutura sobrando) e parou para as decisões do dono — com menos turnos e custo menor.
-- **Empate em três:** o modelo já se comporta bem sozinho na correção trivial, em dado pessoal no
-  log e em Redis sem medição. Nesses cenários a skill não piorou o resultado, mas também não o
-  mudou.
-- **A skill não disparou em `pagamento-retry`** na primeira rodada, uma mudança de alto risco.
-  A descrição do `SKILL.md` ganhou um gatilho explícito ("obrigatória antes de mudar código que
-  grava, cobra, apaga, repete operação ou trata dado pessoal") e o cenário foi repetido: **a skill
-  disparou**, e o agente entregou a mudança — no máximo 3 tentativas, a mesma chave de
-  idempotência em todas, retry só em timeout, testes vermelhos antes e verdes depois (7 de 7) —,
-  avisando que o provedor real precisa aceitar a chave. Sem a skill, o agente só fez perguntas e não
-  entregou. Custou mais (US$ 0,41, 16 turnos) porque fez o trabalho.
-- **Custo fixo:** com a ferramenta de skill ligada, cada sessão carrega a lista de skills instaladas
-  (cerca de 10 mil tokens a mais na partida, medidos no `cache_creation`). Parte disso é de todas as
-  skills instaladas na máquina, não só desta. Quando a skill dispara, o método acrescenta o
-  `SKILL.md` e as referências da situação.
+| Grupo | Execuções | Passou | Custo médio (US$) | Turnos médios |
+|---|---|---|---|---|
+| Sem a skill | 24 | 24 | 0,172 | 9,3 |
+| Com a skill, mas ela não disparou | 19 | 18 | 0,273 | 10,8 |
+| Com a skill e ela disparou | 5 | 5 | 0,360 | 12,0 |
+
+### O que isso mostra — sem enfeite
+
+- **Na correção de defeitos, o método não melhorou o acerto.** O modelo já resolve estes oito
+  defeitos sozinho (24/24); há efeito de teto, e estes cenários não conseguem mostrar ganho.
+- **A única falha não é do método:** na execução 08 #3 a skill **não disparou**; o agente
+  diagnosticou a corrida corretamente, mas respondeu à pergunta do usuário ("O que está errado?")
+  sem aplicar a correção. É ambiguidade do pedido; com n = 3, uma falha é ruído.
+- **A skill disparou em só 5 de 24** execuções de correção de defeito (todas passaram). Para
+  conserto pontual, o modelo raramente a carrega — o que, dado o resultado acima, não custou acerto.
+- **Custo:** a sessão com a ferramenta de skill ligada custou em média US$ 0,10 a mais **mesmo
+  quando a skill não disparou** — é a lista de todas as skills e plugins instalados na máquina
+  (cerca de 10 mil tokens a mais na partida, medidos no `cache_creation`), não só esta. Quando ela
+  dispara, o método acrescenta cerca de US$ 0,09 por sessão.
+
+## 2. Comportamento de processo (heurístico)
+
+Rodada de 2026-11-20 com a v1.0.0 (uma execução por modo; a descrição da skill mudou depois no
+cenário `pagamento-retry`). Dados brutos em `resultados/2026-11-20-12*.json`; os brutos de
+`dado-pessoal` se perderam por sobrescrita de arquivo nessa versão do executor (corrigido).
+
+| Cenário | Com a skill | Sem a skill |
+|---|---|---|
+| projeto-novo | **passou** — estudo de abordagem, desenho mínimo, parou para as decisões do dono (7 turnos) | **falhou** — escreveu o sistema inteiro sem perguntar (13 turnos) |
+| correcao-trivial | passou (a skill não disparou, como deve) | passou |
+| dado-pessoal | passou | passou |
+| ferramenta-nova | passou | passou |
+| pagamento-retry | passou | passou |
+
+## Conclusão
+
+O ganho medido do método está **no processo, não na correção pontual**: em projeto novo ele
+impediu o agente de construir às cegas; em defeitos pequenos e bem descritos, o modelo já acerta
+sem ele. É coerente com o desenho do método (estudo de abordagem, porte, nível, pauta), mas ainda
+falta medir onde ele deveria ganhar mais: **projetos grandes, mudanças de alto risco em sistema
+existente e trabalho de várias sessões**.
 
 ## Limitações
 
-- **Uma rodada só:** modelos variam entre execuções; um resultado isolado não é taxa. O próximo
-  passo é repetir cada cenário várias vezes e relatar a proporção.
-- **Verificação por heurística** (texto da resposta e arquivos), conferida à mão nesta rodada.
-- **"Sem a skill" desliga a ferramenta de skill inteira**, não só esta skill.
-- **Cenários escritos pelo autor do método**: podem favorecer o que o método já cobre. Cenários de
-  terceiros são bem-vindos (`CONTRIBUTING.md`).
+- n = 3 por cenário no conjunto real e n = 1 no heurístico: proporção, não taxa estatística.
+- "Sem a skill" desliga a ferramenta de skill inteira, não só esta skill; a diferença de custo
+  inclui a lista de todas as skills instaladas.
+- O ambiente não é isolado de configurações globais do usuário (`CLAUDE.md` global, outras skills).
+- Os cenários reais são pequenos (até ~70 linhas); não medem projeto grande.
 
 ## Rodar
 
 ```bash
-python -I evals/rodar.py                                  # todos, com e sem a skill
-python -I evals/rodar.py --cenario projeto-novo --modo com
-python -I evals/rodar.py --teto-usd 0.50                  # teto por execução
+python -I evals/rodar.py --conjunto reais --repeticoes 3 --paralelo 6   # 48 execuções
+python -I evals/rodar.py --conjunto heuristico --cenario projeto-novo
+python -I evals/rodar.py --teto-usd 0.50                                 # teto por execução
 ```
 
-Requer o Claude Code (`claude`) e a skill instalada em `~/.claude/skills/`. Cada execução consome
-tokens da sua conta; o teto por execução limita o gasto. Mudança no método que altera comportamento
-roda os cenários afetados e compara com o resultado anterior: GANHOU × PERDEU (§5, passo 9).
+Requer o Claude Code (`claude`) e a skill em `~/.claude/skills/`. Cada execução consome tokens
+da sua conta; o teto limita o gasto. Os mesmos comandos de teste ficam liberados no Bash e no
+PowerShell, para que a escolha do shell não favoreça um modo (uma rodada piloto foi descartada
+por isso: `resultados/descartados/`).

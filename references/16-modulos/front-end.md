@@ -170,8 +170,8 @@ equivalente que a equipe domine — a regra do repositório vence esta ("Como ca
 | Formulário | React Hook Form (ou equivalente) + **Zod** | Formulário com validação; o mesmo esquema Zod valida no cliente e no servidor |
 | API / contrato | tRPC (monorepo TS ponta a ponta), REST tipado, ou GraphQL | tRPC quando cliente e servidor são TS; GraphQL quando há muitos consumidores |
 | Banco e ORM | **PostgreSQL** com Prisma ou Drizzle; Postgres gerenciado (Neon, RDS) ou próprio | Quando o projeto persiste dado; o ORM dá migração versionada e consulta tipada |
-| Autenticação | Auth.js, Better Auth, ou um provedor OIDC (ex.: Keycloak) | Quando há login; sessão e autorização sempre validadas no servidor (§16.6.6) |
-| Build e qualidade | Vite ou Turbopack; ESLint + Prettier, ou Biome | Sempre; lint e formatação no `pre-commit` e no CI |
+| Autenticação | Better Auth, ou um provedor OIDC (ex.: Keycloak) | Quando há login; sessão e autorização sempre validadas no servidor (§16.6.6) |
+| Build e qualidade | Vite, ou o bundler do meta-framework; ESLint + Prettier, ou Biome | Sempre; lint e formatação no `pre-commit` e no CI |
 | Teste | Vitest/Jest, Testing Library, Playwright | Pela camada (§16.6.7) |
 | Observabilidade | Core Web Vitals de campo, OpenTelemetry, rastreador de erro (ex.: Sentry) | Em produção com usuário real; métrica de front é medida, não adivinhada (§9) |
 | Deploy | Vercel, Netlify, Cloudflare, ou container próprio; preferir deploy por `git push` em projeto ligado | Quando há o que publicar; preview por branch antes de produção |

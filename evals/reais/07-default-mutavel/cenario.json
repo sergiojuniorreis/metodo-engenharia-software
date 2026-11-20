@@ -1,0 +1,7 @@
+{
+  "id": "07-default-mutavel",
+  "classe_de_erro": "argumento padrao mutavel (estado compartilhado entre requisicoes)",
+  "prompt": "Tem cliente recebendo pedido com itens que ele nao comprou, e alguns pedidos aparecem com cupom que o cliente nunca usou. Parece que piora quanto mais tempo o servidor fica no ar; depois de reiniciar some por um tempo. E o e-mail de confirmacao as vezes vai para outros clientes tambem.",
+  "o_que_os_ocultos_verificam": "Carrinhos novos (abrir_pedido e Pedido direto) nascem vazios e sem cupons; importacao do marketplace nao contamina pedidos seguintes; itens e cupons explicitos continuam aceitos; lista de destinatarios nao acumula e-mails de chamadas anteriores, com ou sem copias.",
+  "armadilha": "Sim. Passar listas novas so em loja.abrir_pedido (onde o carrinho do site nasce) resolve o caso do site, mas importar_pedidos e qualquer Pedido(cliente) direto continuam compartilhando a mesma lista e o mesmo set; e o vazamento de e-mail esta em outro modulo (notificacao.destinatarios)."
+}

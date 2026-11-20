@@ -16,6 +16,8 @@ Transformar o plano em código enxuto, correto e rápido, sem drift, e entregá-
 A skill `metodo-engenharia-software`: `SKILL.md`, `references/14-portao.md`,
 `references/17-especialidades/full-stack.md`, `references/17-especialidades/qualidade-testes.md` e o
 módulo do §16 que se aplica — em interface web, `references/16-modulos/front-end.md` (§16.6).
+Sem ferramenta de skill, leia pelo caminho: `.claude/skills/metodo-engenharia-software/` do
+projeto ou `~/.claude/skills/metodo-engenharia-software/`.
 
 ## Recebe
 

@@ -64,10 +64,10 @@ skills no formato `SKILL.md`). A skill vai para `~/.claude/skills/`; os agentes 
 **Linux, macOS, Codespaces:**
 
 ```bash
-git clone --depth 1 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes
+git clone --depth 1 --branch v1.1.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes
 mkdir -p ~/.claude/skills/metodo-engenharia-software
 cp -r /tmp/mes/SKILL.md /tmp/mes/PERFIL.modelo.md /tmp/mes/references /tmp/mes/agents \
-      /tmp/mes/templates ~/.claude/skills/metodo-engenharia-software/
+      /tmp/mes/templates /tmp/mes/exemplos ~/.claude/skills/metodo-engenharia-software/
 # Agentes, só no projeto que vai usá-los (rode na raiz do projeto):
 mkdir -p .claude/agents && find /tmp/mes/agents -name '*.md' ! -name README.md -exec cp {} .claude/agents/ \;
 rm -rf /tmp/mes
@@ -77,10 +77,10 @@ rm -rf /tmp/mes
 
 ```powershell
 $tmp = Join-Path $env:TEMP 'mes'
-git clone --depth 1 https://github.com/sergiojuniorreis/metodo-engenharia-software.git $tmp
+git clone --depth 1 --branch v1.1.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git $tmp
 $skill = Join-Path $HOME '.claude\skills\metodo-engenharia-software'
 New-Item -ItemType Directory -Force $skill | Out-Null
-Copy-Item -Recurse -Force "$tmp\SKILL.md", "$tmp\PERFIL.modelo.md", "$tmp\references", "$tmp\agents", "$tmp\templates" $skill
+Copy-Item -Recurse -Force "$tmp\SKILL.md", "$tmp\PERFIL.modelo.md", "$tmp\references", "$tmp\agents", "$tmp\templates", "$tmp\exemplos" $skill
 # Agentes, só no projeto que vai usá-los (rode na raiz do projeto):
 New-Item -ItemType Directory -Force '.claude\agents' | Out-Null
 Get-ChildItem "$tmp\agents\*.md" -Exclude README.md | Copy-Item -Destination '.claude\agents' -Force
@@ -88,7 +88,9 @@ Remove-Item -Recurse -Force $tmp
 ```
 
 Cada agente instalado põe a própria descrição no contexto de toda sessão: instale-os no projeto
-que vai usá-los, não globalmente. **Atualizar** é repetir o mesmo comando.
+que vai usá-los, não globalmente. A instalação usa a **versão marcada** (`--branch v1.1.0`), não a
+ponta do `main`; para atualizar, troque pela versão mais recente em
+[Releases](https://github.com/sergiojuniorreis/metodo-engenharia-software/releases) e repita.
 
 **Outro agente com suporte a `SKILL.md`:** copie a mesma pasta para o diretório de skills que ele
 lê. **Modelo sem suporte a skills:** cole o `SKILL.md` e as referências da situação no system
@@ -195,9 +197,11 @@ metodo-engenharia-software/
 
   Requer só Python 3.
 
-- **Evals de comportamento**: cenários reais (projeto novo, correção trivial, dado pessoal,
-  ferramenta nova, pagamento com retry) rodados com e sem a skill, medindo o comportamento, se a
-  skill dispara e o custo. Resultado e limitações em [`evals/README.md`](evals/README.md).
+- **Evals**: 8 defeitos reais escritos por um agente que não leu o método, julgados por testes
+  ocultos (48 execuções, com e sem a skill), e cenários de processo. Resultado honesto: na correção
+  pontual de defeitos o modelo já acerta sozinho (24/24 sem a skill, 23/24 com); o ganho medido
+  está no processo — em projeto novo, sem a skill o agente construiu às cegas, com ela fez o
+  estudo de abordagem. Detalhe, custo e limitações em [`evals/README.md`](evals/README.md).
 
 ---
 
@@ -219,6 +223,7 @@ Comece pelo §14 (portão) e pelo §4 (pronto): são os que mais pegam defeito c
 
 - Contribuições: [`CONTRIBUTING.md`](CONTRIBUTING.md) — elas seguem o próprio método.
 - Falha de segurança: [`SECURITY.md`](SECURITY.md) — relato privado, nunca issue pública.
+- Conduta: [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md).
 - Mudanças por versão: [`CHANGELOG.md`](CHANGELOG.md).
 
 ## Autor e licença

@@ -12,7 +12,8 @@ Contribuições são bem-vindas, com uma condição: **elas seguem o próprio m�
    e a tabela "Como carregar" muda no mesmo commit.
 5. **Zero palavra de domínio no núcleo.** Regra de um tipo de projeto vai para um módulo do §16,
    uma especialidade do §17 ou o `PERFIL.modelo.md`.
-6. **Nada de texto duplicado**: a regra mora num lugar e os outros apontam para ele.
+6. **Nada de texto duplicado**: a regra mora num lugar e os outros apontam para ele. O README
+   pode resumir, sempre apontando a fonte.
 7. **Antes do PR**, rode:
 
    ```bash

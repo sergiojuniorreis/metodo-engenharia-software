@@ -63,6 +63,8 @@ análises ficam no §3, e a **escada de componentes** no §10.
 | Trabalho lento ou em pico | Tabela de estado + worker | Vários consumidores, volume medido → fila gerenciada |
 | Avisar outros sistemas de um fato | Outbox + relé (§3D) | Muitos assinantes → barramento de eventos |
 | Processo longo com desvio e compensação | Máquina de estados escrita (§8) | Muitos fluxos assim → motor de workflow |
+| Tela que precisa ver mudança em tempo real | Consulta periódica com intervalo medido; depois eventos do servidor (SSE) | Interação nos dois sentidos com latência baixa medida → WebSocket |
+| Fluxo contínuo de eventos para processar | Lote curto e frequente sobre tabela ou fila | Latência exigida em segundos e volume medido → processamento de stream, com ordem, deduplicação e reprocessamento definidos (§3D) |
 
 ## Microsserviços
 

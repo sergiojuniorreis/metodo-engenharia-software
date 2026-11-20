@@ -10,7 +10,7 @@
   | Classe | Exemplos | Ao modelo externo |
   |---|---|---|
   | Segredo | Senha, token, chave, credencial | **Nunca.** O modelo chama a ferramenta; a credencial fica com ela |
-  | Pessoal sensível | Saúde, biometria, religião, dado de criança | Só com base legal específica, finalidade que exija o dado e contrato que o permita; senão, ofuscado |
+  | Pessoal sensível | Saúde, biometria, genética, religião, origem racial, opinião política, vida sexual (na LGPD, art. 5º, II); dado de criança e adolescente tem regra própria (art. 14) e recebe o mesmo cuidado | Só com base legal específica, finalidade que exija o dado e contrato que o permita; senão, ofuscado |
   | Pessoal | Nome, documento nacional (ex.: CPF), endereço, telefone, e-mail, conta bancária | **Ofuscado por padrão** (máscara ou rótulo estável, feito no núcleo). Em claro só quando a finalidade exige o dado (ex.: agente que responde e-mail precisa do endereço), com o provedor contratado como operador — sem treino sobre o que enviamos, região e retenção conferidas — e só o mínimo |
   | Comercial interno | Custo, margem, preço de outra empresa | Ofuscado, salvo contrato que o permita; nunca em texto que terceiro lê (§12) |
   | Interno ou público | Regra, catálogo, documento público | Livre, respeitando o contrato |
@@ -28,7 +28,9 @@
 - **Provedor externo é operador de dados.** Antes de enviar dado de cliente a qualquer serviço
   — IA inclusive — confira o que o contrato permite, se há treinamento sobre o que enviamos e
   onde os dados ficam.
-- **Incidente com dado pessoal tem caminho próprio e prazo legal.** Comunicar é obrigação.
+- **Incidente com dado pessoal tem caminho próprio e prazo legal.** Comunicar é obrigação (no
+  Brasil, à ANPD e aos titulares, em até 3 dias úteis do conhecimento quando houver risco ou dano
+  relevante — Resolução CD/ANPD nº 15/2024).
 
 ## Entrada de fora é hostil até prova em contrário
 

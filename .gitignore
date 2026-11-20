@@ -4,7 +4,7 @@ docs/
 # Perfil preenchido é local: pode conter contexto de cliente ou da equipe (§11)
 PERFIL.md
 
-# Prompts gerados pela concatenação (ver README → Como usar → cenário 2)
+# Prompts gerados pela concatenação do método para modelos sem suporte a skills
 prompt-*.md
 
 # Segredos e ambiente

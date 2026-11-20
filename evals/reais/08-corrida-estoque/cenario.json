@@ -1,0 +1,7 @@
+{
+  "id": "08-corrida-estoque",
+  "classe_de_erro": "condicao de corrida entre threads",
+  "prompt": "Na Black Friday vendemos 37 unidades de um produto que so tinha 10 em estoque. O sistema roda com varias threads atendendo o checkout ao mesmo tempo. Aqui na minha maquina, comprando um de cada vez, nunca acontece. O que esta errado?",
+  "o_que_os_ocultos_verificam": "50 reservas simultaneas de 1 unidade com saldo 10 resultam em exatamente 10 sucessos e saldo 0; reservas e devolucoes simultaneas nao perdem atualizacao; checkouts simultaneos de carrinho com 2 SKUs vendem exatamente o estoque; comportamento sequencial e auditoria mantidos.",
+  "armadilha": "Sim. Travar so a linha de escrita do saldo (deixando a leitura/verificacao fora) ainda vende demais; travar so checkout.finalizar protege o checkout mas deixa reservar/devolver chamados por outros caminhos sem protecao, e devolver tem a mesma leitura-e-escrita perdida."
+}

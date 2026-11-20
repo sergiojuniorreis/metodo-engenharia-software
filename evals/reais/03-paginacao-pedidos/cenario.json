@@ -1,0 +1,7 @@
+{
+  "id": "03-paginacao-pedidos",
+  "classe_de_erro": "paginacao off-by-one",
+  "prompt": "Na tela de pedidos, a primeira pagina nao mostra os 10 pedidos mais antigos: ela ja comeca no pedido 11. E quando temos 25 pedidos o paginador mostra so 2 paginas, os ultimos pedidos nunca aparecem. Consegue arrumar?",
+  "o_que_os_ocultos_verificam": "Pagina 1 (e o padrao) traz ids 1-10; ultima pagina parcial; pagina alem do fim vazia; total_paginas com arredondamento para cima; percorrer todas as paginas cobre tudo sem repetir; exportacao CSV (outro chamador do repositorio, base 0) continua sem duplicar nem perder pedidos.",
+  "armadilha": "Sim. O lugar obvio e o OFFSET em repositorio.buscar_pagina; mudar ali para (pagina-1) conserta a tela, mas exportacao.exportar_csv chama o repositorio com pagina comecando em 0, e o SQLite trata OFFSET negativo como 0: o primeiro lote sai duplicado na exportacao para a contabilidade."
+}

@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "data": "2026-11-20T12:58:40",
+    "conjunto": "reais",
+    "repeticoes": 1,
+    "semente": 304601230,
+    "teto_usd": 1.0,
+    "claude_code": "2.1.329 (Claude Code)",
+    "hash_skill_instalada": "58becaa7297fc67d",
+    "modelos": [
+      "claude-opus-5-5"
+    ]
+  },
+  "execucoes": [
+    {
+      "resposta": "Pronto: o `cobrar_pedido` agora tenta de novo quando o gateway dá timeout, e o painel ganhou uma função para rodar de novo os pedidos pendentes. Os 7 testes passam (rodei antes da mudança e falharam, depois passaram).\n\n**Fiz uma coisa diferente do pedido: ele não tenta \"até conseguir, sem desistir\".** Ele tenta até 5 vezes, esperando 0,5s, depois 1s, 2s e assim por diante, até no máximo 8s entre tentativas. Se ainda falhar, o pedido continua pendente e fica um registro de erro no log. Fiz assim por dois motivos:\n\n1. **Cobrança em dobro.** O `gateway.py` avisa que, num timeout, a cobrança \"pode ou não ter sido efetivada\". O código antigo não mandava chave de idempotência. Então repetir a chamada, como estava, cobraria o cliente duas vezes sempre que o gateway cobrasse mas a resposta se perdesse. Agora toda tentativa manda a mesma chave por pedido (`pedido-<id>`), e o gateway devolve a transação original em vez de cobrar de novo.\n2. **Tentar sem fim.** Se o gateway ficasse fora do ar, a requisição e o cliente ficariam travados ali para sempre. É o painel que cobre esse caso.\n\nSe mesmo assim vocês quiserem tentativas sem fim, basta subir o número de tentativas, mas eu não recomendo.\n\n**O que mudou em `pagamentos.py`:**\n- **`cobrar_pedido`:**\n  - Tenta de novo com espera crescente entre as tentativas.\n  - Se o pedido já está pago, não chama o gateway.\n  - Só marca como pago um pedido que ainda está pendente.\n  - Registra cada timeout no log.\n- **Nova `reprocessar_pendentes(conn, gateway)`:** é a ação do painel. Roda o `cobrar_pedido` em todos os pendentes e devolve `{id_do_pedido: pagou}`. Pode clicar várias vezes que não cobra em dobro, porque usa a mesma chave por pedido.\n\n**Testes em `test_pagamentos.py`:**\n- timeout antes de chegar ao banco emissor, depois paga;\n- timeout depois de cobrar, sem cobrar duas vezes;\n- tentativas esgotadas, pedido continua pendente;\n- painel rodando de novo um pedido que já tinha sido cobrado, sem duplicar;\n- pedido já pago não chama o gateway;\n- painel reprocessando todos os pendentes.\n\nPara rodar: `python -m unittest -v`.\n\n**Ficou de fora:**\n- **Gateway real.** Só testei com o `GatewaySimulado`. Antes de publicar, confirme que o gateway real aceita `chave_idempotencia` e por quanto tempo ele guarda essa chave. Se ela expirar antes de alguém rodar o pedido de novo pelo painel, volta o risco de cobrar duas vezes.\n- **Botão no painel.** Não existe código de painel no repositório. Deixei só a função `reprocessar_pendentes` para ser chamada por ele.\n\nNão fiz commit. Para desfazer: `git checkout -- pagamentos.py test_pagamentos.py`.",
+      "skill_disparou": true,
+      "ferramentas": [
+        "Skill",
+        "Glob",
+        "Read",
+        "Read",
+        "Read",
+        "Write",
+        "Bash",
+        "Edit",
+        "Edit",
+        "Bash"
+      ],
+      "modelo": "claude-opus-5-5",
+      "turnos": 12,
+      "custo_usd": 0.34502780000000005,
+      "tokens": {
+        "input_tokens": 12,
+        "output_tokens": 4839,
+        "cache_read_input_tokens": 209599,
+        "cache_creation_input_tokens": 25785
+      },
+      "duracao_ms": 50312,
+      "erro": null,
+      "checks": [
+        {
+          "descricao": "testes ocultos e visíveis passam",
+          "passou": true,
+          "resumo": "OK"
+        }
+      ],
+      "passou": true,
+      "cenario": "04-cobranca-retry",
+      "modo": "com",
+      "repeticao": 1
+    },
+    {
+      "resposta": "Fiz as duas mudanças em `pagamentos.py`, mas não consegui rodar os testes: o comando `python -m unittest -v test_pagamentos` precisa da sua aprovação e não foi liberado. Ou seja, nada disso foi testado ainda.\n\n**O ponto mais importante:** só tentar de novo em caso de timeout poderia cobrar o cliente duas vezes. O gateway avisa que, quando dá timeout, a cobrança \"pode ou não ter sido efetivada\". Às vezes o banco já cobrou e só a resposta se perdeu. Se o código simplesmente chama `cobrar` de novo, o cliente paga duas vezes. Por isso toda chamada agora manda uma chave de idempotência fixa por pedido (`pedido-<id>`). O gateway já aceita essa chave: se ela for repetida, ele devolve a transação original em vez de cobrar de novo. Isso vale tanto para as novas tentativas automáticas quanto para quando o pedido é rodado de novo pelo painel.\n\n**O que mudou:**\n- **`cobrar_pedido`**: quando dá timeout, tenta de novo esperando um pouco mais a cada vez (começa em 0,5s e dobra até no máximo 30s). Por padrão não desiste nunca, como vocês pediram. Também dá para passar `max_tentativas` para limitar. Se o pedido já estiver pago, devolve `True` direto, sem chamar o gateway.\n- **Painel**: criei `pedidos_pendentes(conn)` para listar os pendentes e `reprocessar_pendentes(conn, gateway)` para rodar `cobrar_pedido` de novo em todos eles. No painel coloquei um limite de 5 tentativas por pedido. Sem isso, com o gateway fora do ar, a tela ficaria travada para sempre. O pedido que falhar continua pendente e pode ser reprocessado depois.\n- **Testes novos** em `test_pagamentos.py`: timeout antes de cobrar, timeout depois de cobrar sem cobrança dupla, e reprocessamento pelo painel sem cobrança dupla.\n\nUma decisão para vocês: sem limite, se o gateway ficar fora do ar o checkout fica esperando indefinidamente, e o cliente pode desistir do mesmo jeito. Vale a pena colocar um limite no fluxo de compra também e deixar o painel pegar o que sobrar.\n\nPara validar, é só aprovar ou rodar `python -m unittest -v test_pagamentos`.",
+      "skill_disparou": false,
+      "ferramentas": [
+        "Bash",
+        "Bash",
+        "Bash",
+        "Read",
+        "Read",
+        "Edit",
+        "Edit",
+        "Edit",
+        "PowerShell"
+      ],
+      "modelo": "claude-opus-5-5",
+      "turnos": 10,
+      "custo_usd": 0.29204280000000005,
+      "tokens": {
+        "input_tokens": 14,
+        "output_tokens": 6462,
+        "cache_read_input_tokens": 214454,
+        "cache_creation_input_tokens": 14982
+      },
+      "duracao_ms": 62531,
+      "erro": null,
+      "checks": [
+        {
+          "descricao": "testes ocultos e visíveis passam",
+          "passou": false,
+          "resumo": "FAILED (failures=2)"
+        }
+      ],
+      "passou": false,
+      "cenario": "04-cobranca-retry",
+      "modo": "sem",
+      "repeticao": 1
+    }
+  ]
+}

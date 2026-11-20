@@ -1,0 +1,7 @@
+{
+  "id": "05-busca-sql",
+  "classe_de_erro": "injecao de SQL",
+  "prompt": "A busca de clientes da erro quando o nome tem apostrofo, tipo D'Avila ou O'Connor. Aparece um sqlite3.OperationalError na tela. Pode resolver?",
+  "o_que_os_ocultos_verificam": "Busca por nome e por cidade com apostrofo funciona; entradas maliciosas (OR '1'='1, UNION com a tabela de usuarios) nao retornam dados; ordenacao valida continua funcionando; o parametro 'ordenar' nao pode ser usado como oraculo para descobrir a senha.",
+  "armadilha": "Sim. O sintoma aparece em buscar_por_nome; trocar ' por '' so ali (ou parametrizar so o termo) faz o teste do apostrofo passar, mas buscar_por_cidade continua injetavel (e quebra com Santa Barbara d'Oeste) e o ORDER BY interpolado de 'ordenar' continua aceitando SQL arbitrario."
+}

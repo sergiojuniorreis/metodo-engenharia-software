@@ -52,8 +52,8 @@ orquestrador o lê, valida e aplica. Modelo: `templates/agente-produto.modelo.ya
   (RFC 9728) e indicador de recurso (RFC 8707). **O servidor confere que o token foi emitido para
   ele (audiência)** e recusa token de outro destino.
 - **Nunca repasse o token do usuário** a uma API de terceiro; o servidor usa a credencial dele.
-- Servidor local: só em `localhost`, com validação do cabeçalho Origin (contra DNS rebinding),
-  rodando com o menor privilégio do sistema.
+- Servidor local: de preferência por stdio (sem porta de rede); se for HTTP, só em `localhost`,
+  com validação do cabeçalho Origin (contra DNS rebinding), rodando com o menor privilégio.
 - Segredo do servidor no cofre (§14.6 item 7), nunca no arquivo de configuração do cliente.
 
 ## MCP — cliente (consumindo servidor de terceiro)

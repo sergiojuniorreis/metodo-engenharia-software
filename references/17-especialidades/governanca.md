@@ -47,11 +47,11 @@ o menor peso possível**: saber quem decidiu o quê, com que base, e conseguir p
 - **Transparência**: quem tem direito de saber que há automação sabe (§12).
 - **Avaliação antes de subir e monitoração depois** (§17.4): troca de modelo ou prompt é mudança
   governada, com corpus de regressão.
-- **Marco de referência** escolhido conforme o cliente e a jurisdição — declarado no `PERFIL.md`.
+- **Marco de referência** escolhido conforme o cliente e a jurisdição — declarado no `PERFIL.md` ou no `AGENTS.md` do projeto.
 
 ## Conformidade proporcional
 
-- **A lei e a norma aplicáveis são declaradas** no `PERFIL.md` (lei de dados, setor regulado,
+- **A lei e a norma aplicáveis são declaradas** no `PERFIL.md` ou no `AGENTS.md` do projeto (lei de dados, setor regulado,
   norma exigida pelo cliente). O método não presume nenhuma.
 - **Controle vira teste ou evidência automática** sempre que possível: varredura na CI, teste de
   isolamento, relatório gerado. Controle que depende de lembrar não é controle.

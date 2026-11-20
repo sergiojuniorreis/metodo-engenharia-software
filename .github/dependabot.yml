@@ -1,0 +1,7 @@
+# Mantém atualizadas as actions fixadas por SHA na CI (§17.6, cadeia de suprimentos).
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

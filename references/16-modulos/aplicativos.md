@@ -35,6 +35,9 @@ Carregue quando o projeto tem interface para usuário final ou API pública.
 - **Link profundo validado** como qualquer entrada externa (§11).
 - **Bateria, rede e memória** medidas em aparelho real de entrada, não só no emulador.
 - **Relatório de falhas** com versão do app e do sistema, sem dado pessoal (§9).
+- **Requisitos de segurança verificáveis**: OWASP MASVS (armazenamento, criptografia, autenticação,
+  rede, plataforma, código, resiliência) como lista de conferência do app; cada categoria
+  aplicável com teste ou justificativa.
 - **Assinatura do app**: chave de assinatura no cofre, com backup e dono — perdê-la impede
   atualizar o app publicado.
 

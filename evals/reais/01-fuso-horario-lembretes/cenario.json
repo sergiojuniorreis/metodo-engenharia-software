@@ -1,0 +1,7 @@
+{
+  "id": "01-fuso-horario-lembretes",
+  "classe_de_erro": "fuso horario / horario de verao",
+  "prompt": "Os clientes de Lisboa e de Nova York estao reclamando que, em parte do ano, os lembretes chegam com uma hora de diferenca e o texto do lembrete mostra o horario errado. Os clientes do Brasil nao reclamam. Pode corrigir?",
+  "o_que_os_ocultos_verificam": "Conversao UTC<->local correta no verao e no inverno para Lisboa e Nova York; Brasil sem regressao; texto do lembrete; recorrencia diaria que atravessa o inicio e o fim do horario de verao continua as 09:00 locais; agrupamento de eventos por dia local.",
+  "armadilha": "Sim. O sintoma aparece no texto do lembrete; corrigir so a exibicao (ou somar 1h na tabela de deslocamentos) faz o verao parecer certo mas quebra o inverno, e a recorrencia diaria em agendar_diario continua somando 24h em UTC, deslocando o envio em 1h depois da mudanca de horario."
+}

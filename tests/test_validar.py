@@ -95,6 +95,14 @@ class Validador(unittest.TestCase):
         self.acrescentar("agents/README.md", "\nchave ghp_" + "a" * 30 + "\n")
         self.reprova("padrão de segredo")
 
+    def test_nucleo_acima_do_teto(self):
+        self.acrescentar("SKILL.md", "\n" + "x" * 13000 + "\n")
+        self.reprova("acima do teto")
+
+    def test_modelo_de_agents_acima_do_teto(self):
+        self.acrescentar("templates/AGENTS.modelo.md", "\n" + "x" * 4000 + "\n")
+        self.reprova("acima do teto")
+
     def test_descricao_da_skill_longa_demais(self):
         self.trocar("SKILL.md", "description: ", "description: " + "x" * 1100)
         self.reprova("acima de 1024")

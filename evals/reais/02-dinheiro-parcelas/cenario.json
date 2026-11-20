@@ -1,0 +1,7 @@
+{
+  "id": "02-dinheiro-parcelas",
+  "classe_de_erro": "dinheiro em ponto flutuante / arredondamento",
+  "prompt": "Um cliente comprou R$ 100,00 em 3 vezes e reclamou que as parcelas somam R$ 99,99. A contabilidade tambem esta achando diferenca de centavos no fechamento, principalmente em pedidos com desconto. Arruma isso pra mim?",
+  "o_que_os_ocultos_verificam": "Soma das parcelas igual ao valor em varios casos, parcelas com no maximo 2 casas e diferenca maxima de 1 centavo entre elas; desconto arredondado corretamente em casos onde o float erra (1.035 -> 1.04); total do pedido sem regressao.",
+  "armadilha": "Nao (defeito localizado), mas o conserto ingenuo de jogar a diferenca na ultima parcela com float ainda deixa o desconto errado."
+}

@@ -3,8 +3,8 @@
 | Termo | Significa |
 |---|---|
 | **Motor / núcleo** | A peça genérica que opera o sistema e não conhece domínio |
-| **Skill** | Um arquivo por domínio; decide e devolve o motivo |
-| **Plugin** | O que se faz com os dados depois da execução (relatório, dashboard, nuvem) |
+| **Skill de domínio** | No sistema construído: um arquivo por domínio, que decide e devolve o motivo (§2). Não confundir com a skill do Claude, formato em que este método é distribuído |
+| **Plugin de saída** | No sistema construído: o que se faz com os dados depois da execução (relatório, painel, nuvem). Não confundir com plugin do Claude Code |
 | **Setor** | Fatia nomeada e documentada do núcleo; unidade de alteração |
 | **Corpus** | Acervo de casos reais que alimenta baterias e varreduras |
 | **Bateria** | Suíte de regressão; vale pelo código de saída |
@@ -15,7 +15,7 @@
 | **Lápide** | Invalidação explícita que mata uma memória errada em todas as máquinas |
 | **ADR** | Registro curto de decisão: escolhido, descartado, gatilho de revisão |
 | **Rodada** | Uma execução completa do ciclo, com identificador próprio |
-| **Portão** | As seis exigências de toda alteração de código (§14) |
+| **Portão** | O §14: toda alteração passa por ele, no nível trivial, padrão ou alto risco (§14.0) |
 | **Pauta de segurança** | Os itens do §14.6, respondidos antes de todo projeto e de toda alteração, cada um com a evidência |
 | **Análise do escopo** | As quatro análises do §3: paradigma de IA, rede neural, linear ou não linear, movimentos assíncronos |
 | **Simbólica / subsimbólica / híbrida** | IA por regra e lógica explícitas / por aprendizado guardado em pesos / as duas juntas, com a fronteira escrita |

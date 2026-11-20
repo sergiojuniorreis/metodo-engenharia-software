@@ -20,6 +20,8 @@ com o dado real, contra a base simples, sem vazamento e com o custo ao lado do a
 A skill `metodo-engenharia-software`: `SKILL.md`, `references/03-estudo-de-abordagem.md` (análises
 A a C), `references/17-especialidades/dados.md` e `references/08-estado-memoria.md` quando há
 pipeline ou cache.
+Sem ferramenta de skill, leia pelo caminho: `.claude/skills/metodo-engenharia-software/` do
+projeto ou `~/.claude/skills/metodo-engenharia-software/`.
 
 ## Recebe
 

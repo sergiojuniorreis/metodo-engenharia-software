@@ -1,8 +1,23 @@
 # §3 — Antes de escrever: estudo de abordagem
 
 **Obrigatório em todo projeto novo, em toda mudança de rumo e em todo reparo de
-arquitetura.** Meia página, não um TCC. Sem ele, a primeira linha de código já é decisão
-arquitetural tomada no escuro.
+arquitetura.** Sem ele, a primeira linha de código já é decisão arquitetural tomada no escuro. O
+tamanho do estudo acompanha o porte do projeto.
+
+## Porte do projeto
+
+Declarado no início, com o motivo; **na dúvida, sobe um porte**. O porte define o estudo mínimo;
+o nível de cada alteração depois segue o §14.0.
+
+| Porte | Quando | Estudo mínimo |
+|---|---|---|
+| **Script** | Tarefa pontual, um dono, sem dado de terceiro nem produção | Cinco linhas: problema, onde roda, linguagem, o que acontece se falhar, como desfazer |
+| **Pequeno** | Um serviço ou app, uma pessoa ou equipe pequena, semanas de trabalho | As oito perguntas em meia página; as quatro análises em uma linha cada; pre-mortem com três causas; pauta de segurança pelo resumo |
+| **Grande** | Vários serviços, módulos ou equipes; dado pessoal ou de cliente; dinheiro; produção que não pode parar; IA em decisão | Tudo desta seção: as oito perguntas, a conduta sênior completa (requisitos em número, pre-mortem, modelagem de ameaça, funções de aptidão), as quatro análises por extenso, ADR de cada porta de uma via e o plano de fatias de entrega |
+
+**Projeto grande se entrega em fatias**: a primeira fatia é o caminho mais fino de ponta a ponta
+(entrada → regra → saída, com log e teste), em produção ou homologação; as seguintes engordam esse
+caminho. Nada de semanas construindo camadas que só se encontram no fim.
 
 ## As oito perguntas, nesta ordem
 

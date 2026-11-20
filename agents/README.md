@@ -35,7 +35,9 @@ Agente do projeto com o mesmo nome de um global prevalece. Regras do projeto fic
 O modelo é um ponto de partida (§14.4: busca e execução no mais barato que dá conta, julgamento no
 mais forte). Troque no cabeçalho do agente quando a medição mostrar outro equilíbrio.
 
-Quem audita não conserta: devolve ao responsável com a evidência.
+Quem audita não conserta: devolve ao responsável com a evidência. A restrição de escrita vem da
+lista de ferramentas e da instrução; para impô-la de fato (o Bash também grava), use regras de
+permissão do projeto ou um hook que recuse escrita para esses agentes.
 
 ## Quando cada um entra
 
@@ -48,7 +50,7 @@ Quem audita não conserta: devolve ao responsável com a evidência.
 | 4 | `engenheiro-full-stack` | Implementação que não cabe no contexto principal ou corre em paralelo | Diff mínimo, teste vermelho → verde, pré-auditoria |
 | 5 | `engenheiro-devops-sre` | Pipeline, ambiente, deploy, observabilidade | Mudança de infra testada, runbook, rollback |
 | 6 | `especialista-seguranca` | Início de projeto; nível padrão com item da pauta aplicável; todo alto risco; release | Parecer da pauta com as varreduras |
-| 7 | `auditor-entrega` | Push de nível padrão ou alto risco; release; instalação | Veredito, relatório §14.5, pacote de evidência |
+| 7 | `auditor-entrega` | Push de alto risco; release; instalação. No nível padrão, a sessão principal faz a auditoria do §14.1 sem agente | Veredito, relatório §14.5, pacote de evidência |
 
 3a e 3b podem correr em paralelo quando a mudança toca as duas frentes.
 
