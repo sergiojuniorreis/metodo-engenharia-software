@@ -44,12 +44,18 @@ arquivo da linha — nunca a pasta inteira (§18).
 | Modelagem de ameaça, varredura de segredo, dependências | §17.6 | `17-especialidades/ciberseguranca.md` |
 | ADR, dívida, LGPD, inventário de IA, licenças, evidência | §17.7 | `17-especialidades/governanca.md` |
 | Que teste escrever, mutação, revisão de código | §17.8 | `17-especialidades/qualidade-testes.md` |
+| Qual comando roda cada prova (teste, mutação, análise, auditoria) por linguagem | §17.9 | `17-especialidades/ferramentas-por-linguagem.md` |
 | Preparar o `AGENTS.md`; tarefa gastando contexto com o que o projeto já sabe | §18 | `18-contexto-cache.md` |
 | Conferir de onde vem uma regra | — | `fontes.md` |
 
+**Comandos** (instalados em `~/.claude/commands/`): `/iniciar` cria a estrutura do projeto,
+`/estudo` faz o §3, `/mudanca` passa uma alteração pelo §14 no nível certo, `/entrega` confere
+antes do commit. Prefira-os: eles carregam o roteiro certo sem depender de lembrar o método.
+
 Fora de `references/`: agentes e o fluxo entre eles em `agents/README.md`; modelos (`AGENTS.md`
 de projeto, ADR, relatório, questionário, manifesto de agente) em `templates/`; o fluxo inteiro
-num caso fictício em `exemplos/exemplo-completo.md`.
+num caso fictício em `exemplos/exemplo-completo.md` e o estudo de um projeto grande em
+`exemplos/exemplo-projeto-grande.md`.
 
 - **Modelo ou agente sem suporte a skills:** concatene este arquivo com as referências da
   situação no system prompt ou no arquivo de regras do projeto.

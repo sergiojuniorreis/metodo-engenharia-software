@@ -6,6 +6,36 @@ muda) sobe o primeiro número.
 
 ## [Não lançado]
 
+## [1.2.0] — 2026-11-20
+
+Aplicabilidade: do "o que deve ser verdade" para o "como se faz".
+
+### Adicionado
+
+- **Quatro comandos** (`commands/`, instalados em `~/.claude/commands/`): `/iniciar` (kit do
+  projeto), `/estudo` (§3, para nas decisões do dono), `/mudanca` (§14 no nível certo, com teste
+  vermelho → verde e relatório do nível), `/entrega` (conferência antes do commit). Carregam o
+  roteiro certo sem depender de a skill disparar sozinha.
+- **Kit de início** (`scripts/iniciar_projeto.py`): cria `AGENTS.md`, `CLAUDE.md`, CI com o teste
+  da linguagem e gitleaks no histórico, pasta de ADR e o estudo de abordagem; não sobrescreve nada.
+  Testado (`tests/test_iniciar_projeto.py`).
+- **§17.9 Ferramentas de prova por linguagem**: o comando de teste, cobertura, mutação, lint,
+  análise de segurança, auditoria de dependências e segredo em Python, TypeScript, Java/Kotlin,
+  Go, C# e Rust.
+- **Modelo e exemplo de estudo de abordagem** (`templates/estudo-de-abordagem.md`,
+  `exemplos/exemplo-projeto-grande.md`).
+- **Modo dev sozinho** nos agentes: no máximo dois, em decisão de uma via e em alto risco.
+- `evals/processo.json`: comandos × pedido em texto livre, com critérios neutros.
+- Validador: cabeçalho dos comandos e caractere de controle em texto (um escape errado tinha
+  quebrado o comando de instalação do PowerShell no README antes de publicar).
+
+### Alterado
+
+- **Nível padrão enxuto (§14.0)**: pauta **por gatilho** (só os itens que a mudança toca) e
+  relatório de **seis linhas**; o relatório completo fica para o alto risco.
+- `templates/relatorio-entrega.md` com os três formatos. README com "Usar: quatro comandos" e a
+  instalação dos comandos e do kit.
+
 ## [1.1.1] — 2026-11-20
 
 Correções da terceira revisão independente.

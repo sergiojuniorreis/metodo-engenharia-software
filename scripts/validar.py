@@ -125,6 +125,15 @@ def checar_agentes():
         falhas.append("SKILL.md: description vazia ou acima de 1024 caracteres")
 
 
+def checar_comandos():
+    for p in sorted((RAIZ / "commands").glob("*.md")):
+        c = cabecalho(p)
+        if c is None or len(c.get("description", "")) < 20:
+            falhas.append(f"{p.relative_to(RAIZ)}: comando sem cabeçalho com description")
+        elif "$ARGUMENTS" not in ler(p):
+            falhas.append(f"{p.relative_to(RAIZ)}: comando não usa $ARGUMENTS")
+
+
 def checar_roteamento():
     """Todo arquivo de references/ está na tabela "Como carregar" do SKILL.md, e vice-versa."""
     texto = ler(RAIZ / "SKILL.md")
@@ -151,6 +160,15 @@ def checar_tamanho():
         falhas.append("SKILL.md: não manda ler o PERFIL.md")
 
 
+def checar_controle():
+    """Caractere de controle num texto quebra comando copiado (ex.: \r, \a, \t vindos de escape errado)."""
+    regex = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f]")
+    for p in arquivos({".md", ".py", ".yml", ".yaml", ".json"}):
+        for n, linha in enumerate(ler(p).splitlines(), 1):
+            if regex.search(linha):
+                falhas.append(f"{p.relative_to(RAIZ)}:{n}: caractere de controle no texto")
+
+
 def checar_segredos():
     regex = re.compile("|".join(PADROES_SEGREDO))
     for p in arquivos({".md", ".py", ".yml", ".yaml", ".json", ".txt"}):
@@ -164,8 +182,10 @@ def checar_segredos():
 checar_referencias()
 checar_caminhos()
 checar_agentes()
+checar_comandos()
 checar_roteamento()
 checar_tamanho()
+checar_controle()
 checar_segredos()
 
 if falhas:

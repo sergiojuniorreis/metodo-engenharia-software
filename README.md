@@ -58,18 +58,18 @@ o código, seja gente ou modelo.
 
 ## Instalar
 
-Requer o [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (ou outro agente que leia
-skills no formato `SKILL.md`). A skill vai para `~/.claude/skills/`; os agentes são opcionais.
+Requer o [Claude Code](https://docs.anthropic.com/en/docs/claude-code) e Python 3 (para o kit de
+início). Vai para `~/.claude/`: a skill, o kit e os quatro comandos. Os agentes são opcionais.
 
 **Linux, macOS, Codespaces:**
 
 ```bash
-git clone --depth 1 --branch v1.1.1 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes
-mkdir -p ~/.claude/skills/metodo-engenharia-software
-cp -r /tmp/mes/SKILL.md /tmp/mes/PERFIL.modelo.md /tmp/mes/references /tmp/mes/agents \
-      /tmp/mes/templates /tmp/mes/exemplos ~/.claude/skills/metodo-engenharia-software/
-# Agentes, só no projeto que vai usá-los (rode na raiz do projeto):
-mkdir -p .claude/agents && find /tmp/mes/agents -name '*.md' ! -name README.md -exec cp {} .claude/agents/ \;
+git clone --depth 1 --branch v1.2.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes
+S=~/.claude/skills/metodo-engenharia-software
+mkdir -p "$S/scripts" ~/.claude/commands
+cp -r /tmp/mes/SKILL.md /tmp/mes/PERFIL.modelo.md /tmp/mes/references /tmp/mes/agents       /tmp/mes/templates /tmp/mes/exemplos "$S/"
+cp /tmp/mes/scripts/iniciar_projeto.py "$S/scripts/"
+cp /tmp/mes/commands/*.md ~/.claude/commands/
 rm -rf /tmp/mes
 ```
 
@@ -77,37 +77,48 @@ rm -rf /tmp/mes
 
 ```powershell
 $tmp = Join-Path $env:TEMP 'mes'
-git clone --depth 1 --branch v1.1.1 https://github.com/sergiojuniorreis/metodo-engenharia-software.git $tmp
+git clone --depth 1 --branch v1.2.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git $tmp
 $skill = Join-Path $HOME '.claude\skills\metodo-engenharia-software'
-New-Item -ItemType Directory -Force $skill | Out-Null
+$cmds = Join-Path $HOME '.claude\commands'
+New-Item -ItemType Directory -Force "$skill\scripts", $cmds | Out-Null
 Copy-Item -Recurse -Force "$tmp\SKILL.md", "$tmp\PERFIL.modelo.md", "$tmp\references", "$tmp\agents", "$tmp\templates", "$tmp\exemplos" $skill
-# Agentes, só no projeto que vai usá-los (rode na raiz do projeto):
-New-Item -ItemType Directory -Force '.claude\agents' | Out-Null
-Get-ChildItem "$tmp\agents\*.md" -Exclude README.md | Copy-Item -Destination '.claude\agents' -Force
+Copy-Item -Force "$tmp\scripts\iniciar_projeto.py" "$skill\scripts"
+Copy-Item -Force "$tmp\commands\*.md" $cmds
 Remove-Item -Recurse -Force $tmp
 ```
 
-Cada agente instalado põe a própria descrição no contexto de toda sessão: instale-os no projeto
-que vai usá-los, não globalmente. A instalação usa a **versão marcada** (`--branch v1.1.1`), não a
-ponta do `main`; para atualizar, troque pela versão mais recente em
+A instalação usa a **versão marcada** (`--branch v1.2.0`), não a ponta do `main`; para atualizar,
+troque pela versão mais recente em
 [Releases](https://github.com/sergiojuniorreis/metodo-engenharia-software/releases) e repita.
 
-**Outro agente com suporte a `SKILL.md`:** copie a mesma pasta para o diretório de skills que ele
-lê. **Modelo sem suporte a skills:** cole o `SKILL.md` e as referências da situação no system
-prompt — não no `AGENTS.md` do projeto, que é o cache curto do projeto (§18).
+**Agentes (opcionais):** copie os `.md` de `agents/` (menos o README) para `.claude/agents/` do
+projeto que vai usá-los. Cada agente instalado põe a descrição no contexto de toda sessão; sozinho,
+você precisa de no máximo dois (veja [`agents/README.md`](agents/README.md)).
 
-## Preparar um projeto
+**Modelo sem suporte a skills:** cole o `SKILL.md` e as referências da situação no system prompt —
+não no `AGENTS.md` do projeto, que é o cache curto do projeto (§18).
 
-1. Copie [`templates/AGENTS.modelo.md`](templates/AGENTS.modelo.md) para a raiz do projeto como
-   `AGENTS.md` e preencha: invariantes, comandos, mapa, armadilhas. Curto — entra em toda sessão.
-2. Crie um `CLAUDE.md` com uma linha: `@AGENTS.md`.
-3. *(Opcional)* Copie `PERFIL.modelo.md` para `PERFIL.md` na pasta da skill: idioma, shell, moeda,
-   lei de dados, provedores de IA autorizados.
-4. **Confira**: peça *"vou começar um projeto novo de integração com ERP"*. O agente deve responder
-   pelo estudo de abordagem (§3) e pelo módulo §16.1 antes de propor código.
+## Usar: quatro comandos
 
-**Veja o fluxo inteiro num exemplo:** [`exemplos/exemplo-completo.md`](exemplos/exemplo-completo.md)
-— uma mudança do pedido ao relatório da entrega, e o relatório curto de uma mudança trivial.
+| Comando | O que faz | Quando |
+|---|---|---|
+| `/iniciar <pasta> <nome> <linguagem>` | Cria `AGENTS.md`, `CLAUDE.md`, CI com teste e segredo, pasta de ADR e o estudo de abordagem para preencher | Repositório novo |
+| `/estudo <descrição>` | Estudo de abordagem do §3 no porte certo; para nas decisões do dono; não escreve código | Antes da primeira linha de um projeto ou de uma mudança de rumo |
+| `/mudanca <o que mudar>` | Classifica o nível (trivial, padrão, alto risco), escreve a âncora, responde a pauta por gatilho, teste vermelho → verde, relatório do nível | Toda alteração de código |
+| `/entrega` | Confere diff, suíte e varreduras e monta o relatório antes do commit | Antes de cada commit |
+
+**Um projeto do zero:**
+
+```text
+/iniciar ./agenda "Agenda de clínicas" python
+/estudo plataforma de agendamento para clínicas com lembrete e cobrança por Pix
+/mudanca primeira fatia: clínica cria horário e paciente agenda
+/entrega
+```
+
+Exemplos: o estudo de um projeto grande em
+[`exemplos/exemplo-projeto-grande.md`](exemplos/exemplo-projeto-grande.md) e uma mudança do pedido
+ao relatório em [`exemplos/exemplo-completo.md`](exemplos/exemplo-completo.md).
 
 ---
 
@@ -173,10 +184,12 @@ metodo-engenharia-software/
 │   ├── 18-contexto-cache.md     cache de conhecimento do projeto
 │   └── fontes.md                fontes externas
 ├── agents/                      8 agentes + fluxo
-├── templates/                   AGENTS.md, ADR, relatório, questionário, manifesto de agente
+├── commands/                    /iniciar, /estudo, /mudanca, /entrega
+├── templates/                   AGENTS.md, estudo, ADR, relatório, questionário, manifesto
 ├── exemplos/                    o fluxo inteiro num caso fictício
 ├── evals/                       cenários que provam o efeito da skill
-├── scripts/validar.py · tests/  validação do repositório
+├── scripts/                     validar.py (repositório) · iniciar_projeto.py (kit)
+├── tests/                       testes do validador e do kit
 └── CHANGELOG.md · CONTRIBUTING.md · SECURITY.md · LICENSE · LICENSE-CODE
 ```
 

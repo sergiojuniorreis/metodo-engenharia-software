@@ -12,8 +12,38 @@ baixo o que é de cima é defeito, achado na auditoria como qualquer outro.
 | Nível | Quando | Lista mínima |
 |---|---|---|
 | **Trivial** | Não muda comportamento observável nem contrato: texto, comentário, documentação, nome interno sem uso externo, formatação de um arquivo. Não toca segurança, dado pessoal, escrita nem configuração de produção | Âncora de uma linha (objetivo e nível) · sintaxe conferida pela ferramenta · suíte que cobre o arquivo · varredura de segredo no diff · **relatório curto** |
-| **Padrão** | Muda comportamento dentro de um setor, sem gatilho de alto risco — inclusive gravação comum de um registro e ferramenta nova (esta com o §14.3) | Tudo deste §14: âncora completa, mapa de impacto, linha de base, teste vermelho → verde, suíte inteira, auditoria do diff, pauta respondida pelo resumo (detalhe só dos itens que se aplicam), revisão em cinco eixos, **relatório completo** |
-| **Alto risco** | Grava ou remove em lote ou de forma irreversível; mexe em retomada ou controle de execução; calcula valor que será cobrado, pago ou faturado; autenticação, autorização, segredo ou dado pessoal; contrato público, esquema de dado, migração; produção ou infraestrutura; IA em decisão | O padrão **mais**: detalhe da pauta (§14.6) para cada item que se aplica, mutação de cada guarda nova, matriz de interrupção e bateria de invariantes (§17.8), revisão adversarial independente, rollback ensaiado |
+| **Padrão** | Muda comportamento dentro de um setor, sem gatilho de alto risco — inclusive gravação comum de um registro e ferramenta nova (esta com o §14.3) | Âncora (objetivo, aceite, escopo, invariantes, Fora) · mapa de impacto · linha de base · teste vermelho → verde · suíte inteira · auditoria do diff · **pauta por gatilho** (tabela abaixo) · revisão em cinco eixos · **relatório padrão** (seis linhas) |
+| **Alto risco** | Grava ou remove em lote ou de forma irreversível; mexe em retomada ou controle de execução; calcula valor que será cobrado, pago ou faturado; autenticação, autorização, segredo ou dado pessoal; contrato público, esquema de dado, migração; produção ou infraestrutura; IA em decisão | O padrão **mais**: detalhe da pauta (§14.6) para cada item que se aplica, **relatório completo** (§14.5), mutação de cada guarda nova, matriz de interrupção e bateria de invariantes (§17.8), revisão adversarial independente, rollback ensaiado |
+
+**Pauta por gatilho** (níveis padrão e alto risco). Marque o que a mudança toca; só os itens
+marcados se respondem, com a evidência. Nenhum gatilho: "pauta: nenhum gatilho".
+
+| A mudança toca… | Itens da pauta |
+|---|---|
+| Gravação, remoção ou registro que se guarda | 1, 4 |
+| Dado de mais de um dono (cliente, empresa, usuário) | 2 |
+| Envio a modelo de IA | 3 |
+| Ação em nome de uma pessoa (enviar, aprovar, pagar) | 5 |
+| Configuração ou modo de ambiente | 6 |
+| Segredo, credencial ou token | 7, 9 |
+| Build, pacote ou deploy | 8 |
+| Entrada vinda de fora (web, API, arquivo, upload) | 10 |
+| Login, sessão ou permissão | 11 |
+| Integração OAuth | 12 |
+| Servidor MCP ou ferramenta de agente | 13 |
+| Extensão ou agente de navegador | 14 |
+| Dependência nova ou atualizada | 15 |
+
+**Relatório padrão** (seis linhas):
+
+```text
+Nível        padrão — <por que não é trivial nem alto risco>
+Âncora       <objetivo> — atendido · aceite: <comando> → <resultado> (vermelho antes: <teste>)
+Mudança      <arquivos> · suíte antes × depois → <códigos> · sintaxe → <ferramenta>
+Pauta        <gatilhos tocados> → itens <n> → <evidência> · ou: nenhum gatilho
+Revisão      cinco eixos, 0 Crítico/Importante · Fora: <o que vi e não mexi>
+Reverter     <commit>
+```
 
 **Relatório curto** (nível trivial):
 
@@ -156,7 +186,8 @@ Sem nenhum dos dois, as linhas Ferramenta e Agentes do relatório dizem "nenhuma
 
 ## 14.5 O relatório da entrega
 
-Toda entrega de código termina com este bloco. Campo vazio não existe: tem evidência, ou
+Formato completo, para o **nível alto risco** (o padrão usa as seis linhas do §14.0, o trivial as
+quatro). Campo vazio não existe: tem evidência, ou
 "não se aplica — motivo", ou "NÃO FEITO — motivo".
 
 ```text

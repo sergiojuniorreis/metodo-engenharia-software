@@ -8,6 +8,19 @@ cada um com uma frente própria. Servem a qualquer projeto: o domínio vem do re
 frente dele existe na mudança e não cabe no contexto principal, ou quando é preciso um olho
 independente.
 
+## Dev sozinho — o modo padrão
+
+Trabalhando sozinho, use **no máximo dois** agentes, e só nestes momentos:
+
+| Momento | Agente | Para quê |
+|---|---|---|
+| Decisão de uma via (esquema, contrato, runtime, separar serviço) | `arquiteto-software` | Segundo olho no desenho antes de travar |
+| Mudança de alto risco pronta para subir | `especialista-seguranca` ou `auditor-entrega` | Olho independente que não escreveu o código |
+
+O resto — estudo, implementação, testes, nível padrão — a sessão principal faz direto, guiada pelos
+comandos `/estudo`, `/mudanca` e `/entrega`. Os outros agentes existem para equipe ou para frentes
+paralelas grandes.
+
 ## Instalar
 
 Copie os arquivos `.md` desta pasta (menos este README) para:

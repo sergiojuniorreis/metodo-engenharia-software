@@ -1,0 +1,31 @@
+[
+  {
+    "id": "estudo-projeto-grande",
+    "origem": "fixtures/vazio",
+    "prompts": {
+      "com": "/estudo plataforma de agendamento para varias clinicas, com lembrete por mensagem ao paciente e cobranca da consulta por Pix",
+      "sem": "Quero uma plataforma de agendamento para varias clinicas, com lembrete por mensagem ao paciente e cobranca da consulta por Pix. Pode comecar."
+    },
+    "checks": [
+      {"tipo": "sem_arquivos_novos", "extensoes": [".py", ".js", ".ts", ".java", ".go", ".cs", ".sql"], "descricao": "não escreve código antes das decisões do dono"},
+      {"tipo": "texto_ou_arquivos_contem", "regex": "(?i)isolament|outra cl[ií]nica|entre cl[ií]nicas|multi.?(empresa|tenant|cl[ií]nica)|tenant", "descricao": "aponta o isolamento de dados entre clínicas"},
+      {"tipo": "texto_ou_arquivos_contem", "regex": "(?i)idempot|cobran[cç]a duplicada|cobrar duas vezes|em dobro|webhook.{0,80}(repet|duplic)", "descricao": "aponta o risco de cobrança duplicada"},
+      {"tipo": "texto_ou_arquivos_contem", "regex": "(?i)dado(s)? (pessoa|sens[ií]ve|de sa[uú]de)|lgpd|sa[uú]de do paciente", "descricao": "aponta dado pessoal e de saúde"},
+      {"tipo": "texto_ou_arquivos_contem", "regex": "(?i)decid|precis(o|amos) (saber|que voc)|antes de (seguir|come[cç]ar)|qual (provedor|voc)", "descricao": "leva decisões ao dono"},
+      {"tipo": "texto_ou_arquivos_contem", "regex": "(?i)porte|fatia", "descricao": "MARCADOR do método: porte ou fatias declarados", "marcador": true}
+    ]
+  },
+  {
+    "id": "mudanca-padrao",
+    "origem": "reais/03-paginacao-pedidos/projeto",
+    "ocultos": "reais/03-paginacao-pedidos/ocultos",
+    "prompts": {
+      "com": "/mudanca Na tela de pedidos, a primeira pagina nao mostra os 10 pedidos mais antigos: ela ja comeca no pedido 11. E quando temos 25 pedidos o paginador mostra so 2 paginas, os ultimos pedidos nunca aparecem. Consegue arrumar?",
+      "sem": "Na tela de pedidos, a primeira pagina nao mostra os 10 pedidos mais antigos: ela ja comeca no pedido 11. E quando temos 25 pedidos o paginador mostra so 2 paginas, os ultimos pedidos nunca aparecem. Consegue arrumar?"
+    },
+    "checks": [
+      {"tipo": "texto_ou_arquivos_contem", "regex": "(?i)n[ií]vel\\s*(padr[aã]o|trivial|alto)", "descricao": "MARCADOR do método: nível declarado", "marcador": true},
+      {"tipo": "texto_ou_arquivos_contem", "regex": "(?i)reverter|git revert", "descricao": "MARCADOR do método: como reverter", "marcador": true}
+    ]
+  }
+]

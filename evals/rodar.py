@@ -148,10 +148,26 @@ def conferir(check, pasta, resposta, hashes_antes):
                 if cita and not re.search(r"(?i)mascar|ofusc|mask|anonim|hash", linha):
                     return False
         return True
+    if t == "texto_ou_arquivos_contem":
+        textos = [resposta]
+        for p in pasta.rglob("*"):
+            if p.is_file() and ".git" not in p.parts:
+                try:
+                    textos.append(p.read_text(encoding="utf-8"))
+                except UnicodeDecodeError:
+                    continue
+        return bool(re.search(check["regex"], "\n".join(textos)))
     raise ValueError(f"tipo de verificação desconhecido: {t}")
 
 
 def carregar(conjunto):
+    if conjunto == "processo":
+        cen = json.loads((AQUI / "processo.json").read_text(encoding="utf-8"))
+        for c in cen:
+            c["origem"] = AQUI / c["origem"]
+            if c.get("ocultos"):
+                c["ocultos"] = AQUI / c["ocultos"]
+        return cen
     if conjunto == "heuristico":
         cen = json.loads((AQUI / "cenarios.json").read_text(encoding="utf-8"))
         for c in cen:
@@ -171,16 +187,20 @@ def uma_execucao(c, modo, rep, conjunto, teto):
     try:
         antes = {str(p.relative_to(pasta)).replace("\\", "/"): hash_arquivo(p)
                  for p in pasta.rglob("*") if p.is_file() and ".git" not in p.parts}
-        r = executar(c["prompt"], pasta, modo, teto)
-        if conjunto == "reais":
+        prompt = c.get("prompts", {}).get(modo) or c["prompt"]
+        r = executar(prompt, pasta, modo, teto)
+        r["checks"] = [{"descricao": ch["descricao"], "passou": conferir(ch, pasta, r["resposta"], antes),
+                        "marcador": ch.get("marcador", False)}
+                       for ch in c.get("checks", [])]
+        if c.get("ocultos"):
             for oculto in c["ocultos"].glob("*.py"):
                 shutil.copy(oculto, pasta / oculto.name)
             ok, resumo = rodar_testes(pasta)
-            r["checks"] = [{"descricao": "testes ocultos e visíveis passam", "passou": ok, "resumo": resumo}]
-        else:
-            r["checks"] = [{"descricao": ch["descricao"], "passou": conferir(ch, pasta, r["resposta"], antes)}
-                           for ch in c["checks"]]
-        r["passou"] = all(ch["passou"] for ch in r["checks"])
+            r["checks"].append({"descricao": "testes ocultos e visíveis passam", "passou": ok,
+                                "resumo": resumo, "marcador": False})
+        # Marcador do método (nível declarado, relatório) é registrado, mas não conta para passar:
+        # o modo sem a skill não tem por que produzi-lo.
+        r["passou"] = all(ch["passou"] for ch in r["checks"] if not ch["marcador"])
         r.update({"cenario": c["id"], "modo": modo, "repeticao": rep})
         return r
     finally:
@@ -189,7 +209,7 @@ def uma_execucao(c, modo, rep, conjunto, teto):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--conjunto", choices=["reais", "heuristico"], default="reais")
+    ap.add_argument("--conjunto", choices=["reais", "heuristico", "processo"], default="reais")
     ap.add_argument("--cenario")
     ap.add_argument("--modo", choices=["com", "sem"])
     ap.add_argument("--repeticoes", type=int, default=1)

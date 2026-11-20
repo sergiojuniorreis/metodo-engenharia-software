@@ -65,13 +65,49 @@ cenário `pagamento-retry`). Dados brutos em `resultados/2026-11-20-12*.json`; o
 | ferramenta-nova | passou | passou |
 | pagamento-retry | passou | passou |
 
+## 3. Comandos × pedido em texto livre (v1.2.0)
+
+`processo.json`: o mesmo pedido, feito pelo comando do método (`/estudo`, `/mudanca`) ou em texto
+livre sem a skill. Os critérios que decidem "passou" são **neutros** — o que um especialista
+cobraria e os dois modos podem cumprir; os marcadores do método (porte, nível, reversão) são
+registrados à parte e **não contam**. Rodada de 2026-11-20: 2 cenários × 2 modos × 3 repetições,
+semente 529371636, `claude-opus-5-5`, hash da skill `7749b173585d3c83`. Dados brutos:
+`resultados/2026-11-20-142232-processo.json`.
+
+**Estudo de projeto grande** (plataforma de agendamento multiclínica com lembrete e Pix):
+
+| Critério neutro | `/estudo` | Texto livre |
+|---|---|---|
+| Não escreve código antes das decisões do dono | 3/3 | **0/3** |
+| Aponta isolamento de dados entre clínicas | 3/3 | 3/3 |
+| Aponta risco de cobrança duplicada | 3/3 | **1/3** |
+| Aponta dado pessoal e de saúde | 3/3 | 3/3 |
+| Leva decisões ao dono | 3/3 | 2/3 |
+| **Passou (todos os critérios)** | **3/3** | **0/3** |
+| Custo médio · tempo · turnos | US$ 0,71 · 150 s · 11 | US$ 0,65 · 160 s · 18 |
+
+**Mudança de nível padrão** (defeito de paginação, com os testes ocultos do cenário `reais/03`):
+
+| | `/mudanca` | Texto livre |
+|---|---|---|
+| Testes ocultos e visíveis passam | 3/3 | 3/3 |
+| Declara nível e como reverter (marcador) | 3/3 | 0/3 |
+| Custo médio · tempo · turnos | **US$ 0,39 · 58 s · 18** | **US$ 0,13 · 25 s · 8** |
+
+- **`/estudo` resolve o problema de aplicabilidade no início de projeto**, com custo igual: sem
+  ele, o agente escreveu código nas três execuções e só uma vez apontou o risco de cobrança dupla.
+- **`/mudanca` num conserto pequeno custa 3 vezes mais** sem melhorar o acerto: o ganho é o
+  processo registrado (nível, âncora, reversão), não a correção. Para conserto pequeno e bem
+  descrito, use-o quando o registro valer o custo; em alto risco, o roteiro com parada antes da
+  edição é o que protege.
+
 ## Conclusão
 
-O ganho medido do método está **no processo, não na correção pontual**: em projeto novo ele
-impediu o agente de construir às cegas; em defeitos pequenos e bem descritos, o modelo já acerta
-sem ele. É coerente com o desenho do método (estudo de abordagem, porte, nível, pauta), mas ainda
-falta medir onde ele deveria ganhar mais: **projetos grandes, mudanças de alto risco em sistema
-existente e trabalho de várias sessões**.
+O ganho medido do método está **no processo, não na correção pontual**: em projeto novo, com o
+`/estudo`, o agente parou nas decisões do dono e apontou os riscos certos em 3 de 3 execuções;
+sem ele, construiu às cegas em 3 de 3. Em defeitos pequenos e bem descritos, o modelo já acerta
+sem o método, e o `/mudanca` custa mais pelo registro. Falta medir onde ele deveria ganhar mais:
+**mudanças de alto risco em sistema existente e trabalho de várias sessões**.
 
 ## Limitações
 

@@ -95,6 +95,14 @@ class Validador(unittest.TestCase):
         self.acrescentar("agents/README.md", "\nchave ghp_" + "a" * 30 + "\n")
         self.reprova("padrão de segredo")
 
+    def test_comando_sem_descricao(self):
+        self.trocar("commands/estudo.md", "description: ", "descricao: ")
+        self.reprova("comando sem cabeçalho")
+
+    def test_caractere_de_controle(self):
+        self.acrescentar("README.md", "\nCopy-Item \"$tmp\x07gents\"\n")
+        self.reprova("caractere de controle")
+
     def test_nucleo_acima_do_teto(self):
         self.acrescentar("SKILL.md", "\n" + "x" * 13000 + "\n")
         self.reprova("acima do teto")

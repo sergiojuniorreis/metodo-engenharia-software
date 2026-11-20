@@ -1,0 +1,722 @@
+{
+  "meta": {
+    "data": "2026-11-20T14:18:05",
+    "conjunto": "processo",
+    "repeticoes": 3,
+    "semente": 529371636,
+    "teto_usd": 1.5,
+    "claude_code": "2.1.329 (Claude Code)",
+    "hash_skill_instalada": "7749b173585d3c83",
+    "modelos": [
+      "claude-opus-5-5"
+    ]
+  },
+  "execucoes": [
+    {
+      "resposta": "Arrumei os dois problemas, e os dois estavam em `api.py`. Os testes passam.\n\n1. **A primeira página começava no pedido 11.** A tela conta as páginas a partir de 1, mas a consulta ao banco (`repositorio.buscar_pagina`) conta a partir de 0. Por isso a página 1 da tela virava a segunda página do banco. Agora a API converte o número com `pagina - 1` antes de buscar. Mantive a consulta contando a partir de 0 porque a exportação para a contabilidade (`exportacao.py`) depende disso. Se eu mudasse lá, a exportação perderia o primeiro lote de pedidos.\n2. **Com 25 pedidos apareciam só 2 páginas.** A conta do total de páginas arredondava para baixo (25 ÷ 10 = 2). Agora arredonda para cima, e 25 pedidos dão 3 páginas.\n\nTambém adicionei um teste em `test_api.py` com 25 pedidos. Ele confere que a página 1 traz os pedidos 1 a 10, que a página 3 traz os pedidos 21 a 25 e que o total é de 3 páginas.\n\nSe não houver nenhum pedido, `total_paginas` vem como 0. Se a tela esperar pelo menos 1 página nesse caso, é um ajuste rápido.",
+      "skill_disparou": false,
+      "ferramentas": [
+        "Grep",
+        "Grep",
+        "Edit",
+        "Read",
+        "Read",
+        "Edit",
+        "PowerShell"
+      ],
+      "modelo": "claude-opus-5-5",
+      "turnos": 8,
+      "custo_usd": 0.1329132,
+      "tokens": {
+        "input_tokens": 12,
+        "output_tokens": 1850,
+        "cache_read_input_tokens": 166366,
+        "cache_creation_input_tokens": 7824
+      },
+      "duracao_ms": 24398,
+      "erro": null,
+      "checks": [
+        {
+          "descricao": "MARCADOR do método: nível declarado",
+          "passou": false,
+          "marcador": true
+        },
+        {
+          "descricao": "MARCADOR do método: como reverter",
+          "passou": false,
+          "marcador": true
+        },
+        {
+          "descricao": "testes ocultos e visíveis passam",
+          "passou": true,
+          "resumo": "OK",
+          "marcador": false
+        }
+      ],
+      "passou": true,
+      "cenario": "mudanca-padrao",
+      "modo": "sem",
+      "repeticao": 3
+    },
+    {
+      "resposta": "Consertei, e os dois problemas tinham causas diferentes, ambas em `api.py`:\n\n- **A primeira página começava no pedido 11.** A tela conta as páginas a partir de 1, mas `repositorio.buscar_pagina` conta a partir de 0. A página 1 virava \"pule 10 pedidos\". Agora a API passa `pagina - 1` para o repositório.\n- **Com 25 pedidos apareciam só 2 páginas.** A conta `25 // 10` arredondava para baixo e a última página incompleta sumia. Agora arredonda para cima: 25 pedidos dão 3 páginas, e a terceira traz os pedidos 21 a 25.\n\nDeixei `repositorio.py` como estava porque a exportação para a contabilidade (`exportacao.py:9-11`) também usa a função, começando em 0. Se eu tivesse mudado a função, a exportação passaria a perder os 100 primeiros pedidos. Um teste novo protege isso.\n\nAntes do conserto, os três testes novos falharam com o defeito real: a página 1 trouxe os pedidos 11 a 20, o total deu 2 páginas em vez de 3, e com 1 só pedido a lista ficou vazia. Depois do conserto, os 5 testes passam.\n\n```text\nNível        padrão — muda o que a listagem retorna (visível na tela) num único setor; só leitura, sem gravação, cobrança, permissão, dado pessoal ou esquema\nÂncora       página N (a partir de 1) mostra os pedidos 10(N-1)+1..10N, e total_paginas arredonda para cima — atendido\n             · aceite: python -m unittest → OK, 5 testes\n             · vermelho antes: test_primeira_pagina… ([11..20] != [1..10]), test_25_pedidos… (2 != 3), test_todas_as_paginas… (n=1 → [])\n             · invariantes: lista vazia → 0 páginas (test_sem_pedidos); exportação ainda começa em 0 e traz tudo (test_exporta_todos_os_pedidos); formato da resposta igual\nMudança      api.py, test_api.py · suíte antes 1 OK → depois 5 OK (código 0) · sintaxe → py_compile OK · fim de linha mantido (diff de 41+/2-)\nPauta        entrada de fora (pagina vem da query) → item 10: a consulta continua com parâmetros (?), sem concatenar texto; validar o valor ficou no Fora · demais gatilhos: não tocados\nRevisão      cinco eixos, 0 Crítico/Importante · Fora: (1) api.listar_pedidos aceita pagina=0 ou negativa e repassa offset negativo, sem validação nem 400; (2) pedidos.total é TEXT no esquema (repositorio.py:6); (3) o projeto não tem AGENTS.md\nReverter     git checkout -- api.py test_api.py (nada commitado; base 651cd96)\n```\n\nNão fiz commit nem push. Se quiser, eu commito, ou trato a validação de `pagina` (item 1 do Fora) como uma mudança separada.",
+      "skill_disparou": false,
+      "ferramentas": [
+        "Bash",
+        "Read",
+        "Read",
+        "Glob",
+        "Read",
+        "Read",
+        "Read",
+        "Read",
+        "PowerShell",
+        "Bash",
+        "Bash",
+        "Edit",
+        "Bash",
+        "Edit",
+        "Bash"
+      ],
+      "modelo": "claude-opus-5-5",
+      "turnos": 16,
+      "custo_usd": 0.3841882,
+      "tokens": {
+        "input_tokens": 18,
+        "output_tokens": 4276,
+        "cache_read_input_tokens": 337421,
+        "cache_creation_input_tokens": 28889
+      },
+      "duracao_ms": 53146,
+      "erro": null,
+      "checks": [
+        {
+          "descricao": "MARCADOR do método: nível declarado",
+          "passou": true,
+          "marcador": true
+        },
+        {
+          "descricao": "MARCADOR do método: como reverter",
+          "passou": true,
+          "marcador": true
+        },
+        {
+          "descricao": "testes ocultos e visíveis passam",
+          "passou": true,
+          "resumo": "OK",
+          "marcador": false
+        }
+      ],
+      "passou": true,
+      "cenario": "mudanca-padrao",
+      "modo": "com",
+      "repeticao": 3
+    },
+    {
+      "resposta": "Arrumei os dois problemas. A página 1 agora começa no pedido 1, e com 25 pedidos o paginador mostra 3 páginas, com os pedidos 21 a 25 na última. Não fiz commit.\n\n**O que estava errado:** os dois problemas vinham de `api.py`.\n- **Primeira página:** a tela conta as páginas a partir de 1, mas a função do banco que busca a página (`repositorio.buscar_pagina`) conta a partir de 0. Por isso, pedir a \"página 1\" trazia os pedidos 11 a 20.\n- **Paginador:** o total de páginas era calculado com uma divisão que arredonda para baixo (25 ÷ 10 deu 2). A página com os últimos 5 pedidos sumia.\n\nCorrigi só na `api.py` porque a exportação CSV para a contabilidade (`exportacao.py`) usa a mesma função do banco já contando a partir de 0. Mudar essa função quebraria a exportação.\n\n```text\nNível        padrão — muda o que a tela mostra; só leitura, sem gatilho de alto risco\nÂncora       página 1 = pedidos 1–10; 25 pedidos = 3 páginas — atendido · aceite: python -m unittest → 6 OK\n             (vermelho antes: os 3 testes com 25 pedidos falharam — [11..20] no lugar de [1..10], e \"2 != 3\" páginas)\nMudança      api.py (+3/−2), test_api.py (+40) · suíte antes 1 OK → depois 6 OK, código 0 · sintaxe → o Python carregou os arquivos sem erro\nPauta        nenhum gatilho\nRevisão      cinco eixos, 0 Crítico/Importante · exportação travada por teste (250 pedidos, sem perda)\n             Fora: (1) página 0, negativa ou além da última não é validada; uma página pedida acima da última volta vazia\n                   (2) não há AGENTS.md no projeto\n                   (3) com zero pedidos, total_paginas = 0; confirme se a tela espera 1\nReverter     git checkout -- api.py test_api.py (ainda não tem commit)\n```\n\nOs testes novos cobrem a primeira página, a última página com 5 pedidos, as páginas juntas trazendo todos os pedidos sem repetir e o caso de 20 pedidos, que não deve criar uma página vazia a mais. Os itens do **Fora** eu vi e deixei sem mexer, porque estão fora do que você pediu.\n\nSe quiser que eu faça o commit, é só dizer.",
+      "skill_disparou": false,
+      "ferramentas": [
+        "Bash",
+        "Bash",
+        "Bash",
+        "Read",
+        "Read",
+        "Glob",
+        "Read",
+        "Read",
+        "Read",
+        "Read",
+        "PowerShell",
+        "PowerShell",
+        "PowerShell",
+        "Edit",
+        "PowerShell",
+        "Edit",
+        "PowerShell",
+        "PowerShell"
+      ],
+      "modelo": "claude-opus-5-5",
+      "turnos": 19,
+      "custo_usd": 0.3809456,
+      "tokens": {
+        "input_tokens": 24,
+        "output_tokens": 4440,
+        "cache_read_input_tokens": 426448,
+        "cache_creation_input_tokens": 25845
+      },
+      "duracao_ms": 59415,
+      "erro": null,
+      "checks": [
+        {
+          "descricao": "MARCADOR do método: nível declarado",
+          "passou": true,
+          "marcador": true
+        },
+        {
+          "descricao": "MARCADOR do método: como reverter",
+          "passou": true,
+          "marcador": true
+        },
+        {
+          "descricao": "testes ocultos e visíveis passam",
+          "passou": true,
+          "resumo": "OK",
+          "marcador": false
+        }
+      ],
+      "passou": true,
+      "cenario": "mudanca-padrao",
+      "modo": "com",
+      "repeticao": 2
+    },
+    {
+      "resposta": "Consertei os dois problemas, ambos em `api.py`. Os testes passam.\n\n**1. A primeira página começava no pedido 11.** A tela conta as páginas a partir de 1 (`?pagina=1`), mas `repositorio.buscar_pagina` conta a partir de 0. A API repassava o número sem converter, então a página 1 pulava os 10 primeiros pedidos. Agora a API passa `pagina - 1` para o repositório.\n\n**2. Com 25 pedidos apareciam só 2 páginas.** O total de páginas era `total // 10`, uma divisão que arredonda para baixo. Agora ele arredonda para cima: 25 pedidos dão 3 páginas, e 20 pedidos continuam dando 2, sem uma página vazia no final.\n\nFiz a conversão na API e não no repositório porque `exportacao.py` também usa `buscar_pagina` contando a partir de 0. Mudar o repositório quebraria a exportação.\n\nTambém acrescentei testes em `test_api.py`: com 25 pedidos, a página 1 mostra os pedidos 1 a 10 e a página 3 mostra os pedidos 21 a 25; com 20 pedidos, o paginador mostra exatamente 2 páginas.",
+      "skill_disparou": false,
+      "ferramentas": [
+        "Grep",
+        "Read",
+        "Read",
+        "Read",
+        "Edit",
+        "Edit",
+        "PowerShell"
+      ],
+      "modelo": "claude-opus-5-5",
+      "turnos": 8,
+      "custo_usd": 0.13615020000000003,
+      "tokens": {
+        "input_tokens": 12,
+        "output_tokens": 1995,
+        "cache_read_input_tokens": 167251,
+        "cache_creation_input_tokens": 7844
+      },
+      "duracao_ms": 23564,
+      "erro": null,
+      "checks": [
+        {
+          "descricao": "MARCADOR do método: nível declarado",
+          "passou": false,
+          "marcador": true
+        },
+        {
+          "descricao": "MARCADOR do método: como reverter",
+          "passou": false,
+          "marcador": true
+        },
+        {
+          "descricao": "testes ocultos e visíveis passam",
+          "passou": true,
+          "resumo": "OK",
+          "marcador": false
+        }
+      ],
+      "passou": true,
+      "cenario": "mudanca-padrao",
+      "modo": "sem",
+      "repeticao": 1
+    },
+    {
+      "resposta": "Consertei os dois problemas. Os dois estavam em `api.py`, na função `listar_pedidos`.\n\n1. **A primeira página começava no pedido 11.** A tela conta as páginas a partir de 1, mas `repositorio.buscar_pagina` conta a partir de 0. A página 1 da tela virava a segunda página do banco. Agora a API passa `pagina - 1` para o repositório.\n2. **Com 25 pedidos apareciam só 2 páginas.** O total de páginas era calculado com `total // 10`, que arredonda para baixo e descarta a última página incompleta. Agora ele arredonda para cima: 25 pedidos dão 3 páginas, e 20 pedidos continuam dando 2, sem página vazia no final.\n\nNão mexi em `repositorio.py`. A exportação (`exportacao.py`) usa a mesma função contando a partir de 0 e já funcionava certo; mudar o repositório quebraria a exportação.\n\nTambém adicionei testes em `test_api.py` para esses casos:\n- 25 pedidos: a página 1 traz os pedidos 1 a 10, existem 3 páginas, e a página 3 traz os pedidos 21 a 25.\n- 20 pedidos: o resultado é exatamente 2 páginas.\n- Sem pedidos: o resultado é 0 páginas.\n\nOs 3 testes passam.",
+      "skill_disparou": false,
+      "ferramentas": [
+        "Grep",
+        "Read",
+        "Read",
+        "Read",
+        "Edit",
+        "Edit",
+        "PowerShell"
+      ],
+      "modelo": "claude-opus-5-5",
+      "turnos": 8,
+      "custo_usd": 0.132172,
+      "tokens": {
+        "input_tokens": 12,
+        "output_tokens": 1894,
+        "cache_read_input_tokens": 167020,
+        "cache_creation_input_tokens": 7605
+      },
+      "duracao_ms": 25726,
+      "erro": null,
+      "checks": [
+        {
+          "descricao": "MARCADOR do método: nível declarado",
+          "passou": false,
+          "marcador": true
+        },
+        {
+          "descricao": "MARCADOR do método: como reverter",
+          "passou": false,
+          "marcador": true
+        },
+        {
+          "descricao": "testes ocultos e visíveis passam",
+          "passou": true,
+          "resumo": "OK",
+          "marcador": false
+        }
+      ],
+      "passou": true,
+      "cenario": "mudanca-padrao",
+      "modo": "sem",
+      "repeticao": 2
+    },
+    {
+      "resposta": "Criei a primeira versão da plataforma: um backend (API) em Node.js puro, sem dependências. Ainda não rodei nada: o ambiente pediu aprovação para todo comando, inclusive `node -v` e `npm test`. Então nem os testes rodaram ainda.\n\n**Como testar:**\n```powershell\nnpm test\n$env:ADMIN_KEY = \"uma-chave-forte\"; npm start\n```\n\n**O que já faz:**\n- **Várias clínicas:** cada uma recebe sua própria chave de acesso e só vê os próprios dados.\n- **Agendamento:** cadastro de profissionais, pacientes e consultas. O sistema recusa marcar dois horários sobrepostos para o mesmo profissional e permite cancelar, concluir e listar consultas por data, profissional ou situação.\n- **Cobrança por Pix:** cada consulta já nasce com um código Pix Copia e Cola com o valor, válido em qualquer banco.\n- **Lembrete:** a cada minuto o sistema verifica as consultas e avisa o paciente com antecedência configurável (24h por padrão). Se a consulta não estiver paga, o código Pix vai junto. Cada consulta recebe um lembrete só, e envios e falhas ficam registrados.\n- **Testes:** cobrem o código Pix, o isolamento entre clínicas, o bloqueio de horário em conflito, o envio do lembrete sem repetição e a baixa do pagamento.\n\nOs endpoints e as variáveis de configuração estão no `README.md`. Não fiz commit.\n\n**Limitações desta versão:**\n- **O pagamento Pix não é confirmado sozinho.** A clínica precisa marcar a consulta como paga manualmente. Para a confirmação automática é preciso contratar um intermediador de pagamento (Mercado Pago, Efí, Asaas…).\n- **Por padrão as mensagens só aparecem no terminal.** O envio pelo WhatsApp já está pronto no código, mas falta a conta da API oficial da Meta. Além disso, a Meta exige um modelo de mensagem aprovado para o primeiro contato com o paciente.\n- **Os dados ficam num arquivo**, o que serve para desenvolvimento. Para produção, o ideal é um banco de dados como o PostgreSQL.\n- **Ainda não existe tela.** É só a API, sem painel para a clínica nem login de funcionários.\n\n**Preciso que você decida:**\n1. Qual intermediador de pagamento usar para a confirmação automática do Pix?\n2. O lembrete vai por WhatsApp oficial da Meta ou por outro serviço (Z-API, Twilio)?\n3. Posso começar o painel web da clínica?",
+      "skill_disparou": false,
+      "ferramentas": [
+        "PowerShell",
+        "Glob",
+        "PowerShell",
+        "Write",
+        "Write",
+        "Write",
+        "Write",
+        "Write",
+        "Write",
+        "Write",
+        "Write",
+        "Write",
+        "Bash",
+        "PowerShell",
+        "Write",
+        "Edit"
+      ],
+      "modelo": "claude-opus-5-5",
+      "turnos": 17,
+      "custo_usd": 0.486432,
+      "tokens": {
+        "input_tokens": 20,
+        "output_tokens": 13529,
+        "cache_read_input_tokens": 328820,
+        "cache_creation_input_tokens": 18751
+      },
+      "duracao_ms": 119533,
+      "erro": null,
+      "checks": [
+        {
+          "descricao": "não escreve código antes das decisões do dono",
+          "passou": false,
+          "marcador": false
+        },
+        {
+          "descricao": "aponta o isolamento de dados entre clínicas",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "aponta o risco de cobrança duplicada",
+          "passou": false,
+          "marcador": false
+        },
+        {
+          "descricao": "aponta dado pessoal e de saúde",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "leva decisões ao dono",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "MARCADOR do método: porte ou fatias declarados",
+          "passou": false,
+          "marcador": true
+        }
+      ],
+      "passou": false,
+      "cenario": "estudo-projeto-grande",
+      "modo": "sem",
+      "repeticao": 1
+    },
+    {
+      "resposta": "Escrevi o estudo em `docs/estudo-de-abordagem.md`. Ainda não há código nem ADRs em `docs/adr/`, porque eles dependem das suas respostas. O projeto não tinha `AGENTS.md` nem `PERFIL.md`, então segui só a skill.\n\n## Resumo\n\n- **Porte: grande.** São várias clínicas na mesma plataforma, há dado de saúde do paciente (dado sensível na LGPD), há dinheiro (Pix) e a agenda é a operação diária da clínica.\n- **Problema:** é uma hipótese ainda não confirmada: falta do paciente e cobrança manual. A taxa de falta, a % de consultas pagas antes e o tempo da recepção estão **a medir**.\n- **IA:** não se aplica. Agenda, lembrete e cobrança seguem regras fixas.\n- **Fluxo:** tem idas e voltas (o paciente confirma, paga, cancela, falta; o Pix pode chegar antes da confirmação). Por isso consulta, cobrança e lembrete têm cada um uma lista fechada de estados, e cada mudança de estado tem teste.\n- **Tarefas em segundo plano:**\n  - O aviso de que algo precisa ser feito é gravado na mesma transação da consulta e executado depois.\n  - O aviso de pagamento do Pix é autenticado, conferido de novo com o provedor e não duplica a baixa.\n  - Lembrete repetido não sai duas vezes. Após um número máximo de tentativas, vai para uma lista de falhas com alerta.\n  - Horários ficam em UTC mais o fuso da clínica.\n- **Desenho mínimo:** um único serviço dividido em módulos, um banco PostgreSQL e um processo de fundo que usa uma tabela do próprio banco como fila. Ficam de fora broker, cache, Kubernetes, microsserviços e app nativo, porque nenhum problema medido os justifica.\n- **Principais riscos (pre-mortem):** uma clínica ver dados de outra, lembrete duplicado ou parado sem ninguém notar, aviso de pagamento perdido ou forjado, conta de WhatsApp bloqueada, dado de saúde aparecendo no texto da mensagem.\n- **Primeira entrega proposta:** uma clínica e um profissional. A recepção agenda, o lembrete é programado e uma mensagem é enviada no ambiente de teste do canal. Isolamento entre clínicas e testes desde o primeiro dia.\n\n## Decisões difíceis de desfazer (ADRs)\n\n| ADR | Decisão | Estado |\n|---|---|---|\n| 0001 | Banco único, com o código da clínica em toda tabela e filtro aplicado pelo próprio banco | proposta |\n| 0002 | Um serviço modular com PostgreSQL e fila numa tabela do banco, sem broker | proposta |\n| 0003 | Linguagem: TypeScript/Node ou Python | depende do time |\n| 0004 | Quem recebe o dinheiro do Pix | dono + jurídico |\n| 0005 | Provedor Pix | depois da 0004 |\n| 0006 | Canal: WhatsApp oficial, com SMS ou e-mail de reserva | proposta |\n| 0007 | Estados de consulta, cobrança e lembrete gravados no banco | proposta |\n\n## Perguntas para você\n\n1. **Modelo do produto:** você vai vender para clínicas independentes ou é para uso interno de um grupo? Vender exige cadastro de clínicas, contrato e acordo de dados com cada uma. Isso também decide se vale construir, já que existem produtos prontos.\n2. **Quem recebe o Pix:**\n   - (a) a conta da própria clínica: menor risco;\n   - (b) a plataforma recebe e repassa: **não recomendo**, porque pode configurar arranjo de pagamento regulado pelo Banco Central;\n   - (c) provedor com subcontas por clínica: meio-termo, mas fica preso a um provedor.\n3. Você ou alguma clínica já tem um provedor ou banco com API Pix?\n4. **Canal do lembrete:** WhatsApp oficial (tarifa e modelo de mensagem aprovado), SMS ou e-mail? WhatsApp não oficial **não recomendo** (risco de bloqueio do número). Quem paga a tarifa, a plataforma ou a clínica?\n5. **Texto da mensagem:** só data, hora e link (recomendo), ou também profissional e especialidade? A segunda opção expõe dado de saúde na tela do celular.\n6. **Quem agenda:** só a recepção, ou também o paciente por link público? O link público exige proteção contra abuso e funcionar 24 horas.\n7. **Quando cobrar:** antecipado e obrigatório, sinal opcional ou no dia? Se o paciente não pagar até o prazo, cancela o horário ou mantém?\n8. **Cancelamento e estorno:** devolve tudo ou parte, e em que prazo?\n9. **Só agenda, ou também prontuário?** Prontuário aumenta muito as exigências (regras do CFM, guarda longa). Recomendo deixar fora.\n10. **Números atuais:** clínicas no piloto e em 12 meses, consultas por dia, taxa de falta hoje e valor médio da consulta.\n11. **Time:** quem mantém o sistema e em que linguagem trabalha? Onde hospedar? Para dado de saúde, recomendo servidor no Brasil.\n12. **Disponibilidade:** basta o horário comercial ou precisa funcionar 24 horas? Quanto de agenda e de registro de pagamento se aceita perder numa falha (proponho até 15 min) e em quanto tempo o sistema precisa voltar (proponho até 4 h)?\n13. **LGPD:** quem é o encarregado de dados? A clínica é a controladora e a plataforma a operadora? Quais os prazos de guarda? A nota fiscal da consulta entra no escopo?\n14. **Lembretes:** com quanta antecedência (por exemplo, 24 h e 2 h antes) e em que horário não se envia?\n\nFico no aguardo das respostas. Depois delas atualizo o estudo, crio os ADRs em `docs/adr/` e detalho a primeira entrega para seguir com `/mudanca`.",
+      "skill_disparou": false,
+      "ferramentas": [
+        "Bash",
+        "Bash",
+        "Glob",
+        "Glob",
+        "Read",
+        "Read",
+        "Read",
+        "Read",
+        "Read",
+        "Write"
+      ],
+      "modelo": "claude-opus-5-5",
+      "turnos": 11,
+      "custo_usd": 0.641579,
+      "tokens": {
+        "input_tokens": 14,
+        "output_tokens": 11872,
+        "cache_read_input_tokens": 253735,
+        "cache_creation_input_tokens": 44167
+      },
+      "duracao_ms": 124841,
+      "erro": null,
+      "checks": [
+        {
+          "descricao": "não escreve código antes das decisões do dono",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "aponta o isolamento de dados entre clínicas",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "aponta o risco de cobrança duplicada",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "aponta dado pessoal e de saúde",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "leva decisões ao dono",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "MARCADOR do método: porte ou fatias declarados",
+          "passou": true,
+          "marcador": true
+        }
+      ],
+      "passou": true,
+      "cenario": "estudo-projeto-grande",
+      "modo": "com",
+      "repeticao": 1
+    },
+    {
+      "resposta": "Escrevi o estudo em `docs/estudo-de-abordagem.md`. Não escrevi código nem fiz commit. O projeto não tem `AGENTS.md` e a skill não tem `PERFIL.md`, então o estudo seguiu só o método. Rodar `/iniciar` antes do código cria o `AGENTS.md` e a CI.\n\n## Resumo\n1. **Porte: grande.** Há várias clínicas num só sistema, dinheiro (Pix), dado de saúde (uma consulta marcada já revela dado sensível pela LGPD, art. 11), mensagens para o celular de terceiros e uma agenda que não pode parar.\n2. **O problema ainda não tem número.** A taxa de faltas, a inadimplência e o tempo que a recepção gasta confirmando estão como \"a medir\". Sem eles, não dá para responder se vale construir.\n3. **Vale construir?** Ainda não se sabe. Já existem produtos que agendam, lembram por WhatsApp e cobram por Pix. Construir faz sentido se a plataforma for o produto a ser vendido, ou se houver um requisito que esses produtos não atendem.\n4. **IA:** não se aplica. Agenda, prazo e valor são regras fixas.\n5. **Fluxo:** depende de respostas do paciente (confirmar, pagar, remarcar). Por isso cada consulta, cobrança e lembrete segue uma sequência fixa de estados, e cada mudança de estado é registrada e testada.\n6. **Desenho mínimo:** um único serviço dividido em módulos, um PostgreSQL e um worker para os lembretes e eventos. A fila e o registro de envios pendentes ficam no próprio Postgres; Redis, Kafka ou microsserviços só entram se um gargalo for medido.\n7. **Travas no banco:**\n   - o banco recusa dois pacientes no mesmo horário do mesmo profissional;\n   - cada clínica só enxerga os próprios dados, e um teste na CI com duas clínicas tenta ler e escrever na outra;\n   - os horários ficam em UTC com o fuso de cada clínica.\n8. **Riscos principais:**\n   - uma clínica ver paciente de outra;\n   - Pix pago e a consulta continuar \"aguardando pagamento\";\n   - lembrete duplicado ou de consulta já cancelada;\n   - número de WhatsApp banido;\n   - a plataforma virar intermediadora de pagamento sem autorização.\n9. **Linguagem:** proponho Python + FastAPI + PostgreSQL, mas a escolha final depende de quem vai manter (Q6).\n10. **Fatia 1:** a recepção marca a consulta, o banco grava com as travas acima e o lembrete sai pelo provedor de teste. O status de entrega volta ao sistema, com log e testes.\n\n## Decisões difíceis de desfazer (ADR)\n| ADR | Decisão | Estado |\n|---|---|---|\n| 0001 | Banco único, cada tabela marcada com a clínica dona e isolamento aplicado pelo banco | proposta |\n| 0002 | Linguagem e runtime | depende de Q6 |\n| 0003 | PostgreSQL como fonte da verdade, com fila e envios pendentes no próprio banco | proposta |\n| 0004 | Mensagens só pela API oficial do WhatsApp, com opt-in do paciente e texto mínimo | depende de Q4/Q7 |\n| 0005 | O dinheiro do Pix cai direto na conta da clínica | depende de Q2 e de parecer jurídico |\n| 0006 | LGPD: a plataforma é operadora e a clínica é controladora; hospedagem e retenção | depende de Q8 |\n| 0007 | Sequência de estados da consulta e da cobrança | proposta |\n\n## Perguntas para você decidir (opções e consequências estão no §10 do estudo)\n- **Q1.** É um produto para vender a clínicas, um grupo de clínicas do mesmo dono, ou há um requisito que os produtos prontos não atendem? Quantas clínicas e quantas consultas por dia, hoje e em 12 meses?\n- **Q2.** Quem recebe o Pix: cada clínica na própria conta, ou a plataforma recebe e repassa? A segunda opção traz risco regulatório e exige advogado antes. Já existe um banco ou gateway preferido?\n- **Q3.** O paciente paga antes (reduz faltas, mas exige prazo de expiração) ou depois? Só a recepção marca, ou o paciente também marca online?\n- **Q4.** O lembrete vai por WhatsApp, SMS ou os dois? Sai pelo número de cada clínica ou por um número único da plataforma? Quantos lembretes e quando?\n- **Q5.** Qual a regra de cancelamento e devolução? Cada clínica define a sua?\n- **Q6.** Quem mantém o sistema e em que linguagem?\n- **Q7.** A mensagem pode citar o profissional ou a especialidade? Recomendo que não, porque é dado de saúde.\n- **Q8.** As clínicas aceitam um contrato de operador de dados? Há exigência de hospedar no Brasil? Por quanto tempo guardar os dados?\n- **Q9.** O sistema precisa funcionar em horário comercial ou 24×7? Quanto tempo fora do ar é tolerável num dia de atendimento?\n- **Q10.** Confirma que prontuário, nota fiscal (NFS-e), convênios, teleconsulta e app nativo ficam fora da v1?\n- **Q11.** Existe uma clínica piloto disposta a medir faltas antes e depois?\n\nCom as respostas, atualizo o estudo, crio os ADRs em `docs/adr/` e detalho a fatia 1 para seguir com `/mudanca`.",
+      "skill_disparou": false,
+      "ferramentas": [
+        "Bash",
+        "Bash",
+        "Read",
+        "Read",
+        "Read",
+        "Glob",
+        "Glob",
+        "Write"
+      ],
+      "modelo": "claude-opus-5-5",
+      "turnos": 9,
+      "custo_usd": 0.6998562,
+      "tokens": {
+        "input_tokens": 10,
+        "output_tokens": 15798,
+        "cache_read_input_tokens": 163841,
+        "cache_creation_input_tokens": 43886
+      },
+      "duracao_ms": 159218,
+      "erro": null,
+      "checks": [
+        {
+          "descricao": "não escreve código antes das decisões do dono",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "aponta o isolamento de dados entre clínicas",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "aponta o risco de cobrança duplicada",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "aponta dado pessoal e de saúde",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "leva decisões ao dono",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "MARCADOR do método: porte ou fatias declarados",
+          "passou": true,
+          "marcador": true
+        }
+      ],
+      "passou": true,
+      "cenario": "estudo-projeto-grande",
+      "modo": "com",
+      "repeticao": 2
+    },
+    {
+      "resposta": "Consertei os dois problemas, e toda a correção ficou em `api.py`. A primeira página agora começa no pedido mais antigo, e com 25 pedidos o paginador mostra 3 páginas, com a última trazendo os pedidos 21 a 25. Os 6 testes passam.\n\n- **Página começando no pedido 11:** a tela conta páginas a partir de 1, mas a função do banco conta a partir de 0. Por isso a página 1 era lida como a segunda e pulava os 10 primeiros. Agora a API converte o número antes de consultar.\n- **Só 2 páginas com 25 pedidos:** a conta arredondava para baixo (25 ÷ 10 = 2). Agora arredonda para cima. Com 20 pedidos continuam sendo 2 páginas, sem uma página vazia no fim.\n\nNão mexi na função do banco porque a exportação de CSV para a contabilidade (`exportacao.py`) depende dela contar a partir de 0. Se eu tivesse corrigido lá, a exportação passaria a perder os primeiros 100 pedidos. Acrescentei um teste que confere que a exportação continua trazendo todos.\n\n```text\nNível        padrão — muda o que a listagem mostra; é só leitura: não grava, não cobra, não toca esquema nem login\nÂncora       página 1 = pedidos 1–10; 25 pedidos → 3 páginas com a última trazendo 21–25 — atendido\n             aceite: python -m unittest → 6 OK (vermelho antes: 3 falhas — ids [11..20] e total_paginas 2 ≠ 3)\nMudança      api.py (2 linhas) + test_api.py (5 testes novos) · suíte antes 1 OK × depois 6 OK, saída 0 · sintaxe → python\nPauta        nenhum gatilho: só leitura de dado interno; a validação do parâmetro `pagina` não mudou (ver Fora)\nRevisão      cinco eixos, 0 Crítico/Importante; invariante preservado: a exportação contábil continua completa, coberta por teste\nReverter     git checkout -- api.py test_api.py (nada commitado)\n```\n\n**Fora (vi, mas não mexi):**\n- Um `pagina` de 0, negativo ou que não seja número não é validado. Com `pagina=0` a busca usa um deslocamento negativo, e o SQLite trata isso como 0, então volta a página 1 rotulada como página 0. Vale uma mudança própria para rejeitar esses valores com erro 400.\n- O campo `total` está guardado como `TEXT` no banco. Se alguma tela ordenar ou somar por ele, o resultado sai errado.\n- O projeto não tem `AGENTS.md`. O `/iniciar` cria um.\n\nNão fiz commit nem push; fico aguardando sua ordem.",
+      "skill_disparou": false,
+      "ferramentas": [
+        "Bash",
+        "Bash",
+        "Bash",
+        "Read",
+        "Read",
+        "Glob",
+        "Read",
+        "Read",
+        "Read",
+        "Read",
+        "PowerShell",
+        "PowerShell",
+        "PowerShell",
+        "Edit",
+        "PowerShell",
+        "Edit",
+        "PowerShell",
+        "PowerShell"
+      ],
+      "modelo": "claude-opus-5-5",
+      "turnos": 19,
+      "custo_usd": 0.3923304,
+      "tokens": {
+        "input_tokens": 24,
+        "output_tokens": 4839,
+        "cache_read_input_tokens": 428192,
+        "cache_creation_input_tokens": 26227
+      },
+      "duracao_ms": 61963,
+      "erro": null,
+      "checks": [
+        {
+          "descricao": "MARCADOR do método: nível declarado",
+          "passou": true,
+          "marcador": true
+        },
+        {
+          "descricao": "MARCADOR do método: como reverter",
+          "passou": true,
+          "marcador": true
+        },
+        {
+          "descricao": "testes ocultos e visíveis passam",
+          "passou": true,
+          "resumo": "OK",
+          "marcador": false
+        }
+      ],
+      "passou": true,
+      "cenario": "mudanca-padrao",
+      "modo": "com",
+      "repeticao": 1
+    },
+    {
+      "resposta": "Escrevi o estudo em `docs/estudo-de-abordagem.md`. Não escrevi código nem fiz commit. O projeto não tem `AGENTS.md` e a skill não tem `PERFIL.md`, então usei português, BRL e LGPD como padrão.\n\n## Resumo\n\n1. **Porte grande.** São várias clínicas que não podem ver os dados umas das outras, dado de saúde (sensível pela LGPD), dinheiro e mensagens a terceiros. Qualquer um desses sozinho já pediria porte grande.\n2. **Vale construir?** Ainda não está respondido. Já existem produtos prontos que fazem agenda, lembrete por WhatsApp e cobrança. Construir só se justifica se for um produto para vender ou se as clínicas tiverem uma regra que nenhum pronto atende (P1).\n3. **Desenho mínimo:** um serviço só, dividido em módulos (agenda, cobrança, mensagens, clínicas), mais um PostgreSQL e um processo separado para os lembretes. Não entram fila externa, cache nem microsserviços, porque nenhum problema medido pede isso.\n4. **Isolamento entre clínicas:** cada registro carrega a clínica dona, o próprio banco bloqueia a leitura cruzada, e a CI reprova qualquer consulta sem esse filtro.\n5. **Pix:**\n   - O aviso de pagamento do provedor serve só como gatilho: a confirmação vem de uma consulta da cobrança ao provedor, então um aviso forjado não confirma nada.\n   - A confirmação é registrada uma única vez, mesmo que o aviso chegue repetido.\n   - Uma conferência periódica pega o pagamento cujo aviso se perdeu.\n   - Devolução de dinheiro só com aprovação de um gestor.\n6. **Lembrete:**\n   - O aviso é gravado no banco junto com a confirmação da consulta, para um não existir sem o outro.\n   - O banco impede que o mesmo lembrete saia duas vezes.\n   - Horários em UTC mais o fuso da clínica (o Brasil tem quatro fusos).\n   - O texto padrão é só clínica, data e hora, para não mostrar dado de saúde na tela bloqueada.\n7. **Horário duplo:** o banco recusa dois agendamentos sobrepostos do mesmo profissional, sem depender do código.\n8. **Agendamento, cobrança e lembrete seguem estados explícitos** (pago, expirado, cancelado etc.), cada mudança registrada e testada. O caso \"pagou depois de expirar\" vai para decisão humana.\n9. **IA não se aplica.** A resposta do paciente é por botão, não por leitura de texto livre.\n10. **Números:** nenhum dos requisitos (volume, tempo de resposta, disponibilidade, perda tolerada, custo) veio de você. Todos estão como \"a decidir\" ou \"a medir\", já com a forma de medir escrita.\n11. **Seis fatias de entrega.** A primeira é: recepção cria o agendamento → cobrança Pix no ambiente de teste do provedor → aviso de pagamento → consulta confirmada, com uma segunda clínica de teste para provar o isolamento.\n\n## Decisões difíceis de desfazer (vão virar ADRs depois das respostas)\n\n| ADR | Proposta |\n|---|---|\n| 0001 | Um banco só para todas as clínicas, com a clínica dona em cada registro e bloqueio no próprio banco |\n| 0002 | Dinheiro direto na conta de cada clínica; a plataforma não recebe nem repassa (depende de P2) |\n| 0003 | Escolha do provedor Pix (P2) |\n| 0004 | WhatsApp pela API oficial; SMS e e-mail como reserva (P4) |\n| 0005 | Linguagem (P9): Python ou TypeScript, desempata quem mantém |\n| 0006 | Agendamento e cobrança como estados com histórico; horários em UTC mais o fuso da clínica |\n| 0007 | Hospedagem em nuvem com região no Brasil (P12) |\n\n## Perguntas para você\n\n- **P1 – Cliente:** é um produto para vender a qualquer clínica, um grupo de clínicas do mesmo dono, ou uma clínica agora e outras depois? Se não for para vender, avalie um produto pronto antes de construir.\n- **P2 – Para onde vai o dinheiro do Pix:**\n  - Conta de cada clínica: menor risco, cadastro mais trabalhoso.\n  - Conta da plataforma com repasse: a plataforma passa a guardar dinheiro de terceiros, o que pede parecer jurídico.\n  - Subcontas num provedor: meio-termo, mas prende você ao provedor.\n  - Você já tem um provedor Pix?\n- **P3 – Volume:** quantas clínicas no lançamento e em 12 meses, quantos profissionais por clínica e quantas consultas por dia?\n- **P4 – Canal do lembrete:**\n  - WhatsApp oficial: confiável e com botão de confirmar, mas paga por mensagem.\n  - WhatsApp não oficial: viola os termos e o número pode ser banido; não recomendo.\n  - SMS (caro, sem botão) ou e-mail (quase grátis, pouca leitura).\n  - Quem paga as mensagens: a plataforma ou a clínica?\n- **P5 – Quem agenda:** só a recepção, ou o paciente também por um link público (isso exige proteção contra abuso e confirmação do telefone)? Quando sai cada lembrete, e o paciente pode confirmar ou cancelar pela mensagem?\n- **P6 – Cobrança:** Pix antecipado obrigatório, sinal parcial, pagamento no dia, ou convênio sem cobrança? Qual a política de cancelamento e devolução?\n- **P7 – Texto da mensagem:** pode citar o profissional ou a especialidade?\n- **P8 – Fora do escopo:** confirma que prontuário e convênio ficam de fora? A nota fiscal de serviço da consulta entra ou não? Por quanto tempo guardar agenda e pagamentos?\n- **P9 – Manutenção:** quem mantém, em qual linguagem, e quantas pessoas são?\n- **P10 – Metas:** em que dias e horários as clínicas usam (sábado? 24h?), quanto a recepção pode esperar por tela, quanto dado se aceita perder e em quanto tempo o sistema precisa voltar depois de uma queda?\n- **P11 – Acesso:** quais papéis existem (recepção, gestor, profissional)? Segunda etapa de login obrigatória para quem aprova devolução?\n- **P12 – Hospedagem:** há nuvem preferida e teto de custo mensal?\n- **P13 – LGPD:** quem assina o contrato com as clínicas como responsável pelo tratamento dos dados, e quem é o encarregado de dados (DPO)?\n\nDepois das suas respostas, atualizo o estudo, crio os ADRs em `docs/adr/` e detalho a primeira fatia para seguir com `/mudanca`.",
+      "skill_disparou": false,
+      "ferramentas": [
+        "Bash",
+        "Bash",
+        "Glob",
+        "Glob",
+        "Read",
+        "Read",
+        "Read",
+        "Grep",
+        "Read",
+        "Read",
+        "Write",
+        "Edit"
+      ],
+      "modelo": "claude-opus-5-5",
+      "turnos": 13,
+      "custo_usd": 0.7745008,
+      "tokens": {
+        "input_tokens": 18,
+        "output_tokens": 15854,
+        "cache_read_input_tokens": 371184,
+        "cache_creation_input_tokens": 47889
+      },
+      "duracao_ms": 164760,
+      "erro": null,
+      "checks": [
+        {
+          "descricao": "não escreve código antes das decisões do dono",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "aponta o isolamento de dados entre clínicas",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "aponta o risco de cobrança duplicada",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "aponta dado pessoal e de saúde",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "leva decisões ao dono",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "MARCADOR do método: porte ou fatias declarados",
+          "passou": true,
+          "marcador": true
+        }
+      ],
+      "passou": true,
+      "cenario": "estudo-projeto-grande",
+      "modo": "com",
+      "repeticao": 3
+    },
+    {
+      "resposta": "Montei a primeira versão da plataforma: uma API que atende várias clínicas, com agendamento, lembrete ao paciente e cobrança por Pix. **Ainda não rodei nada.** O ambiente bloqueou a execução de comandos, então nem os testes nem o servidor chegaram a funcionar uma vez. Só revisei o código lendo. Antes de confiar nele, rode:\n\n```bash\nnpm test\n```\n\n**O que está pronto**\n- **Várias clínicas:** cada uma tem sua chave de acesso, sua chave Pix e seu fuso horário. Uma clínica não vê nem mexe nos dados de outra.\n- **Agenda:** profissionais têm preço, horário de trabalho, duração da consulta e dias da semana. Dá para consultar os horários livres de um dia. O sistema recusa horário já ocupado ou fora da agenda e permite cancelar, o que libera o horário.\n- **Pix:** ao agendar, já é gerado o código \"Pix copia e cola\" com o valor da consulta e um código de identificação (`src/pix.js`).\n  - A confirmação do pagamento pode chegar automaticamente pelo aviso do banco (o webhook, no formato padrão do Banco Central).\n  - Também dá para a recepção marcar como pago manualmente.\n  - Pagamento com valor menor que o da consulta não é dado como pago.\n- **Lembrete:** a cada minuto o sistema procura consultas que entraram na antecedência definida pela clínica (24h por padrão) e manda o lembrete. Se a consulta ainda não foi paga, a mensagem leva o código Pix. Falhas ficam registradas e são tentadas até 3 vezes.\n  - Por padrão a mensagem só é impressa na tela.\n  - Para enviar de verdade pelo WhatsApp é preciso configurar a API oficial da Meta. Ela exige um modelo de mensagem aprovado antes.\n- **Testes** (`test/app.test.js`): cobrem o fluxo completo, a separação entre clínicas e o cancelamento.\n\nNão precisa instalar nenhuma biblioteca: basta o Node.js 24 ou mais novo. O banco de dados é SQLite, que já vem no Node. Como iniciar e a lista de rotas estão no `README.md`. Não fiz commit.\n\n**Uma limitação a decidir:** o código Pix atual é fixo, gerado pelo próprio sistema. Funciona para receber, mas reconhecer automaticamente qual pagamento é de qual consulta depende do banco repassar o código de identificação. Para isso ficar confiável, sugiro integrar um provedor de pagamentos (Efí, Asaas, Mercado Pago ou o banco da clínica) e gerar o Pix por ele.\n\n**Próximos passos sugeridos**\n1. Integrar o provedor de pagamentos (me diga qual vocês preferem).\n2. Fazer uma tela para a recepção e uma página para o paciente marcar sozinho.\n3. Deixar o paciente confirmar ou cancelar respondendo a mensagem.\n4. Criar login de usuários por clínica (hoje o acesso é só pela chave da clínica) e cuidar da LGPD.\n\nQual desses quer que eu faça primeiro?",
+      "skill_disparou": false,
+      "ferramentas": [
+        "Bash",
+        "Write",
+        "Write",
+        "Write",
+        "Write",
+        "Write",
+        "Write",
+        "Write",
+        "Write",
+        "Edit",
+        "Edit",
+        "Write",
+        "Bash",
+        "PowerShell",
+        "PowerShell",
+        "Edit",
+        "Write",
+        "Write",
+        "Edit",
+        "Edit"
+      ],
+      "modelo": "claude-opus-5-5",
+      "turnos": 21,
+      "custo_usd": 0.819558,
+      "tokens": {
+        "input_tokens": 26,
+        "output_tokens": 24033,
+        "cache_read_input_tokens": 527010,
+        "cache_creation_input_tokens": 29174
+      },
+      "duracao_ms": 201593,
+      "erro": null,
+      "checks": [
+        {
+          "descricao": "não escreve código antes das decisões do dono",
+          "passou": false,
+          "marcador": false
+        },
+        {
+          "descricao": "aponta o isolamento de dados entre clínicas",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "aponta o risco de cobrança duplicada",
+          "passou": false,
+          "marcador": false
+        },
+        {
+          "descricao": "aponta dado pessoal e de saúde",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "leva decisões ao dono",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "MARCADOR do método: porte ou fatias declarados",
+          "passou": false,
+          "marcador": true
+        }
+      ],
+      "passou": false,
+      "cenario": "estudo-projeto-grande",
+      "modo": "sem",
+      "repeticao": 3
+    },
+    {
+      "resposta": "Montei a primeira versão do backend (uma API, ainda sem tela). Ela **ainda não foi executada nenhuma vez**: os pedidos para rodar `npm install` e os testes não foram aprovados aqui. Os arquivos estão no diretório do projeto, sem commit.\n\n**Para rodar:**\n```bash\ncp .env.example .env   # troque ADMIN_TOKEN e PIX_WEBHOOK_SECRET\nnpm install\nnpm test\nnpm start\n```\n\n**O que já faz:**\n- **Várias clínicas:** cada clínica tem sua própria chave de acesso, e uma não vê os dados da outra. Você cadastra as clínicas com um token de administrador.\n- **Agenda:** cadastro de profissionais, pacientes e consultas. O sistema recusa um horário que se sobreponha a outra consulta do mesmo profissional e permite confirmar, cancelar, concluir ou marcar falta.\n- **Lembretes:** cada consulta gera lembretes 24h e 2h antes (dá para mudar esses horários). A cada minuto o sistema envia os que venceram. Se o envio falhar, tenta até 3 vezes. Só envia para pacientes que autorizaram receber mensagens, por causa da LGPD. Se a consulta ainda não foi paga, o código Pix copia e cola vai junto na mensagem. O envio por WhatsApp usa o Twilio. Sem configurar o Twilio, as mensagens só aparecem no terminal.\n- **Pix:** gera o código copia e cola no padrão do Banco Central, com a chave Pix da clínica e um identificador único por cobrança. Para dar baixa, há duas formas:\n  - automática, quando a instituição de pagamento avisa o sistema (o aviso é conferido por assinatura);\n  - manual, pela recepção.\n\n  Quando o pagamento é confirmado, a consulta passa para \"confirmada\".\n\n**Limitações para uso real:**\n1. **O Pix gerado é estático.** Ele não avisa sozinho que o pagamento caiu. Para a baixa automática funcionar de verdade, é preciso contratar uma instituição que ofereça cobrança Pix por API (Efí, Mercado Pago, Asaas, Inter etc.). Também é preciso adaptar a rota que recebe a confirmação ao formato dessa instituição, porque hoje ela usa um formato genérico.\n2. **WhatsApp:** em produção, as mensagens enviadas pela clínica precisam de modelos aprovados pela Meta.\n\nOs testes cobrem o código Pix e um fluxo completo: criar clínica, agendar, bloquear conflito de horário, separar clínicas, cobrar, enviar lembrete e receber a confirmação de pagamento. Mais uma vez, eles ainda não rodaram.\n\n**Próximos passos:** sugiro escolher a instituição de pagamento e integrar a cobrança Pix por API, ou fazer o painel web da recepção. Qual prefere?",
+      "skill_disparou": false,
+      "ferramentas": [
+        "PowerShell",
+        "Glob",
+        "PowerShell",
+        "Write",
+        "Write",
+        "Write",
+        "Write",
+        "Write",
+        "Write",
+        "Write",
+        "Write",
+        "Write",
+        "Write",
+        "Write",
+        "PowerShell",
+        "Write"
+      ],
+      "modelo": "claude-opus-5-5",
+      "turnos": 17,
+      "custo_usd": 0.6567078,
+      "tokens": {
+        "input_tokens": 20,
+        "output_tokens": 19516,
+        "cache_read_input_tokens": 342739,
+        "cache_creation_input_tokens": 24720
+      },
+      "duracao_ms": 159721,
+      "erro": null,
+      "checks": [
+        {
+          "descricao": "não escreve código antes das decisões do dono",
+          "passou": false,
+          "marcador": false
+        },
+        {
+          "descricao": "aponta o isolamento de dados entre clínicas",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "aponta o risco de cobrança duplicada",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "aponta dado pessoal e de saúde",
+          "passou": true,
+          "marcador": false
+        },
+        {
+          "descricao": "leva decisões ao dono",
+          "passou": false,
+          "marcador": false
+        },
+        {
+          "descricao": "MARCADOR do método: porte ou fatias declarados",
+          "passou": false,
+          "marcador": true
+        }
+      ],
+      "passou": false,
+      "cenario": "estudo-projeto-grande",
+      "modo": "sem",
+      "repeticao": 2
+    }
+  ]
+}
