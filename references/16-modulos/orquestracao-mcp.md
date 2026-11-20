@@ -48,7 +48,8 @@ orquestrador o lê, valida e aplica. Modelo: `templates/agente-produto.modelo.ya
 
 - Uma ferramenta = um verbo (§7); marque se é só leitura ou destrutiva.
 - Servidor remoto com autenticação forte e escopo mínimo (§14.6 itens 11 e 12), seguindo a
-  autorização da especificação MCP: OAuth 2.1 com PKCE, metadados do recurso protegido
+  autorização da especificação MCP: OAuth 2.1 (rascunho da IETF que consolida o OAuth 2.0 com as
+  boas práticas atuais) com PKCE, metadados do recurso protegido
   (RFC 9728) e indicador de recurso (RFC 8707). **O servidor confere que o token foi emitido para
   ele (audiência)** e recusa token de outro destino.
 - **Nunca repasse o token do usuário** a uma API de terceiro; o servidor usa a credencial dele.

@@ -66,6 +66,7 @@ necessidade, no §10.
 Medidas para enxergar a saúde do processo, nunca para comparar pessoas:
 
 - **Frequência de deploy** e **tempo de espera da mudança** (commit → produção).
+- **Taxa de retrabalho**: deploys não planejados feitos para corrigir um problema em produção.
 - **Taxa de falha de mudança** e **tempo de recuperação** depois de um deploy com falha.
 
 ## Custo

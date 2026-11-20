@@ -39,7 +39,8 @@ A âncora, o setor nomeado pelo dono e, quando houver, a entrega do `consultor-d
    contrato antes do código (§17.1).
 5. **Mapa de impacto** (§14.1): funções, setores vizinhos, contratos, caminhos lidos por outros
    sistemas, cópias, baterias que cobrem cada ponto e as que faltam.
-6. **Separar em módulo só no terceiro caso** ou quando a peça ganhou duas responsabilidades (§2).
+6. **Abstração só no terceiro caso** (§2); separar em módulo quando a peça ganhou duas
+   responsabilidades.
 7. **Invariantes** que a bateria tem de travar, cada um com o teste que falharia sem ele.
 8. **Pontos de desempenho**: leitura repetida, chamada externa por item que cache ou lote resolvem,
    trabalho paralelizável com teto — com o que medir, nunca com número suposto.

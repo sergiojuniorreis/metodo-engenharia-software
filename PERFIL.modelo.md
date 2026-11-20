@@ -26,7 +26,7 @@ lei de dados e as palavras de domínio.** Campo não preenchido: o agente pergun
 |---|---|
 | Automação de processo | <ex.: conciliação, cobrança, pedido, expedição, cadastro, rotina de portal e de ERP> |
 | Integração entre sistemas | <ex.: ERP × ERP, portal, marketplace, banco — pela API oficial; tela só como reserva documentada e autorizada (§7)> |
-| Agentes de IA | <ex.: leem documento, classificam, decidem e justificam; RAG sobre acervo próprio; ferramentas por MCP> |
+| Agentes de IA | <ex.: leem documento, classificam e propõem com justificativa — a regra decide; RAG sobre acervo próprio; ferramentas por MCP> |
 | Troubleshooting | <ex.: comportamento errático em sistema de terceiro, dado corrompido, custo fora da curva> |
 | Relatório e painel | <ex.: o número que a operação usa para decidir> |
 

@@ -45,8 +45,9 @@ ele serve para conferir de onde vem uma regra.
 
 ## §11 — Dados pessoais e fronteira de confiança
 
-- Brasil. Lei nº 13.709/2018 (LGPD), especialmente arts. 6º (princípios), 11 (dado sensível),
-  20 (decisão automatizada) e 48 (comunicação de incidente).
+- Brasil. Lei nº 13.709/2018 (LGPD), especialmente arts. 5º, II (dado sensível), 6º (princípios),
+  11 (tratamento de dado sensível), 14 (criança e adolescente), 20 (decisão automatizada) e 48
+  (comunicação de incidente); ANPD, Resolução CD/ANPD nº 15/2024 (comunicação de incidente).
 - União Europeia. Regulamento (UE) 2016/679 (GDPR).
 - OWASP. *Top 10 for LLM Applications 2025* — injeção de instrução e vazamento de dado sensível.
 

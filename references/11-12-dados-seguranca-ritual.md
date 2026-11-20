@@ -10,7 +10,7 @@
   | Classe | Exemplos | Ao modelo externo |
   |---|---|---|
   | Segredo | Senha, token, chave, credencial | **Nunca.** O modelo chama a ferramenta; a credencial fica com ela |
-  | Pessoal sensível | Saúde, biometria, genética, religião, origem racial, opinião política, vida sexual (na LGPD, art. 5º, II); dado de criança e adolescente tem regra própria (art. 14) e recebe o mesmo cuidado | Só com base legal específica, finalidade que exija o dado e contrato que o permita; senão, ofuscado |
+  | Pessoal sensível | Origem racial ou étnica, convicção religiosa, opinião política, filiação a sindicato ou a organização religiosa, filosófica ou política, saúde, vida sexual, genética, biometria (na LGPD, art. 5º, II); dado de criança e adolescente tem regra própria (art. 14) e recebe o mesmo cuidado | Só com base legal específica, finalidade que exija o dado e contrato que o permita; senão, ofuscado |
   | Pessoal | Nome, documento nacional (ex.: CPF), endereço, telefone, e-mail, conta bancária | **Ofuscado por padrão** (máscara ou rótulo estável, feito no núcleo). Em claro só quando a finalidade exige o dado (ex.: agente que responde e-mail precisa do endereço), com o provedor contratado como operador — sem treino sobre o que enviamos, região e retenção conferidas — e só o mínimo |
   | Comercial interno | Custo, margem, preço de outra empresa | Ofuscado, salvo contrato que o permita; nunca em texto que terceiro lê (§12) |
   | Interno ou público | Regra, catálogo, documento público | Livre, respeitando o contrato |

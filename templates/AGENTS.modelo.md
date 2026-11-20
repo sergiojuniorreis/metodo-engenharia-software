@@ -8,7 +8,8 @@ explicação (o porquê mora no ADR) e sem copiar regras do método. Apague este
 # <Projeto> — regras para os agentes
 
 <Uma frase: o que o projeto faz e para quem.> Método: skill `metodo-engenharia-software`
-(portão §14 em toda alteração). Este arquivo vence o método onde divergir — e a divergência é dita.
+(portão §14 em toda alteração). **Carregue a skill antes da primeira edição de cada tarefa** —
+ela não dispara sozinha com confiança. Este arquivo vence o método onde divergir, e a divergência é dita.
 
 ## Não pode quebrar
 

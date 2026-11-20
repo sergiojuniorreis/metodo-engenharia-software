@@ -13,8 +13,9 @@ O agente lê o `AGENTS.md` da loja (camada quente): comando de teste `python -m 
 
 ## 2. Nível (§14.0)
 
-**Padrão.** Muda comportamento observável (o total do pedido) dentro de um setor. Não grava nem
-remove, não toca autenticação nem dado pessoal, não muda contrato público — não é alto risco.
+**Alto risco.** Muda o valor que será cobrado do cliente (§14.0). Não grava em lote, não toca
+autenticação nem dado pessoal, não muda contrato público — mas dinheiro cobrado basta. Além do
+padrão: mutação da guarda nova, revisão adversarial e rollback ensaiado.
 
 ## 3. Âncora (§14.2)
 
@@ -74,7 +75,17 @@ fica garantido pela comparação `>` e registrado no Fora como dívida; centavos
 baixo, coberto por `test_desconto_acima_de_200`); pedido vazio (total 0, sem desconto — teste
 `test_pedido_vazio` acrescentado). Revisão em cinco eixos: nenhum Crítico nem Importante.
 
-## 8. Relatório da entrega (§14.5)
+## 8. O que o alto risco acrescenta
+
+- **Mutação da guarda nova:** sem o `if total > 20000`, `test_desconto_acima_de_200` falha ✔.
+  Trocando `>` por `>=`, nenhum teste falha — o limite exato não é atingível com o catálogo; fica
+  no Fora como dívida (já registrado).
+- **Revisão adversarial:** um segundo leitor tenta quebrar a regra — pedido vazio (total 0, sem
+  desconto, coberto por `test_pedido_vazio`); desconto aplicado duas vezes num reprocessamento
+  (impossível: a função é pura e não grava). Nenhum achado novo.
+- **Rollback ensaiado:** `git revert` aplicado numa cópia e a suíte antiga volta a 3/0.
+
+## 9. Relatório da entrega (§14.5)
 
 ```text
 Âncora        desconto de 10% acima de 20000 centavos — atendido
@@ -83,14 +94,14 @@ Invariantes   centavos inteiros → test_total · abaixo do limite → test_sem_
               erro de produto → test_produto_inexistente
 Auditoria     app.py, test_app.py · chamadores: só testes · cópias: nenhuma · sintaxe:
               py_compile → ok · suíte antes 3/0, depois 6/0 · varreduras limpas · fim de linha igual
-Revisão       cinco eixos · Crítico/Importante pendentes: 0
+Revisão       cinco eixos + adversarial · mutação da guarda: sentida · Crítico/Importante: 0
 Drift         hunks fora da âncora: 0 · mudanças de rumo: 0 · Fora: teste do limite exato (dívida datada)
 Ferramenta    nenhuma
 Agentes       0
 Segurança     pauta 1–15: não se aplica — não guarda, registra nem envia; sem dado pessoal
 Análise       A, B não se aplica (sem IA) · C linear: fórmula com teste · D não se aplica
 Módulo §16    não se aplica — sem interface, ERP ou integração
-Reverter      git revert <commit>
+Reverter      git revert <commit> — ensaiado numa cópia
 ```
 
 ## A mesma loja, uma mudança trivial

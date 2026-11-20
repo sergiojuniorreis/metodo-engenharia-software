@@ -6,6 +6,27 @@ muda) sobe o primeiro número.
 
 ## [Não lançado]
 
+## [1.1.1] — 2026-11-20
+
+Correções da terceira revisão independente.
+
+### Alterado
+
+- **Alto risco recalibrado (§14.0)**: gravação comum de um registro e ferramenta nova são nível
+  padrão (esta com o §14.3); alto risco é gravação em lote ou irreversível, valor cobrado, pago ou
+  faturado, e os demais gatilhos.
+- `templates/AGENTS.modelo.md` manda carregar a skill antes da primeira edição: nos evals ela
+  disparou sozinha em só 5 de 24 correções.
+
+### Corrigido
+
+- Exemplo completo: o desconto altera valor cobrado — passa a nível alto risco, com mutação da
+  guarda, revisão adversarial e rollback ensaiado.
+- LGPD: lista completa do dado sensível (art. 5º, II); fontes com arts. 5º, 14 e a Resolução
+  CD/ANPD nº 15/2024. OAuth 2.1 indicado como rascunho da IETF. Quinta métrica DORA (retrabalho).
+- `PERFIL.modelo.md`: agentes propõem, a regra decide. Agente arquiteto: "abstração só no terceiro
+  caso". CHANGELOG 1.1.0: tabela de front-end descrita corretamente.
+
 ## [1.1.0] — 2026-11-20
 
 Responde à segunda revisão independente (média 7,2).
@@ -44,7 +65,8 @@ Responde à segunda revisão independente (média 7,2).
 - "A IA não promove" × "a IA ranqueia": ordenar candidatos para a regra decidir é permitido.
 - Projeto sem IA continua carregando §16.3 e §16.4 nas partes que não são de agente.
 - MCP local por stdio de preferência; Isolation Forest antes do autoencoder; lockfile × faixa de
-  versão de biblioteca; Turbopack e Auth.js na tabela de front-end.
+  versão de biblioteca; na tabela de front-end, Turbopack saiu (é só do Next.js) e Auth.js deu lugar a
+  Better Auth.
 - Exemplo completo: o limite não testado vai para o Fora como dívida; pedido vazio com teste.
 - Evals: arquivo de resultado com nome único (a v1.0.0 perdeu os dados brutos de `dado-pessoal`
   por sobrescrita); `__pycache__` fora da cópia.
