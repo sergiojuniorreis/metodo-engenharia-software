@@ -64,7 +64,7 @@ skills no formato `SKILL.md`). A skill vai para `~/.claude/skills/`; os agentes 
 **Linux, macOS, Codespaces:**
 
 ```bash
-git clone --depth 1 --branch v1.1.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes
+git clone --depth 1 --branch v1.1.1 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes
 mkdir -p ~/.claude/skills/metodo-engenharia-software
 cp -r /tmp/mes/SKILL.md /tmp/mes/PERFIL.modelo.md /tmp/mes/references /tmp/mes/agents \
       /tmp/mes/templates /tmp/mes/exemplos ~/.claude/skills/metodo-engenharia-software/
@@ -77,7 +77,7 @@ rm -rf /tmp/mes
 
 ```powershell
 $tmp = Join-Path $env:TEMP 'mes'
-git clone --depth 1 --branch v1.1.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git $tmp
+git clone --depth 1 --branch v1.1.1 https://github.com/sergiojuniorreis/metodo-engenharia-software.git $tmp
 $skill = Join-Path $HOME '.claude\skills\metodo-engenharia-software'
 New-Item -ItemType Directory -Force $skill | Out-Null
 Copy-Item -Recurse -Force "$tmp\SKILL.md", "$tmp\PERFIL.modelo.md", "$tmp\references", "$tmp\agents", "$tmp\templates", "$tmp\exemplos" $skill
@@ -88,7 +88,7 @@ Remove-Item -Recurse -Force $tmp
 ```
 
 Cada agente instalado põe a própria descrição no contexto de toda sessão: instale-os no projeto
-que vai usá-los, não globalmente. A instalação usa a **versão marcada** (`--branch v1.1.0`), não a
+que vai usá-los, não globalmente. A instalação usa a **versão marcada** (`--branch v1.1.1`), não a
 ponta do `main`; para atualizar, troque pela versão mais recente em
 [Releases](https://github.com/sergiojuniorreis/metodo-engenharia-software/releases) e repita.
 
