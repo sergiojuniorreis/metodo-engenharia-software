@@ -1,3 +1,6 @@
+# Material de estudo e anotações locais — nunca publicar
+docs/
+
 # Perfil preenchido é local: pode conter contexto de cliente ou da equipe (§11)
 PERFIL.md
 
@@ -9,6 +12,11 @@ prompt-*.md
 .env.*
 *.pem
 *.key
+*.p12
+*token*
+*recovery*
+*credenciais*
+*senha*
 
 # Sistema operacional e editores
 .DS_Store
@@ -18,3 +26,4 @@ desktop.ini
 .idea/
 *.swp
 *~
+__pycache__/

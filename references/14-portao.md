@@ -148,6 +148,9 @@ Vale para agentes usados **no trabalho de desenvolvimento**. Agentes que são o 
 Subagente não é velocidade de graça: cada um relê contexto do zero e o fan-out multiplica a
 conta.
 
+**Os especialistas prontos** — um por frente, com o fluxo e as devoluções — estão em
+`agents/README.md`. Escolher um deles não dispensa as regras abaixo.
+
 **O padrão é zero agente.** Faz-se direto o que cabe no contexto (dois ou três arquivos, um
 log recortado), o que é sequencial, o que depende do que acabou de ser visto e a busca de um
 símbolo conhecido.

@@ -40,6 +40,43 @@ Os nomes da tabela são exemplos de categoria, não recomendação fixa:
 **A coluna da direita é a mais importante:** é ela que evita o projeto de três semanas com
 infraestrutura de três anos.
 
+## A escada de componentes
+
+Todo sistema começa no menor desenho que funciona: um processo, um banco, uma máquina. Cada
+componente a mais é a resposta a **um problema que apareceu e foi medido** — nunca a um problema
+imaginado. Diante de qualquer peça de infraestrutura, a pergunta é uma só: **que problema
+apareceu que nos obrigou a pôr isto aqui?** Sem resposta com número, a peça não sobe.
+
+| Problema medido | Menor componente que resolve | O que ele cobra em troca |
+|---|---|---|
+| Uma instância não dá conta do tráfego | Mais instâncias atrás de um **balanceador de carga**, com verificação de saúde | Estado não pode ficar na instância; sessão e arquivo saem dela |
+| A mesma leitura repetida pesa no banco | **Cache** (em memória do processo antes de cache distribuído) | Dado velho: precisa de TTL, invalidação e lápide (§8) |
+| Leituras crescem além do primário | **Réplicas de leitura** | Atraso de replicação: ler logo após escrever pode não ver a escrita |
+| Um banco não comporta o volume de escrita ou de dado | **Particionamento (sharding)** | Consulta entre partições fica cara; chave de partição vira decisão de uma via (ADR) |
+| Arquivo grande dentro do banco | **Armazenamento de objetos**; **CDN** quando o usuário está longe | Permissão por objeto, URL assinada, custo de saída de dados |
+| Usuário esperando trabalho lento | **Fila + worker** (tabela de estado + worker antes de broker) | Entrega duplicada e fora de ordem: consumidor idempotente (§3D) |
+| Uma peça cair derruba tudo | **Redundância**: réplica, verificação de saúde, retry com teto, failover | Mais peças para operar; o failover só existe depois de exercitado (§7) |
+| Ninguém sabe o que aconteceu | **Observabilidade**: log, métrica e rastreamento (§9) | Volume e custo de telemetria; dado pessoal fora do log |
+| Times e ritmos de deploy diferentes travam um ao outro | **Serviços separados** | Falha de rede entre eles, contrato versionado, rastreamento distribuído |
+
+- **Comece simples → ache o gargalo → ponha o menor componente que o resolve → repita.** O
+  objetivo não é que nada falhe; é que a falha de uma parte não derrube o todo.
+- **Cada degrau tem gatilho escrito** (o número que obriga a subir) e é medido antes e depois.
+- **Microsserviço, broker de eventos, orquestrador de containers e vários bancos** não são sinal
+  de bom desenho: são custo que só se paga com gargalo medido.
+
+## Desempenho: a ordem do trabalho
+
+1. **Medir primeiro**: onde o tempo vai — perfil, rastreamento de uma requisição, consulta lenta,
+   tamanho de payload. Sem medição, não há otimização; há palpite.
+2. **Dados e API**: consulta sem índice, N+1, leitura repetida, payload maior que o necessário,
+   chamada externa em série que poderia ser em lote ou em paralelo com teto.
+3. **Frontend por último**: peso do pacote, imagem, renderização, requisições por tela.
+4. **Uma melhoria por vez**, cada uma com a conferência que prova o ganho (o número antes e
+   depois) e a suíte verde. Melhoria que não mexeu no número sai do diff.
+5. **Fila, cache distribuído e várias instâncias** só entram quando a medição mostrar o gargalo
+   (escada acima).
+
 Constantes que não se renegociam, porque custam quase zero e a ausência custa caro: **git com
 CI que roda tudo**, **contrato OpenAPI** quando existe API pública, **roteamento de IA por
 custo** quando há IA e **segredo fora do código**.

@@ -22,6 +22,7 @@ Projeto sem IA: "não se aplica — motivo".
   produz falso veto — confira executando a skill, não lendo o prompt.
 - **Modelo e prompt fixados por versão.** Trocou modelo, provedor ou prompt, roda o corpus de
   regressão (§5, passo 9) antes de subir (§16.2).
+- **RAG, busca semântica, banco vetorial, agentes e avaliação de IA** em detalhe: §17.4.
 
 # §7 — Ferramentas, MCP e limite de estrago
 

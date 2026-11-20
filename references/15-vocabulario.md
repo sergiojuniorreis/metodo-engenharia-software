@@ -37,3 +37,16 @@
 | **Envenenamento de ferramenta** | Instrução maliciosa escondida na descrição de uma ferramenta MCP ou de agente |
 | **Escopo OAuth** | Permissão pedida a uma plataforma (Microsoft, Google, ERP) em nome da pessoa ou da aplicação |
 | **Tenant** | Organização isolada dentro de uma plataforma ou sistema multiempresa |
+| **Especialidade** | Setor do §17 que diz como fazer bem uma disciplina (arquitetura, full stack, dados, IA aplicada, DevOps/SRE, cibersegurança, governança, testes) |
+| **Escada de componentes** | Começar no menor desenho e subir um componente por vez, só diante de gargalo medido (§10) |
+| **RAG** | Geração com recuperação: o modelo responde com trechos buscados na base, citando-os |
+| **Embedding** | Vetor que representa o significado de um texto; aproxima textos parecidos |
+| **Busca híbrida** | Busca por palavra (BM25) somada à busca por vetor, com fusão dos resultados |
+| **Reranqueamento** | Segunda ordenação, mais precisa e mais cara, dos candidatos já recuperados |
+| **Banco vetorial** | Índice que guarda embeddings e acha os mais próximos; entra por necessidade (§17.4) |
+| **SLO / orçamento de erro** | Objetivo de confiabilidade de uma jornada / o quanto de falha o objetivo ainda permite |
+| **SBOM** | Lista das dependências que um artefato leva, em formato padrão |
+| **Mutação** | Retirar de propósito uma guarda para provar que a suíte a sente |
+| **Matriz de interrupção** | O mesmo cenário rodado em cada parada possível, conferindo o estado final |
+| **Ficha do modelo** | Dado de treino, métricas, limites, dono e como voltar de um modelo |
+| **Deriva** | Mudança, com o tempo, na entrada ou no acerto de um modelo |

@@ -13,6 +13,8 @@ lei de dados e as palavras de domínio.** Campo não preenchido: o agente pergun
 | Sistema e shell padrão (§14.3) | <ex.: Windows + PowerShell · Linux + Bash> |
 | Moeda das métricas de custo (§3B, §6, §9) | <ex.: BRL> |
 | Lei de dados aplicável (§11) | <ex.: LGPD · GDPR> |
+| Norma ou marco exigido (§17.7) | <ex.: nenhum · ISO/IEC 27001 · NIST AI RMF · exigência do cliente> |
+| Provedores de IA autorizados e o que o contrato permite (§11, §17.4) | <ex.: provedor, retenção, uso para treino, região> |
 | Cofre de segredos usado (§14.6 item 7) | <ex.: DPAPI · Keychain · Vault · secret manager da nuvem> |
 | Ferramenta de deploy e listagem do artefato (§14.6 item 8) | <preencher> |
 

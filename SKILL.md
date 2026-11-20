@@ -1,6 +1,6 @@
 ---
 name: metodo-engenharia-software
-description: Método de engenharia para todo projeto novo e todo reparo de código ou de arquitetura — sistemas, ERPs, automações, aplicativos, integrações, centrais de agentes de IA (orquestração), agentes com MCP, agentes conectados a apps (Microsoft, Google e afins) e extensões de navegador, com ou sem IA. Define o estudo de abordagem antes de codar e as quatro análises do escopo (paradigma de IA, rede neural, linear ou não linear, movimentos assíncronos). Traz a definição de pronto com evidência, idempotência, concorrência, memória com TTL, observabilidade, release e rollback, ferramenta só por necessidade, proteção de dados pessoais e a fronteira contra entrada hostil. Toda alteração de código passa pelo portão do §14, com a pauta de segurança. Use ao iniciar projeto, reparar código ou arquitetura, escolher tecnologia ou modelo de IA, projetar, escrever, revisar ou depurar.
+description: Método de engenharia para todo projeto novo e todo reparo de código ou de arquitetura — sistemas, ERPs, automações, aplicativos, integrações, centrais de agentes de IA, MCP, agentes ligados a apps (Microsoft, Google e afins) e extensões de navegador, com ou sem IA. Une arquitetura, full stack, ciência de dados, IA aplicada (RAG, busca semântica, agentes), DevOps/SRE, cibersegurança, governança e testes. Exige estudo de abordagem antes de codar, as quatro análises do escopo, componente só por problema medido, definição de pronto com evidência, idempotência, memória com TTL, observabilidade, release e rollback, proteção de dados pessoais e fronteira contra entrada hostil. Toda alteração passa pelo portão do §14 e pela pauta de segurança. Traz nove agentes de desenvolvimento. Use ao iniciar projeto, reparar código ou arquitetura, escolher tecnologia ou modelo de IA, projetar, escrever, revisar, depurar ou publicar.
 ---
 
 # Método de engenharia de software
@@ -33,11 +33,25 @@ quando a situação pede. Toda referência "§n" aponta para o arquivo desta tab
 | §16.4 Extensões de navegador e agentes que operam o navegador | `references/16-modulos/extensoes-navegador.md` |
 | §16.5 Aplicativos (web, mobile, desktop) | `references/16-modulos/aplicativos.md` |
 | §16.6 Front-end (web): interface, desempenho e acessibilidade | `references/16-modulos/front-end.md` |
+| §17.1 Arquitetura e desenho de sistema | `references/17-especialidades/arquitetura.md` |
+| §17.2 Desenvolvimento full stack | `references/17-especialidades/full-stack.md` |
+| §17.3 Ciência e engenharia de dados | `references/17-especialidades/dados.md` |
+| §17.4 Engenharia de IA aplicada (LLM, RAG, busca semântica, agentes) | `references/17-especialidades/ia-aplicada.md` |
+| §17.5 DevOps e confiabilidade (SRE) | `references/17-especialidades/devops-sre.md` |
+| §17.6 Cibersegurança | `references/17-especialidades/ciberseguranca.md` |
+| §17.7 Governança de software, dados e IA | `references/17-especialidades/governanca.md` |
+| §17.8 Qualidade e testes | `references/17-especialidades/qualidade-testes.md` |
+| Agentes de desenvolvimento e o fluxo entre eles | `agents/README.md` |
+| Modelos: `AGENTS.md` de projeto, ADR, relatório da entrega, questionário ao dono | `templates/` |
 
 - **Modelo ou agente sem suporte a skills:** concatene este arquivo com as referências da
   situação no system prompt, no `AGENTS.md` ou no arquivo de regras do projeto.
 - **Projeto sem IA:** §5, §6, as análises A e B do §3 e os módulos §16.2 a §16.4 se respondem
   "não se aplica — motivo". O resto vale inteiro.
+- **Especialidades (§17):** cada setor diz como fazer bem uma disciplina e aponta para as regras
+  do núcleo, sem repeti-las. Carregue só o setor que a tarefa toca.
+- **Agentes (`agents/`):** nove especialistas prontos para o Claude Code, um por frente, com o fluxo
+  e as devoluções em `agents/README.md`. Seguem o §14.4: os necessários, nem um a mais.
 - **Contexto da equipe ou do projeto (opcional):** copie `PERFIL.modelo.md` para `PERFIL.md`
   e preencha. Palavra de domínio, idioma, shell, moeda e lei de dados ficam lá, nunca no núcleo.
 
@@ -54,7 +68,7 @@ quando a situação pede. Toda referência "§n" aponta para o arquivo desta tab
 | Escrever ferramenta/MCP ou automação que grava em sistema alheio | §7 |
 | Dado compartilhado, retomada, cache, memória do sistema | §8 |
 | Log, métrica, alerta, custo | §9 |
-| Vai entrar banco, fila, container, provisionamento; dimensionar | §10 |
+| Vai entrar banco, fila, cache, container, provisionamento; dimensionar; desempenho | §10 (escada de componentes) |
 | Documento de cliente, dado pessoal, entrada vinda de fora | §11 |
 | Alterar produção, subir release, incidente | §12 |
 | Projeto de ERP, sistema transacional ou integração com ERP | §16.1 |
@@ -63,6 +77,15 @@ quando a situação pede. Toda referência "§n" aponta para o arquivo desta tab
 | Extensão de navegador ou agente que opera o navegador | §16.4 |
 | Aplicativo web, mobile ou desktop | §16.5 |
 | Interface web: tela, desempenho no navegador, acessibilidade, componentes, bundle | §16.6 |
+| Desenhar sistema, fronteira, contrato ou modelo de dados | §17.1 |
+| Implementar backend, API, banco ou interface | §17.2 |
+| Métrica, painel, previsão, classificação, pipeline de dados | §17.3 |
+| LLM, RAG, banco vetorial, busca semântica, agente de IA | §17.4 |
+| CI/CD, infraestrutura, deploy, SLO, alerta, backup | §17.5 |
+| Modelagem de ameaça, varredura de segredo, dependências | §17.6 |
+| ADR, dívida, LGPD, inventário de IA, licenças, evidência de auditoria | §17.7 |
+| Que teste escrever, mutação, revisão de código | §17.8 |
+| Dividir o trabalho entre agentes especialistas | `agents/README.md` e §14.4 |
 
 ### As oito regras de ouro
 
@@ -75,7 +98,8 @@ Se nada mais for lido, que se leia isto:
    trava (§16.2).
 3. **Regra sem teste é boato.** Contrato, invariante e cláusula de resiliência valem quando
    existe bateria que falharia sem eles.
-4. **Nada é obrigatório por padrão** — nem banco, nem fila, nem framework (§10).
+4. **Nada é obrigatório por padrão** — nem banco, nem fila, nem framework. Comece simples, ache
+   o gargalo, ponha o menor componente que o resolve e repita (§10).
 5. **Operação que escreve é idempotente, com teto e freio.** Repetir não pode duplicar.
 6. **Log completo, sem desistência silenciosa.** Erro some do log nunca; some da tela, às vezes.
 7. **Dado pessoal e segredo não cruzam fronteira sem ofuscação** (§11).
