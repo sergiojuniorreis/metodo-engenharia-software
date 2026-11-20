@@ -40,6 +40,8 @@ O método cobre:
 - **Dados pessoais e fronteira de confiança**: entrada de fora é hostil até prova em contrário.
 - **O portão do §14**: seis exigências para toda alteração de código, incluindo a pauta de
   segurança com 15 itens.
+- **Contexto sem desperdício (§18)**: o `AGENTS.md` do projeto vira um cache quente e curto; o
+  detalhe se lê só quando a tarefa pede. O agente não redescobre o que o projeto já sabe.
 - **Oito especialidades** — arquitetura, full stack, ciência de dados, IA aplicada (RAG, busca
   semântica, agentes), DevOps/SRE, cibersegurança, governança, qualidade e testes — e **nove
   agentes de desenvolvimento** que as aplicam.
@@ -63,6 +65,182 @@ Se nada mais for lido, que se leia isto (do [`SKILL.md`](SKILL.md)):
 
 ---
 
+## Começo rápido
+
+**1. Instale** a skill e os agentes no Claude Code (Linux, macOS, Codespaces):
+
+```bash
+git clone --depth 1 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes   && mkdir -p ~/.claude/skills/metodo-engenharia-software   && cp -r /tmp/mes/SKILL.md /tmp/mes/PERFIL.modelo.md /tmp/mes/references         /tmp/mes/agents /tmp/mes/templates ~/.claude/skills/metodo-engenharia-software/   && rm -rf /tmp/mes
+```
+
+No Windows, use o bloco PowerShell em [Como usar](#como-usar). Os agentes são opcionais e a
+instalação deles está no mesmo lugar.
+
+**2. Prepare o projeto**: copie [`templates/AGENTS.modelo.md`](templates/AGENTS.modelo.md) para
+a raiz como `AGENTS.md`, preencha e crie um `CLAUDE.md` com a linha `@AGENTS.md`. É o cache quente
+do projeto (§18): curto, só o que quase toda tarefa usa.
+
+**3. Confira**: peça *"vou começar um projeto novo de integração com ERP"*. O agente deve responder
+pelo estudo de abordagem (§3) e pelo módulo §16.1 antes de propor código.
+
+---
+
+## Como usar
+
+Escolha o cenário. Nos três, a pasta precisa manter a estrutura acima, porque o `SKILL.md`
+aponta para `references/`, `agents/` e `templates/` por caminho relativo.
+
+### 1. Como skill no Claude Code, no Abacus.AI (DeepAgent) ou em outro agente com suporte a skills
+
+O agente lê o nome e a descrição do `SKILL.md` para decidir quando usar a skill. Depois lê o
+núcleo inteiro e só abre as referências que a tarefa pede.
+
+**Passo a passo:**
+
+1. Baixe o repositório:
+   ```bash
+   git clone https://github.com/sergiojuniorreis/metodo-engenharia-software.git
+   ```
+2. Copie os arquivos da skill para a pasta de skills do agente, numa pasta com o mesmo nome do
+   campo `name` do `SKILL.md`:
+   ```bash
+   mkdir -p skills/metodo-engenharia-software
+   cp -r metodo-engenharia-software/SKILL.md \
+         metodo-engenharia-software/PERFIL.modelo.md \
+         metodo-engenharia-software/references \
+         metodo-engenharia-software/agents \
+         metodo-engenharia-software/templates \
+         skills/metodo-engenharia-software/
+   ```
+   `README.md`, `LICENSE`, `CHANGELOG.md`, `scripts/` e `.github/` servem ao repositório e não
+   precisam ir para a pasta da skill.
+3. **No Abacus.AI / DeepAgent:** envie os arquivos na conversa (ou informe a URL deste
+   repositório) e peça *"crie uma skill chamada `metodo-engenharia-software` a partir destes
+   arquivos, usando a descrição do frontmatter do `SKILL.md`"*. O agente registra a skill e
+   ela passa a valer nas próximas conversas.
+4. **Em outros agentes compatíveis com o formato `SKILL.md`:** coloque a pasta no diretório
+   de skills que o agente lê (por exemplo, `~/.claude/skills/` no Claude Code).
+5. **Agentes (Claude Code):** copie os arquivos de `agents/`, menos o `README.md`, para
+   `~/.claude/agents/` (todos os projetos) ou `.claude/agents/` (um projeto). A descrição de cada
+   agente instalado entra no contexto de toda sessão: instale por projeto se não for usá-los em
+   todos. Agente do projeto com o mesmo nome de um global prevalece.
+6. *(Opcional)* Copie `PERFIL.modelo.md` para `PERFIL.md` dentro da pasta da skill e preencha
+   idioma, shell, moeda, lei de dados e regras do seu domínio.
+
+#### Instalação por terminal (Linux, macOS, Claude Code, Codespaces)
+
+Cole o comando abaixo no terminal. Ele clona o repositório, instala a skill em
+`~/.claude/skills/` e os agentes em `~/.claude/agents/`:
+
+```bash
+git clone --depth 1 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes \
+  && mkdir -p ~/.claude/skills/metodo-engenharia-software ~/.claude/agents \
+  && cp -r /tmp/mes/SKILL.md /tmp/mes/PERFIL.modelo.md /tmp/mes/references \
+        /tmp/mes/agents /tmp/mes/templates ~/.claude/skills/metodo-engenharia-software/ \
+  && find /tmp/mes/agents -name '*.md' ! -name README.md -exec cp {} ~/.claude/agents/ \; \
+  && rm -rf /tmp/mes \
+  && echo "Skill e agentes instalados em ~/.claude"
+```
+
+**PowerShell (Windows):**
+
+```powershell
+$tmp = Join-Path $env:TEMP 'mes'
+git clone --depth 1 https://github.com/sergiojuniorreis/metodo-engenharia-software.git $tmp
+$skill = Join-Path $HOME '.claude\skills\metodo-engenharia-software'
+$agentes = Join-Path $HOME '.claude\agents'
+New-Item -ItemType Directory -Force $skill, $agentes | Out-Null
+Copy-Item -Recurse -Force "$tmp\SKILL.md", "$tmp\PERFIL.modelo.md", "$tmp\references", "$tmp\agents", "$tmp\templates" $skill
+Get-ChildItem "$tmp\agents\*.md" -Exclude README.md | Copy-Item -Destination $agentes -Force
+Remove-Item -Recurse -Force $tmp
+```
+
+> **Codespaces:** o diretório `~/.claude/` é lido pelo Claude Code dentro do Codespace. Se o
+> seu agente usa outro caminho (por exemplo um diretório `skills/` na raiz do projeto), troque o
+> destino pelo caminho que ele lê.
+
+**Conferir a instalação:**
+
+```bash
+ls ~/.claude/skills/metodo-engenharia-software
+# deve listar: PERFIL.modelo.md  SKILL.md  agents  references  templates
+ls ~/.claude/agents
+# deve listar os 9 agentes
+```
+
+**Atualizar depois:** repetir o mesmo comando sobrescreve com a versão mais recente. Se
+preferir manter um clone versionado:
+
+```bash
+git clone https://github.com/sergiojuniorreis/metodo-engenharia-software.git
+cd metodo-engenharia-software && git pull   # nas próximas vezes
+```
+
+**Como conferir que funcionou:** peça ao agente *"vou começar um projeto novo de integração
+com ERP"*. Uma skill carregada responde pelo **estudo de abordagem (§3)** e pelo **módulo
+§16.1** antes de propor qualquer código. Se ele for direto para o código, a skill não
+disparou.
+
+### 2. Como system prompt concatenado (LLMs sem suporte a pastas)
+
+Para modelos que só aceitam texto (API de chat, `AGENTS.md`, arquivo de regras do editor,
+GPT personalizado), junte o núcleo com as referências da situação num único arquivo.
+
+**Prompt completo** (todas as seções):
+
+```bash
+cd metodo-engenharia-software
+{ cat SKILL.md; for f in references/*.md references/16-modulos/*.md references/17-especialidades/*.md; do
+    printf '\n\n---\n\n<!-- %s -->\n\n' "$f"; cat "$f"; done; } > prompt-completo.md
+```
+
+**Prompt enxuto** (núcleo + o que o projeto usa). Exemplo para um projeto de agente com MCP e RAG:
+
+```bash
+cat SKILL.md references/14-portao.md references/03-estudo-de-abordagem.md \
+    references/06-07-ia-ferramentas-mcp.md references/16-modulos/orquestracao-mcp.md \
+    references/17-especialidades/ia-aplicada.md > prompt-agente-mcp.md
+```
+
+**PowerShell (Windows):**
+
+```powershell
+Set-Location metodo-engenharia-software
+$arquivos = @('SKILL.md') + (Get-ChildItem references\*.md, references\16-modulos\*.md, references\17-especialidades\*.md).FullName
+Get-Content $arquivos -Encoding UTF8 | Set-Content prompt-completo.md -Encoding UTF8
+```
+
+Depois cole o arquivo gerado no campo de system prompt ou salve como `AGENTS.md` (ou o
+equivalente da sua ferramenta) na raiz do projeto.
+
+**Regras para escolher o que concatenar:**
+
+- O `SKILL.md` vai **sempre**.
+- O **§14 (`14-portao.md`)** vai sempre que o modelo for alterar código.
+- Inclua os módulos do §16 que correspondem ao tipo de projeto e as especialidades do §17 que a
+  tarefa toca.
+- Prompt longo custa token em toda chamada. Se a janela ou o orçamento apertarem, use a
+  versão enxuta.
+
+### 3. Como referência metodológica (sem IA)
+
+O método também funciona como guia de equipe, checklist de revisão e base de onboarding.
+
+| Momento | O que ler | O que produzir |
+|---|---|---|
+| Kickoff de projeto | §3 inteiro e §17.1 | Estudo de abordagem de meia página com as quatro análises e os ADRs da stack ([modelo](templates/adr.md)) |
+| Antes de cada alteração | §14.1, §14.2 e §14.6 | Mapa de impacto, âncora (objetivo, aceite, escopo, invariantes, Fora) e pauta de segurança respondida |
+| Revisão de PR | §14.5, §17.8 e "Sinais de alerta" do §2 | Relatório da entrega com evidência por item ([modelo](templates/relatorio-entrega.md)) |
+| "Posso entregar?" | §4 | Tabela de pronto preenchida, com a evidência ao lado de cada linha |
+| Incidente ou release | §12 e §17.5 | Ritual de mudança, release arquivada com rollback registrado e incidente fechado com teste novo |
+| Auditoria ou conformidade | §17.7 | Pacote de evidência da release, inventários de dados pessoais e de usos de IA |
+| Onboarding | `SKILL.md` + §15 | Vocabulário comum da equipe |
+
+**Sugestão:** adote o método por partes. Comece pelo §14 (portão) e pelo §4 (pronto). São os
+que mais pegam defeito com menos esforço.
+
+---
+
 ## Mapa da skill
 
 O `SKILL.md` é o **núcleo**: o agente sempre o lê inteiro. O resto fica em `references/` e só
@@ -80,8 +258,9 @@ flowchart TD
         R8["§8 Estado, concorrência e memória"]
         R910["§9 Observabilidade · §10 Escada de componentes"]
         R1112["§11 Dados pessoais · §12 Segurança e ritual"]
-        R14["§14 Portão de toda alteração<br/>§14.6 Pauta de segurança"]
-        R15["§15 Vocabulário"]
+        R14["§14 Portão de toda alteração<br/>+ resumo da pauta de segurança"]
+        R146["§14.3 · §14.4 Ferramenta nova e agentes<br/>§14.6 Pauta em detalhe (só itens que se aplicam)"]
+        R15["§15 Vocabulário · §18 Contexto sem desperdício"]
     end
 
     subgraph MOD["references/16-modulos/ (por tipo de projeto)"]
@@ -244,160 +423,6 @@ responsável com a evidência. Fluxo, devoluções e coordenação em [`agents/R
 
 ---
 
-## Como usar
-
-Escolha o cenário. Nos três, a pasta precisa manter a estrutura acima, porque o `SKILL.md`
-aponta para `references/`, `agents/` e `templates/` por caminho relativo.
-
-### 1. Como skill no Claude Code, no Abacus.AI (DeepAgent) ou em outro agente com suporte a skills
-
-O agente lê o nome e a descrição do `SKILL.md` para decidir quando usar a skill. Depois lê o
-núcleo inteiro e só abre as referências que a tarefa pede.
-
-**Passo a passo:**
-
-1. Baixe o repositório:
-   ```bash
-   git clone https://github.com/sergiojuniorreis/metodo-engenharia-software.git
-   ```
-2. Copie os arquivos da skill para a pasta de skills do agente, numa pasta com o mesmo nome do
-   campo `name` do `SKILL.md`:
-   ```bash
-   mkdir -p skills/metodo-engenharia-software
-   cp -r metodo-engenharia-software/SKILL.md \
-         metodo-engenharia-software/PERFIL.modelo.md \
-         metodo-engenharia-software/references \
-         metodo-engenharia-software/agents \
-         metodo-engenharia-software/templates \
-         skills/metodo-engenharia-software/
-   ```
-   `README.md`, `LICENSE`, `CHANGELOG.md`, `scripts/` e `.github/` servem ao repositório e não
-   precisam ir para a pasta da skill.
-3. **No Abacus.AI / DeepAgent:** envie os arquivos na conversa (ou informe a URL deste
-   repositório) e peça *"crie uma skill chamada `metodo-engenharia-software` a partir destes
-   arquivos, usando a descrição do frontmatter do `SKILL.md`"*. O agente registra a skill e
-   ela passa a valer nas próximas conversas.
-4. **Em outros agentes compatíveis com o formato `SKILL.md`:** coloque a pasta no diretório
-   de skills que o agente lê (por exemplo, `~/.claude/skills/` no Claude Code).
-5. **Agentes (Claude Code):** copie os arquivos de `agents/`, menos o `README.md`, para
-   `~/.claude/agents/` (todos os projetos) ou `.claude/agents/` (um projeto).
-6. *(Opcional)* Copie `PERFIL.modelo.md` para `PERFIL.md` dentro da pasta da skill e preencha
-   idioma, shell, moeda, lei de dados e regras do seu domínio.
-
-#### Instalação por terminal (Linux, macOS, Claude Code, Codespaces)
-
-Cole o comando abaixo no terminal. Ele clona o repositório, instala a skill em
-`~/.claude/skills/` e os agentes em `~/.claude/agents/`:
-
-```bash
-git clone --depth 1 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes \
-  && mkdir -p ~/.claude/skills/metodo-engenharia-software ~/.claude/agents \
-  && cp -r /tmp/mes/SKILL.md /tmp/mes/PERFIL.modelo.md /tmp/mes/references \
-        /tmp/mes/agents /tmp/mes/templates ~/.claude/skills/metodo-engenharia-software/ \
-  && find /tmp/mes/agents -name '*.md' ! -name README.md -exec cp {} ~/.claude/agents/ \; \
-  && rm -rf /tmp/mes \
-  && echo "Skill e agentes instalados em ~/.claude"
-```
-
-**PowerShell (Windows):**
-
-```powershell
-$tmp = Join-Path $env:TEMP 'mes'
-git clone --depth 1 https://github.com/sergiojuniorreis/metodo-engenharia-software.git $tmp
-$skill = Join-Path $HOME '.claude\skills\metodo-engenharia-software'
-$agentes = Join-Path $HOME '.claude\agents'
-New-Item -ItemType Directory -Force $skill, $agentes | Out-Null
-Copy-Item -Recurse -Force "$tmp\SKILL.md", "$tmp\PERFIL.modelo.md", "$tmp\references", "$tmp\agents", "$tmp\templates" $skill
-Get-ChildItem "$tmp\agents\*.md" -Exclude README.md | Copy-Item -Destination $agentes -Force
-Remove-Item -Recurse -Force $tmp
-```
-
-> **Codespaces:** o diretório `~/.claude/` é lido pelo Claude Code dentro do Codespace. Se o
-> seu agente usa outro caminho (por exemplo um diretório `skills/` na raiz do projeto), troque o
-> destino pelo caminho que ele lê.
-
-**Conferir a instalação:**
-
-```bash
-ls ~/.claude/skills/metodo-engenharia-software
-# deve listar: PERFIL.modelo.md  SKILL.md  agents  references  templates
-ls ~/.claude/agents
-# deve listar os 9 agentes
-```
-
-**Atualizar depois:** repetir o mesmo comando sobrescreve com a versão mais recente. Se
-preferir manter um clone versionado:
-
-```bash
-git clone https://github.com/sergiojuniorreis/metodo-engenharia-software.git
-cd metodo-engenharia-software && git pull   # nas próximas vezes
-```
-
-**Como conferir que funcionou:** peça ao agente *"vou começar um projeto novo de integração
-com ERP"*. Uma skill carregada responde pelo **estudo de abordagem (§3)** e pelo **módulo
-§16.1** antes de propor qualquer código. Se ele for direto para o código, a skill não
-disparou.
-
-### 2. Como system prompt concatenado (LLMs sem suporte a pastas)
-
-Para modelos que só aceitam texto (API de chat, `AGENTS.md`, arquivo de regras do editor,
-GPT personalizado), junte o núcleo com as referências da situação num único arquivo.
-
-**Prompt completo** (todas as seções):
-
-```bash
-cd metodo-engenharia-software
-{ cat SKILL.md; for f in references/*.md references/16-modulos/*.md references/17-especialidades/*.md; do
-    printf '\n\n---\n\n<!-- %s -->\n\n' "$f"; cat "$f"; done; } > prompt-completo.md
-```
-
-**Prompt enxuto** (núcleo + o que o projeto usa). Exemplo para um projeto de agente com MCP e RAG:
-
-```bash
-cat SKILL.md references/14-portao.md references/03-estudo-de-abordagem.md \
-    references/06-07-ia-ferramentas-mcp.md references/16-modulos/orquestracao-mcp.md \
-    references/17-especialidades/ia-aplicada.md > prompt-agente-mcp.md
-```
-
-**PowerShell (Windows):**
-
-```powershell
-Set-Location metodo-engenharia-software
-$arquivos = @('SKILL.md') + (Get-ChildItem references\*.md, references\16-modulos\*.md, references\17-especialidades\*.md).FullName
-Get-Content $arquivos -Encoding UTF8 | Set-Content prompt-completo.md -Encoding UTF8
-```
-
-Depois cole o arquivo gerado no campo de system prompt ou salve como `AGENTS.md` (ou o
-equivalente da sua ferramenta) na raiz do projeto.
-
-**Regras para escolher o que concatenar:**
-
-- O `SKILL.md` vai **sempre**.
-- O **§14 (`14-portao.md`)** vai sempre que o modelo for alterar código.
-- Inclua os módulos do §16 que correspondem ao tipo de projeto e as especialidades do §17 que a
-  tarefa toca.
-- Prompt longo custa token em toda chamada. Se a janela ou o orçamento apertarem, use a
-  versão enxuta.
-
-### 3. Como referência metodológica (sem IA)
-
-O método também funciona como guia de equipe, checklist de revisão e base de onboarding.
-
-| Momento | O que ler | O que produzir |
-|---|---|---|
-| Kickoff de projeto | §3 inteiro e §17.1 | Estudo de abordagem de meia página com as quatro análises e os ADRs da stack ([modelo](templates/adr.md)) |
-| Antes de cada alteração | §14.1, §14.2 e §14.6 | Mapa de impacto, âncora (objetivo, aceite, escopo, invariantes, Fora) e pauta de segurança respondida |
-| Revisão de PR | §14.5, §17.8 e "Sinais de alerta" do §2 | Relatório da entrega com evidência por item ([modelo](templates/relatorio-entrega.md)) |
-| "Posso entregar?" | §4 | Tabela de pronto preenchida, com a evidência ao lado de cada linha |
-| Incidente ou release | §12 e §17.5 | Ritual de mudança, release arquivada com rollback registrado e incidente fechado com teste novo |
-| Auditoria ou conformidade | §17.7 | Pacote de evidência da release, inventários de dados pessoais e de usos de IA |
-| Onboarding | `SKILL.md` + §15 | Vocabulário comum da equipe |
-
-**Sugestão:** adote o método por partes. Comece pelo §14 (portão) e pelo §4 (pronto). São os
-que mais pegam defeito com menos esforço.
-
----
-
 ## Adaptando ao seu contexto
 
 - **Regra do repositório vence a do método.** Se o seu projeto tem convenção própria, ela
@@ -423,7 +448,7 @@ python scripts/validar.py
 
 Confere que toda referência § existe, que todo caminho e link citado existe, que o cabeçalho dos
 agentes está correto e que nenhum padrão de chave entrou no repositório. Código de saída 0 é tudo
-certo. A mesma verificação roda na CI a cada push. Mudanças em [`CHANGELOG.md`](CHANGELOG.md).
+certo. Requer só Python 3, sem dependências. A mesma verificação roda na CI a cada push. Mudanças em [`CHANGELOG.md`](CHANGELOG.md).
 
 ---
 

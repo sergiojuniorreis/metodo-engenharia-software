@@ -50,6 +50,10 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). Versão: [
   `14-3-4-ferramenta-agentes.md`, lidos só quando aplicáveis. As fontes externas foram reunidas em
   `references/fontes.md`. O `SKILL.md` tem uma tabela única de roteamento.
 
+- `README.md`: "Começo rápido" no topo (instalar, preparar o projeto, conferir); "Como usar" antes
+  do mapa e dos índices; §18 em "O que é"; diagrama com a divisão do §14; aviso sobre o custo de
+  contexto dos agentes instalados globalmente.
+
 ### Corrigido
 
 - §16.6 (`front-end.md`): a seção "Pauta §14.6" agora descreve cada item como a pauta o define;
