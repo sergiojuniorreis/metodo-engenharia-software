@@ -108,6 +108,14 @@ ele serve para conferir de onde vem uma regra.
 - Anthropic. *Building effective agents*, 2024 (anthropic.com/engineering/building-effective-agents).
 - OWASP. *Top 10 for LLM Applications 2025*.
 - Liu, N. et al. *Lost in the Middle: How Language Models Use Long Contexts*. TACL, 2024.
+- RAG agêntico: Yao, S. et al. *ReAct: Synergizing Reasoning and Acting in Language Models*. ICLR
+  2023; Trivedi, H. et al. *Interleaving Retrieval with Chain-of-Thought Reasoning* (IRCoT). ACL
+  2023 — vários saltos; Ma, X. et al. *Query Rewriting for Retrieval-Augmented Large Language
+  Models*. EMNLP 2023; Asai, A. et al. *Self-RAG*. ICLR 2024 — decidir quando buscar e criticar o
+  recuperado; Yan, S. et al. *Corrective Retrieval Augmented Generation*, 2024 — avaliar se o
+  recuperado basta.
+- Anthropic. *Contextual Retrieval*, 2024 (anthropic.com/news/contextual-retrieval) — contexto do
+  documento anexado ao trecho antes de indexar.
 
 ## §17.5 — DevOps e confiabilidade (SRE)
 

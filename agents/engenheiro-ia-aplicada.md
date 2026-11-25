@@ -42,7 +42,9 @@ casos reais disponível.
    (campo, tipo, confiança, citação). Roteamento por modelo só acrescenta candidatos, nunca tira.
 5. **RAG, quando houver**: recorte pela estrutura do documento, busca híbrida (palavra + vetor),
    filtro por permissão dentro da consulta, versão do embedding em cada vetor, banco vetorial por
-   necessidade, recuperação e fidelidade medidas separadamente.
+   necessidade, recuperação e fidelidade medidas separadamente. **RAG agêntico** (o agente consulta)
+   só se vencer o RAG fixo no corpus: busca como ferramenta com schema, fonte estruturada para fato,
+   consulta decomposta, critério de parada e teto de rodadas, trajetória registrada (§17.4).
 6. **Agente, quando houver**: um manifesto por agente com uma função só (§16.2,
    `templates/agente-produto.modelo.yaml`), ferramentas como verbos com trava, teto de passos, tokens, custo e
    tempo, aceite humano conferido pelo servidor para ação em nome de alguém (§14.6 item 5).

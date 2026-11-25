@@ -64,7 +64,7 @@ início). Vai para `~/.claude/`: a skill, o kit e os quatro comandos. Os agentes
 **Linux, macOS, Codespaces:**
 
 ```bash
-git clone --depth 1 --branch v1.5.1 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes
+git clone --depth 1 --branch v1.6.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes
 S=~/.claude/skills/metodo-engenharia-software
 mkdir -p "$S/scripts" ~/.claude/commands
 cp -r /tmp/mes/SKILL.md /tmp/mes/PERFIL.modelo.md /tmp/mes/references /tmp/mes/agents       /tmp/mes/templates /tmp/mes/exemplos "$S/"
@@ -78,7 +78,7 @@ rm -rf /tmp/mes
 
 ```powershell
 $tmp = Join-Path $env:TEMP 'mes'
-git clone --depth 1 --branch v1.5.1 https://github.com/sergiojuniorreis/metodo-engenharia-software.git $tmp
+git clone --depth 1 --branch v1.6.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git $tmp
 $skill = Join-Path $HOME '.claude\skills\metodo-engenharia-software'
 $cmds = Join-Path $HOME '.claude\commands'
 New-Item -ItemType Directory -Force "$skill\scripts", $cmds | Out-Null
@@ -100,7 +100,7 @@ de skills e `/iniciar`, `/estudo`, `/mudanca` e `/entrega` aparecem ao digitar `
 `py -3 -I "$HOME\.claude\skills\metodo-engenharia-software\scripts\medir_contexto.py"`) imprime uma
 linha `contexto (caracteres): inicio … · trivial … · padrao …`.
 
-A instalação usa a **versão marcada** (`--branch v1.5.1`), não a ponta do `main`; para atualizar,
+A instalação usa a **versão marcada** (`--branch v1.6.0`), não a ponta do `main`; para atualizar,
 troque pela versão mais recente em
 [Releases](https://github.com/sergiojuniorreis/metodo-engenharia-software/releases) e repita.
 

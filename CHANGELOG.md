@@ -6,6 +6,19 @@ muda) sobe o primeiro número.
 
 ## [Não lançado]
 
+## [1.6.0] — 2026-11-24
+
+### Adicionado
+
+- **RAG agêntico** (§17.4, "RAG agêntico — o agente consulta"): busca como ferramenta com schema,
+  fonte estruturada para fato e índice híbrido para texto, consulta reformulada e decomposta,
+  critério de parada com teto de rodadas, citação conferida por código, permissão de quem
+  perguntou, memória de caminhos como sugestão e trajetória no rastreamento. Entra só se vencer o
+  RAG fixo no mesmo corpus; avaliação própria (rodadas, buscas sem citação, saltos).
+- Recorte do RAG indexa o trecho com o contexto do documento e da seção anexado.
+- `engenheiro-ia-aplicada` (item 5), vocabulário e fontes (ReAct, IRCoT, Query Rewriting,
+  Self-RAG, CRAG, Contextual Retrieval).
+
 ## [1.5.1] — 2026-11-24
 
 ### Corrigido

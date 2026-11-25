@@ -40,6 +40,7 @@
 | **Especialidade** | Setor do §17 que diz como fazer bem uma disciplina (arquitetura, full stack, dados, IA aplicada, DevOps/SRE, cibersegurança, governança, testes) |
 | **Escada de componentes** | Começar no menor desenho e subir um componente por vez, só diante de gargalo medido (§10) |
 | **RAG** | Geração com recuperação: o modelo responde com trechos buscados na base, citando-os |
+| **RAG agêntico** | O agente usa a busca como ferramenta: decide o que e onde buscar, reformula e para quando o contexto basta (§17.4) |
 | **Embedding** | Vetor que representa o significado de um texto; aproxima textos parecidos |
 | **Busca híbrida** | Busca por palavra (BM25) somada à busca por vetor, com fusão dos resultados |
 | **Reranqueamento** | Segunda ordenação, mais precisa e mais cara, dos candidatos já recuperados |
