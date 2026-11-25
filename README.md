@@ -64,7 +64,7 @@ início). Vai para `~/.claude/`: a skill, o kit e os quatro comandos. Os agentes
 **Linux, macOS, Codespaces:**
 
 ```bash
-git clone --depth 1 --branch v1.6.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes
+git clone --depth 1 --branch v1.7.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes
 S=~/.claude/skills/metodo-engenharia-software
 mkdir -p "$S/scripts" ~/.claude/commands
 cp -r /tmp/mes/SKILL.md /tmp/mes/PERFIL.modelo.md /tmp/mes/references /tmp/mes/agents       /tmp/mes/templates /tmp/mes/exemplos "$S/"
@@ -78,7 +78,7 @@ rm -rf /tmp/mes
 
 ```powershell
 $tmp = Join-Path $env:TEMP 'mes'
-git clone --depth 1 --branch v1.6.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git $tmp
+git clone --depth 1 --branch v1.7.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git $tmp
 $skill = Join-Path $HOME '.claude\skills\metodo-engenharia-software'
 $cmds = Join-Path $HOME '.claude\commands'
 New-Item -ItemType Directory -Force "$skill\scripts", $cmds | Out-Null
@@ -100,7 +100,7 @@ de skills e `/iniciar`, `/estudo`, `/mudanca` e `/entrega` aparecem ao digitar `
 `py -3 -I "$HOME\.claude\skills\metodo-engenharia-software\scripts\medir_contexto.py"`) imprime uma
 linha `contexto (caracteres): inicio … · trivial … · padrao …`.
 
-A instalação usa a **versão marcada** (`--branch v1.6.0`), não a ponta do `main`; para atualizar,
+A instalação usa a **versão marcada** (`--branch v1.7.0`), não a ponta do `main`; para atualizar,
 troque pela versão mais recente em
 [Releases](https://github.com/sergiojuniorreis/metodo-engenharia-software/releases) e repita.
 
@@ -172,7 +172,9 @@ flowchart LR
 | §17.1 | [`arquitetura.md`](references/17-especialidades/arquitetura.md) | Desenho, contratos, dados, microsserviços, várias linguagens |
 | §17.2 | [`full-stack.md`](references/17-especialidades/full-stack.md) | Backend, API, banco |
 | §17.3 | [`dados.md`](references/17-especialidades/dados.md) | Métrica, previsão, pipeline de dados |
-| §17.4 | [`ia-aplicada.md`](references/17-especialidades/ia-aplicada.md) | LLM, RAG, busca semântica, agentes, avaliação |
+| §17.4 | [`ia-aplicada.md`](references/17-especialidades/ia-aplicada.md) | LLM, escada de IA, chamada de modelo, agentes, avaliação |
+| §17.4.1 | [`rag.md`](references/17-especialidades/rag.md) | RAG fixo e agêntico, busca semântica, banco vetorial |
+| §17.4.2 | [`ajuste-fino.md`](references/17-especialidades/ajuste-fino.md) | Ajuste fino, LoRA, destilação |
 | §17.5 | [`devops-sre.md`](references/17-especialidades/devops-sre.md) | CI/CD, deploy, SLO, incidente |
 | §17.6 | [`ciberseguranca.md`](references/17-especialidades/ciberseguranca.md) | Ameaça, varredura, dependências |
 | §17.7 | [`governanca.md`](references/17-especialidades/governanca.md) | ADR, dívida, LGPD, IA, evidência |

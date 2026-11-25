@@ -15,10 +15,10 @@ arquivo da linha — nunca a pasta inteira (§18).
 
 | Situação | § | Arquivo em `references/` |
 |---|---|---|
-| Alteração de nível **padrão** ou **alto risco** — antes da primeira edição. Trivial: basta o portão abaixo | **§14** | `14-portao.md` |
+| Alteração **padrão** ou **alto risco** — antes da primeira edição. Trivial: basta o portão abaixo | **§14** | `14-portao.md` |
 | Estudo, decisão de desenho ou de uma via, revisão; regras que valem sempre e conduta com o dono | §2 · §13 | `02-13-regras-e-conduta.md` |
 | Ferramenta nova, agentes, passo mecânico que se repete | §14.3 · §14.4 | `14-3-4-ferramenta-agentes.md` |
-| Detalhe e evidência dos itens da pauta de segurança que se aplicam | §14.6 | `14-6-pauta-seguranca.md` |
+| Pauta de segurança: detalhe e evidência de cada item | §14.6 | `14-6-pauta-seguranca.md` |
 | Projeto novo, mudança de rumo, reparo; linguagem e stack; as quatro análises | §3 | `03-estudo-de-abordagem.md` |
 | "Está pronto?" · construir skill, agente, RAG ou prompt de decisão | §4 · §5 | `04-05-pronto-e-ciclo-ia.md` |
 | RAG, veto e custo de IA · ferramenta, MCP, automação que grava em sistema alheio | §6 · §7 | `06-07-ia-ferramentas-mcp.md` |
@@ -28,26 +28,28 @@ arquivo da linha — nunca a pasta inteira (§18).
 | Dúvida sobre um termo | §15 | `15-vocabulario.md` |
 | ERP e sistema transacional | §16.1 | `16-modulos/erp.md` |
 | Central de agentes, orquestração, MCP; agentes do produto | §16.2 | `16-modulos/orquestracao-mcp.md` |
-| Agente ligado a Microsoft 365, Google Workspace e afins | §16.3 | `16-modulos/apps-microsoft-google.md` |
-| Extensão de navegador ou agente que opera o navegador | §16.4 | `16-modulos/extensoes-navegador.md` |
+| Agente em Microsoft 365, Google e afins | §16.3 | `16-modulos/apps-microsoft-google.md` |
+| Extensão de navegador, agente que opera o navegador | §16.4 | `16-modulos/extensoes-navegador.md` |
 | Aplicativo mobile, desktop, API pública | §16.5 | `16-modulos/aplicativos.md` |
 | Interface web: renderização, bundle, componentes, acessibilidade | §16.6 | `16-modulos/front-end.md` |
-| Nuvem, rede, servidor, container, IaC, acesso, custo de infraestrutura | §16.7 | `16-modulos/infraestrutura.md` |
-| Biblioteca, SDK ou CLI publicados para outros usarem | §16.8 | `16-modulos/biblioteca-cli.md` |
+| Nuvem, rede, servidor, container, IaC, acesso, custo | §16.7 | `16-modulos/infraestrutura.md` |
+| Biblioteca, SDK ou CLI publicados | §16.8 | `16-modulos/biblioteca-cli.md` |
 | Desenho de sistema, fronteira, contrato, dados; microsserviços; várias linguagens | §17.1 | `17-especialidades/arquitetura.md` |
 | Implementar backend, API, banco | §17.2 | `17-especialidades/full-stack.md` |
 | Métrica, painel, previsão, classificação, pipeline de dados | §17.3 | `17-especialidades/dados.md` |
-| LLM, RAG, banco vetorial, busca semântica, agente de IA | §17.4 | `17-especialidades/ia-aplicada.md` |
+| LLM, agente de IA | §17.4 | `17-especialidades/ia-aplicada.md` |
+| RAG fixo ou agêntico, banco vetorial | §17.4.1 | `17-especialidades/rag.md` |
+| Ajuste fino, LoRA | §17.4.2 | `17-especialidades/ajuste-fino.md` |
 | CI/CD, infraestrutura, deploy, SLO, alerta, backup | §17.5 | `17-especialidades/devops-sre.md` |
 | Modelagem de ameaça, varredura de segredo, dependências | §17.6 | `17-especialidades/ciberseguranca.md` |
 | ADR, dívida, LGPD, inventário de IA, licenças, evidência | §17.7 | `17-especialidades/governanca.md` |
 | Que teste escrever, mutação, revisão de código | §17.8 | `17-especialidades/qualidade-testes.md` |
-| Qual comando roda cada prova (teste, lint, mutação, auditoria) por linguagem | §17.9 | `17-especialidades/ferramentas-por-linguagem.md` |
-| Preparar o `AGENTS.md`; contexto gasto com o que o projeto já sabe | §18 | `18-contexto-cache.md` |
+| Comando de cada prova (teste, lint, mutação, auditoria) por linguagem | §17.9 | `17-especialidades/ferramentas-por-linguagem.md` |
+| Preparar o `AGENTS.md`; contexto gasto com o que o projeto sabe | §18 | `18-contexto-cache.md` |
 | Conferir de onde vem uma regra | — | `fontes.md` |
 
-- **Comandos:** `/iniciar` cria a estrutura, `/estudo` faz o §3, `/mudanca` passa a alteração pelo
-  §14 no nível certo, `/entrega` confere antes do commit. Agentes em `agents/README.md`; modelos
+- **Comandos:** `/iniciar` cria a estrutura, `/estudo` faz o §3, `/mudanca` passa pelo §14 no
+  nível certo, `/entrega` confere antes do commit. Agentes em `agents/README.md`; modelos
   em `templates/`; o fluxo inteiro em `exemplos/exemplo-completo.md`.
 - **Contexto:** leia o `PERFIL.md` da pasta da skill, se existir (padrões do dono); o `AGENTS.md`
   do projeto **vence** o perfil. Palavra de domínio fica num dos dois, nunca no núcleo. Comece

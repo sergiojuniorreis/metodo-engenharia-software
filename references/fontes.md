@@ -116,6 +116,14 @@ ele serve para conferir de onde vem uma regra.
   recuperado basta.
 - Anthropic. *Contextual Retrieval*, 2024 (anthropic.com/news/contextual-retrieval) — contexto do
   documento anexado ao trecho antes de indexar.
+- Ajuste fino: Howard, J.; Ruder, S. *Universal Language Model Fine-tuning for Text
+  Classification* (ULMFiT). ACL 2018; Hu, E. et al. *LoRA: Low-Rank Adaptation of Large Language
+  Models*. ICLR 2022; Dettmers, T. et al. *QLoRA*. NeurIPS 2023; Hinton, G.; Vinyals, O.; Dean, J.
+  *Distilling the Knowledge in a Neural Network*, 2015; Kirkpatrick, J. et al. *Overcoming
+  catastrophic forgetting in neural networks*. PNAS, 2017; Qi, X. et al. *Fine-tuning Aligned
+  Language Models Compromises Safety, Even When Users Do Not Intend To!* ICLR 2024; Ovadia, O. et
+  al. *Fine-Tuning or Retrieval? Comparing Knowledge Injection in LLMs*, 2023 — fato pelo RAG,
+  comportamento pelo ajuste.
 
 ## §17.5 — DevOps e confiabilidade (SRE)
 

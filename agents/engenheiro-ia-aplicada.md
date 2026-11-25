@@ -21,7 +21,9 @@ quando o modelo falha.
 
 A skill `metodo-engenharia-software`: `SKILL.md`, `references/03-estudo-de-abordagem.md` (análises
 A e B), `references/06-07-ia-ferramentas-mcp.md`, `references/08-estado-memoria.md`,
-`references/17-especialidades/ia-aplicada.md` e, quando há orquestração ou MCP,
+`references/17-especialidades/ia-aplicada.md`, `references/17-especialidades/rag.md` quando há
+RAG, `references/17-especialidades/ajuste-fino.md` quando se cogita ajuste fino e, quando há
+orquestração ou MCP,
 `references/16-modulos/orquestracao-mcp.md`.
 Sem ferramenta de skill, leia pelo caminho: `.claude/skills/metodo-engenharia-software/` do
 projeto ou `~/.claude/skills/metodo-engenharia-software/`.
@@ -44,7 +46,10 @@ casos reais disponível.
    filtro por permissão dentro da consulta, versão do embedding em cada vetor, banco vetorial por
    necessidade, recuperação e fidelidade medidas separadamente. **RAG agêntico** (o agente consulta)
    só se vencer o RAG fixo no corpus: busca como ferramenta com schema, fonte estruturada para fato,
-   consulta decomposta, critério de parada e teto de rodadas, trajetória registrada (§17.4).
+   consulta decomposta, critério de parada e teto de rodadas, trajetória registrada (§17.4.1).
+   **Ajuste fino** só para comportamento, nunca para fato, e só se vencer prompt e RAG no teste
+   congelado: dado sem vazamento e com pessoal ofuscado, LoRA antes do completo, esquecimento e
+   segurança medidos depois, ficha do modelo e volta pela versão anterior (§17.4.2).
 6. **Agente, quando houver**: um manifesto por agente com uma função só (§16.2,
    `templates/agente-produto.modelo.yaml`), ferramentas como verbos com trava, teto de passos, tokens, custo e
    tempo, aceite humano conferido pelo servidor para ação em nome de alguém (§14.6 item 5).

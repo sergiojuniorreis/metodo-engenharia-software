@@ -40,11 +40,14 @@
 | **Especialidade** | Setor do §17 que diz como fazer bem uma disciplina (arquitetura, full stack, dados, IA aplicada, DevOps/SRE, cibersegurança, governança, testes) |
 | **Escada de componentes** | Começar no menor desenho e subir um componente por vez, só diante de gargalo medido (§10) |
 | **RAG** | Geração com recuperação: o modelo responde com trechos buscados na base, citando-os |
-| **RAG agêntico** | O agente usa a busca como ferramenta: decide o que e onde buscar, reformula e para quando o contexto basta (§17.4) |
+| **RAG agêntico** | O agente usa a busca como ferramenta: decide o que e onde buscar, reformula e para quando o contexto basta (§17.4.1) |
+| **Ajuste fino (fine-tuning)** | Treino adicional de um modelo pré-treinado com exemplos do projeto; muda comportamento, não ensina fato (§17.4.2) |
+| **LoRA** | Ajuste fino eficiente: treina um adaptador pequeno ao lado dos pesos congelados da base |
+| **Destilação** | Um modelo pequeno aprende a reproduzir as saídas de um grande, para custar menos |
 | **Embedding** | Vetor que representa o significado de um texto; aproxima textos parecidos |
 | **Busca híbrida** | Busca por palavra (BM25) somada à busca por vetor, com fusão dos resultados |
 | **Reranqueamento** | Segunda ordenação, mais precisa e mais cara, dos candidatos já recuperados |
-| **Banco vetorial** | Índice que guarda embeddings e acha os mais próximos; entra por necessidade (§17.4) |
+| **Banco vetorial** | Índice que guarda embeddings e acha os mais próximos; entra por necessidade (§17.4.1) |
 | **SLO / orçamento de erro** | Objetivo de confiabilidade de uma jornada / o quanto de falha o objetivo ainda permite |
 | **SBOM** | Lista das dependências que um artefato leva, em formato padrão |
 | **Mutação** | Retirar de propósito uma guarda para provar que a suíte a sente |

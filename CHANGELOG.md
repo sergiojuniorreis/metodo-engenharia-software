@@ -6,6 +6,31 @@ muda) sobe o primeiro número.
 
 ## [Não lançado]
 
+## [1.7.0] — 2026-11-24
+
+### Mudado
+
+- **§17.4 dividido em três arquivos** para carregar só o que a tarefa pede (§18): o núcleo de IA
+  (`ia-aplicada.md`: escada, forma do dado, chamada de modelo, agentes, integração, avaliação
+  contínua) cai de 16.267 para 6.761 caracteres (6.280 no RAG e
+  4.139 no ajuste fino, carregados só quando a tarefa pede); RAG fixo e agêntico vão para
+  `rag.md` (§17.4.1) e o ajuste fino para `ajuste-fino.md` (§17.4.2), sem mudança de texto nas
+  seções. Roteamento do `SKILL.md` com as duas linhas novas e redação enxugada para caber no teto
+  de 7.000; referências cruzadas, `engenheiro-ia-aplicada` (Carrega), vocabulário e README
+  apontam para o arquivo certo.
+
+### Adicionado
+
+- **Ajuste fino** (§17.4, "Ajuste fino (fine-tuning)"): muda comportamento, não ensina fato;
+  ordem prompt → RAG → ajuste; quando cabe e quando não cabe; dado rotulado com critério, divisão
+  sem vazamento e teste congelado, pessoal ofuscado antes do treino (peso não esquece); LoRA antes
+  do ajuste completo; ajuste pelo provedor com contrato e prazo de descontinuação conferidos;
+  avaliação contra prompt e RAG, esquecimento, segurança depois do ajuste e custo total; ficha do
+  modelo, sombra, volta pela versão anterior e gatilho de reajuste.
+- `engenheiro-ia-aplicada` (item 5), vocabulário (ajuste fino, LoRA, destilação) e fontes
+  (ULMFiT, LoRA, QLoRA, destilação, esquecimento catastrófico, segurança após ajuste, ajuste ×
+  recuperação).
+
 ## [1.6.0] — 2026-11-24
 
 ### Adicionado
