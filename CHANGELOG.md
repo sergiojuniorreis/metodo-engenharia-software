@@ -6,6 +6,26 @@ muda) sobe o primeiro número.
 
 ## [Não lançado]
 
+## [1.5.0] — 2026-11-24
+
+### Mudado
+
+- **Núcleo enxuto** (§18): `SKILL.md` passa de 11.904 para no máximo 7.000 caracteres e a
+  descrição da skill, que entra em toda sessão, de 1.032 para no máximo 700. O §2 (regras que
+  valem sempre) e o §13 (conduta com o dono) vão, sem mudança de texto, para
+  `references/02-13-regras-e-conduta.md`, carregado pelo `/estudo`, pelo `arquiteto-software` e
+  em decisão de desenho.
+- **Mudança trivial sem o portão inteiro**: a lista do nível trivial e o relatório curto ficam no
+  `SKILL.md`; o `references/14-portao.md` só entra no nível padrão e no alto risco. O `/mudanca`
+  segue a mesma regra.
+
+### Adicionado
+
+- `scripts/medir_contexto.py`: mede, em caracteres (não tokens), o que os cenários início, trivial
+  e padrão carregam, com o CLAUDE.md global e o PERFIL opcionais; uma linha na tela e um JSON.
+- `validar.py`: tetos novos (núcleo 7.000, descrição 700) e o relatório curto do núcleo travado
+  igual ao do §14.0.
+
 ## [1.4.0] — 2026-11-24
 
 ### Adicionado

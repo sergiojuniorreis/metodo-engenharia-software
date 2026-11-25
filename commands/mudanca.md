@@ -4,12 +4,13 @@ argument-hint: <o que mudar>
 ---
 
 Carregue a skill `metodo-engenharia-software` (sem a ferramenta de skill, leia
-`$HOME/.claude/skills/metodo-engenharia-software/SKILL.md` e `references/14-portao.md`). Leia o
-`AGENTS.md` do projeto.
+`$HOME/.claude/skills/metodo-engenharia-software/SKILL.md`). Leia o `AGENTS.md` do projeto.
 
 Pedido: $ARGUMENTS
 
-1. **Nível** (§14.0): trivial, padrão ou alto risco, com o motivo. Na dúvida, suba.
+1. **Nível** (§14.0): trivial, padrão ou alto risco, com o motivo. Na dúvida, suba. **Trivial**:
+   o portão do `SKILL.md` basta, siga só a lista dele. **Padrão e alto risco**: leia agora
+   `references/14-portao.md`.
 2. **Âncora** (trivial: uma linha; demais: objetivo, aceite, escopo, invariantes, Fora). Alto risco
    ou tarefa longa: grave a âncora em `docs/ancoras/<tema>.md` e releia-a na retomada (§14.2).
 3. **Pauta por gatilho** (§14.0): marque o que a mudança toca e responda só esses itens. Alto risco:

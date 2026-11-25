@@ -64,7 +64,7 @@ início). Vai para `~/.claude/`: a skill, o kit e os quatro comandos. Os agentes
 **Linux, macOS, Codespaces:**
 
 ```bash
-git clone --depth 1 --branch v1.4.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes
+git clone --depth 1 --branch v1.5.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes
 S=~/.claude/skills/metodo-engenharia-software
 mkdir -p "$S/scripts" ~/.claude/commands
 cp -r /tmp/mes/SKILL.md /tmp/mes/PERFIL.modelo.md /tmp/mes/references /tmp/mes/agents       /tmp/mes/templates /tmp/mes/exemplos "$S/"
@@ -77,7 +77,7 @@ rm -rf /tmp/mes
 
 ```powershell
 $tmp = Join-Path $env:TEMP 'mes'
-git clone --depth 1 --branch v1.4.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git $tmp
+git clone --depth 1 --branch v1.5.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git $tmp
 $skill = Join-Path $HOME '.claude\skills\metodo-engenharia-software'
 $cmds = Join-Path $HOME '.claude\commands'
 New-Item -ItemType Directory -Force "$skill\scripts", $cmds | Out-Null
@@ -87,7 +87,7 @@ Copy-Item -Force "$tmp\commands\*.md" $cmds
 Remove-Item -Recurse -Force $tmp
 ```
 
-A instalação usa a **versão marcada** (`--branch v1.4.0`), não a ponta do `main`; para atualizar,
+A instalação usa a **versão marcada** (`--branch v1.5.0`), não a ponta do `main`; para atualizar,
 troque pela versão mais recente em
 [Releases](https://github.com/sergiojuniorreis/metodo-engenharia-software/releases) e repita.
 
@@ -124,8 +124,10 @@ ao relatório em [`exemplos/exemplo-completo.md`](exemplos/exemplo-completo.md).
 
 ## Como funciona
 
-O `SKILL.md` é o **núcleo**: regras de ouro, o portão resumido, as regras que valem sempre e a
-tabela que diz qual arquivo carregar em cada situação. O resto entra **só quando a tarefa pede**.
+O `SKILL.md` é o **núcleo**, com teto de 7.000 caracteres: regras de ouro, o portão resumido (a
+mudança trivial se faz só com ele) e a tabela que diz qual arquivo carregar em cada situação. As
+regras que valem sempre e a conduta com o dono (§2, §13), o portão completo e o resto entram **só
+quando a tarefa pede**. `python -I scripts/medir_contexto.py` mede quanto cada cenário carrega.
 
 ```mermaid
 flowchart LR
@@ -177,7 +179,8 @@ O padrão é zero agente: mudança trivial não aciona nenhum. Fluxo e devoluç�
 metodo-engenharia-software/
 ├── SKILL.md                     núcleo e roteamento
 ├── PERFIL.modelo.md             contexto opcional da equipe
-├── references/                  §3–§18, carregados sob demanda
+├── references/                  §2–§18, carregados sob demanda
+│   ├── 02-13-regras-e-conduta.md  regras que valem sempre e conduta com o dono
 │   ├── 14-portao.md             portão em 3 níveis + resumo da pauta
 │   ├── 14-6-pauta-seguranca.md  detalhe da pauta, por item
 │   ├── 16-modulos/              por tipo de projeto

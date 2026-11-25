@@ -121,8 +121,9 @@ def checar_agentes():
     c = cabecalho(RAIZ / "SKILL.md") or {}
     if c.get("name") != "metodo-engenharia-software":
         falhas.append("SKILL.md: name ausente ou errado")
-    if not 0 < len(c.get("description", "")) <= 1024:
-        falhas.append("SKILL.md: description vazia ou acima de 1024 caracteres")
+    if not 0 < len(c.get("description", "")) <= TETO_DESCRICAO:
+        falhas.append(f"SKILL.md: description vazia ou acima de {TETO_DESCRICAO} caracteres "
+                      "(entra em toda sessão, §18)")
 
 
 def checar_comandos():
@@ -147,7 +148,14 @@ def checar_roteamento():
         falhas.append(f"references/{f}: não está na tabela 'Como carregar' do SKILL.md")
 
 
-LIMITES = {"SKILL.md": 12000, "templates/AGENTS.modelo.md": 3000}
+LIMITES = {"SKILL.md": 7000, "templates/AGENTS.modelo.md": 3000}
+TETO_DESCRICAO = 700
+
+
+def relatorio_curto(texto):
+    """O bloco do relatório curto (nível trivial), ou None."""
+    m = re.search(r"```text\nNível        trivial — .*?```", texto, flags=re.S)
+    return m.group(0) if m else None
 
 
 def checar_tamanho():
@@ -156,8 +164,15 @@ def checar_tamanho():
         n = len(ler(RAIZ / rel))
         if n > teto:
             falhas.append(f"{rel}: {n} caracteres, acima do teto de {teto} (§18)")
-    if "`PERFIL.md`" not in ler(RAIZ / "SKILL.md"):
+    nucleo = ler(RAIZ / "SKILL.md")
+    if "`PERFIL.md`" not in nucleo:
         falhas.append("SKILL.md: não manda ler o PERFIL.md")
+    # A mudança trivial se faz só com o núcleo; a cópia do relatório curto é travada igual à do §14.0.
+    copia, fonte = relatorio_curto(nucleo), relatorio_curto(ler(RAIZ / "references" / "14-portao.md"))
+    if copia is None:
+        falhas.append("SKILL.md: sem o relatório curto do nível trivial (o trivial não carrega o §14)")
+    elif copia != fonte:
+        falhas.append("SKILL.md: relatório curto do SKILL.md diferente do §14.0 (references/14-portao.md)")
 
 
 # Definições que moram só no §14.0. Reescrevê-las em outro arquivo já gerou contradição duas vezes.

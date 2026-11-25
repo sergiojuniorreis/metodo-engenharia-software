@@ -120,8 +120,23 @@ class Validador(unittest.TestCase):
         self.reprova("acima do teto")
 
     def test_descricao_da_skill_longa_demais(self):
-        self.trocar("SKILL.md", "description: ", "description: " + "x" * 1100)
-        self.reprova("acima de 1024")
+        # A descrição entra em toda sessão, mesmo sem a skill disparar: teto de contexto, não só o do formato.
+        self.trocar("SKILL.md", "description: ", "description: " + "x" * 701)
+        self.reprova("acima de 700")
+
+    def test_nucleo_acima_do_teto_enxuto(self):
+        self.acrescentar("SKILL.md", "\n" + "x" * 7001 + "\n")
+        self.reprova("acima do teto de 7000")
+
+    def test_relatorio_curto_divergente_do_portao(self):
+        self.trocar("SKILL.md", "Segredo      varredura do diff → limpa", "Segredo      varredura → limpa")
+        self.reprova("relatório curto do SKILL.md diferente do §14.0")
+
+    def test_nucleo_sem_relatorio_curto(self):
+        p = self.raiz / "SKILL.md"
+        t = p.read_text(encoding="utf-8")
+        p.write_text(t.replace("Nível        trivial — ", "Nivel trivial "), encoding="utf-8")
+        self.reprova("relatório curto")
 
 
 if __name__ == "__main__":
