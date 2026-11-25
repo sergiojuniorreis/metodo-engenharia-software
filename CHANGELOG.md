@@ -6,6 +6,18 @@ muda) sobe o primeiro número.
 
 ## [Não lançado]
 
+## [1.5.1] — 2026-11-24
+
+### Corrigido
+
+- **Instalação (README)**: a primeira instalação cria o `PERFIL.md` a partir do `PERFIL.modelo.md`,
+  já com o nome que a skill procura; atualizar não sobrescreve o perfil preenchido. Os dois blocos
+  (bash e PowerShell) instalam também o `scripts/medir_contexto.py`, e o README ganha os passos
+  **Perfil** e **Conferir**.
+- `validar.py` reprova instalação que sobrescreva o `PERFIL.md` ou que não instale os scripts da
+  skill nos dois blocos.
+- Releases do GitHub publicadas para v1.2.1, v1.4.0, v1.5.0 e v1.5.1 (a página parava na v1.2.0).
+
 ## [1.5.0] — 2026-11-24
 
 ### Mudado

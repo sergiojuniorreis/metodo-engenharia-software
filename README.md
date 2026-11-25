@@ -64,12 +64,13 @@ início). Vai para `~/.claude/`: a skill, o kit e os quatro comandos. Os agentes
 **Linux, macOS, Codespaces:**
 
 ```bash
-git clone --depth 1 --branch v1.5.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes
+git clone --depth 1 --branch v1.5.1 https://github.com/sergiojuniorreis/metodo-engenharia-software.git /tmp/mes
 S=~/.claude/skills/metodo-engenharia-software
 mkdir -p "$S/scripts" ~/.claude/commands
 cp -r /tmp/mes/SKILL.md /tmp/mes/PERFIL.modelo.md /tmp/mes/references /tmp/mes/agents       /tmp/mes/templates /tmp/mes/exemplos "$S/"
-cp /tmp/mes/scripts/iniciar_projeto.py "$S/scripts/"
+cp /tmp/mes/scripts/iniciar_projeto.py /tmp/mes/scripts/medir_contexto.py "$S/scripts/"
 cp /tmp/mes/commands/*.md ~/.claude/commands/
+[ -f "$S/PERFIL.md" ] || cp "$S/PERFIL.modelo.md" "$S/PERFIL.md"   # só na 1ª vez: atualizar não apaga o perfil
 rm -rf /tmp/mes
 ```
 
@@ -77,17 +78,29 @@ rm -rf /tmp/mes
 
 ```powershell
 $tmp = Join-Path $env:TEMP 'mes'
-git clone --depth 1 --branch v1.5.0 https://github.com/sergiojuniorreis/metodo-engenharia-software.git $tmp
+git clone --depth 1 --branch v1.5.1 https://github.com/sergiojuniorreis/metodo-engenharia-software.git $tmp
 $skill = Join-Path $HOME '.claude\skills\metodo-engenharia-software'
 $cmds = Join-Path $HOME '.claude\commands'
 New-Item -ItemType Directory -Force "$skill\scripts", $cmds | Out-Null
 Copy-Item -Recurse -Force "$tmp\SKILL.md", "$tmp\PERFIL.modelo.md", "$tmp\references", "$tmp\agents", "$tmp\templates", "$tmp\exemplos" $skill
-Copy-Item -Force "$tmp\scripts\iniciar_projeto.py" "$skill\scripts"
+Copy-Item -Force "$tmp\scripts\iniciar_projeto.py", "$tmp\scripts\medir_contexto.py" "$skill\scripts"
 Copy-Item -Force "$tmp\commands\*.md" $cmds
+if (-not (Test-Path "$skill\PERFIL.md")) { Copy-Item "$skill\PERFIL.modelo.md" "$skill\PERFIL.md" }  # só na 1ª vez
 Remove-Item -Recurse -Force $tmp
 ```
 
-A instalação usa a **versão marcada** (`--branch v1.5.0`), não a ponta do `main`; para atualizar,
+**Perfil:** a primeira instalação cria o `PERFIL.md` a partir do `PERFIL.modelo.md`, já com o nome
+que a skill procura. Preencha-o (idioma, shell, moeda, lei de dados, cofre, pasta temporária):
+campo vazio, o Claude pergunta antes de supor. Atualizar o método **não** sobrescreve o
+`PERFIL.md`; ele fica só na sua máquina (está no `.gitignore`).
+
+**Conferir:** numa sessão nova do Claude Code, a skill `metodo-engenharia-software` aparece na lista
+de skills e `/iniciar`, `/estudo`, `/mudanca` e `/entrega` aparecem ao digitar `/`. E
+`python -I ~/.claude/skills/metodo-engenharia-software/scripts/medir_contexto.py` (no Windows,
+`py -3 -I "$HOME\.claude\skills\metodo-engenharia-software\scripts\medir_contexto.py"`) imprime uma
+linha `contexto (caracteres): inicio … · trivial … · padrao …`.
+
+A instalação usa a **versão marcada** (`--branch v1.5.1`), não a ponta do `main`; para atualizar,
 troque pela versão mais recente em
 [Releases](https://github.com/sergiojuniorreis/metodo-engenharia-software/releases) e repita.
 

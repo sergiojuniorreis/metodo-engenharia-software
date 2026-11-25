@@ -175,6 +175,27 @@ def checar_tamanho():
         falhas.append("SKILL.md: relatório curto do SKILL.md diferente do §14.0 (references/14-portao.md)")
 
 
+GUARDAS_PERFIL = ['[ -f "$S/PERFIL.md" ] || cp', 'if (-not (Test-Path "$skill\\PERFIL.md"))']
+
+
+def checar_instalacao():
+    """A instalação do README cria o PERFIL.md só se faltar (atualizar não apaga o perfil
+    preenchido) e instala os scripts que a skill usa, nos dois blocos (bash e PowerShell)."""
+    texto = ler(RAIZ / "README.md")
+    inicio = texto.find("## Instalar")
+    secao = texto[inicio:texto.find("\n## ", inicio + 1)] if inicio != -1 else ""
+    for linha in secao.splitlines():
+        if re.search(r"PERFIL\.md\"?\s*($|[;#}])", linha) and not any(g in linha for g in GUARDAS_PERFIL):
+            falhas.append(f"README.md: instalação sobrescreve o PERFIL.md do dono: {linha.strip()[:80]}")
+    for guarda in GUARDAS_PERFIL:
+        if guarda not in secao:
+            falhas.append(f"README.md: instalação sobrescreve o PERFIL.md (falta a guarda `{guarda}`)")
+    copias = "\n".join(l for l in secao.splitlines() if l.startswith(("cp ", "Copy-Item ")))
+    for script in ("iniciar_projeto.py", "medir_contexto.py"):
+        if f"/scripts/{script}" not in copias or f"\\scripts\\{script}" not in copias:
+            falhas.append(f"README.md: a instalação não instala scripts/{script} nos dois blocos")
+
+
 # Definições que moram só no §14.0. Reescrevê-las em outro arquivo já gerou contradição duas vezes.
 REDEFINICOES = [
     (r"Mudança que grava, remove", "redefine 'alto risco' fora do §14.0 — aponte para o §14.0"),
@@ -219,6 +240,7 @@ checar_agentes()
 checar_comandos()
 checar_roteamento()
 checar_tamanho()
+checar_instalacao()
 checar_redefinicoes()
 checar_controle()
 checar_segredos()

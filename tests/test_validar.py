@@ -132,6 +132,19 @@ class Validador(unittest.TestCase):
         self.trocar("SKILL.md", "Segredo      varredura do diff → limpa", "Segredo      varredura → limpa")
         self.reprova("relatório curto do SKILL.md diferente do §14.0")
 
+    def test_instalacao_sobrescreve_o_perfil(self):
+        self.trocar("README.md", 'if (-not (Test-Path "$skill\\PERFIL.md")) { Copy-Item',
+                    'Copy-Item "$skill\\PERFIL.modelo.md" "$skill\\PERFIL.md" # { Copy-Item')
+        self.reprova("sobrescreve o PERFIL.md")
+
+    def test_instalacao_bash_sem_guarda_do_perfil(self):
+        self.trocar("README.md", '[ -f "$S/PERFIL.md" ] || cp', 'cp')
+        self.reprova("sobrescreve o PERFIL.md")
+
+    def test_instalacao_sem_o_medidor(self):
+        self.trocar("README.md", ', "$tmp\\scripts\\medir_contexto.py"', '')
+        self.reprova("não instala scripts/medir_contexto.py")
+
     def test_nucleo_sem_relatorio_curto(self):
         p = self.raiz / "SKILL.md"
         t = p.read_text(encoding="utf-8")
