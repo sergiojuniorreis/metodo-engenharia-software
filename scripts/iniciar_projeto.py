@@ -4,8 +4,10 @@ Cria (sem sobrescrever o que já existe):
   AGENTS.md, CLAUDE.md                      camada quente do projeto (§18)
   docs/estudo-de-abordagem.md               §3, para preencher
   docs/adr/0001-registro-de-decisoes.md      primeiro ADR
-  .github/workflows/ci.yml                  teste da linguagem + segredo no histórico
+  .github/workflows/ci.yml                  lint + teste da linguagem + segredo no histórico
   .gitignore                                segredos e lixo comum
+  ruff.toml | eslint.config.mjs, .prettierrc.json, .prettierignore
+  docs/lint-e-formatacao.md                 lint e formatação (Python e TypeScript), §14.3
 e roda `git init` se a pasta ainda não é repositório.
 
 Uso:
@@ -30,6 +32,153 @@ TESTE = {
     "csharp": ["dotnet test"],
     "rust": ["cargo test"],
     "outra": ["echo 'Defina o comando de teste do projeto neste passo (§5, comando único)' && exit 1"],
+}
+
+# Lint e formatação (§17.9) rodam na CI antes do teste. Versões travadas e conferidas no registro
+# em 2026-11-24; a troca de versão segue o §14.3 e o passo a passo em docs/lint-e-formatacao.md.
+RUFF = "ruff==0.17.6"
+NPM_LINT = ("eslint@10.15.0 @eslint/js@10.0.1 typescript-eslint@8.74.0 "
+            "typescript@6.0.3 prettier@3.10.1")  # typescript-eslint 8.74 pede typescript <6.1
+LINT = {
+    "python": [f"python -m pip install {RUFF}", "ruff check .", "ruff format --check ."],
+    "typescript": ["npm run lint"],
+}
+
+RUFF_TOML = """# Lint e formatação do projeto (§17.9). Passo a passo: docs/lint-e-formatacao.md.
+line-length = 100
+
+[lint]
+# E/W estilo, F erros prováveis, I ordem dos imports, B armadilhas comuns, UP sintaxe antiga.
+select = ["E", "F", "W", "I", "B", "UP"]
+"""
+
+ESLINT_CONFIG = """// Lint do projeto (§17.9). Passo a passo: docs/lint-e-formatacao.md.
+// Formatação é do Prettier; o ESLint cuida de erro provável e de fronteira (no-restricted-imports).
+import js from "@eslint/js";
+import { defineConfig, globalIgnores } from "eslint/config";
+import tseslint from "typescript-eslint";
+
+export default defineConfig([
+  globalIgnores(["dist/", "coverage/", "node_modules/"]),
+  js.configs.recommended,
+  tseslint.configs.recommended,
+]);
+"""
+
+# endOfLine "auto": o Prettier mantém o fim de linha que o arquivo já tem (regra do full-stack).
+PRETTIERRC = """{
+  "printWidth": 100,
+  "endOfLine": "auto"
+}
+"""
+
+PRETTIERIGNORE = """dist/
+coverage/
+package-lock.json
+# Markdown dos modelos do método: formatá-lo é commit próprio, de nível trivial. Para formatar,
+# tire esta linha e rode `npm run format -- "**/*.md"` num commit só de formatação.
+*.md
+"""
+
+GUIA_LINT_PY = f"""# ruff 0.17.6 — configuração
+
+Para que serve aqui: lint (erro provável, import, armadilha) e formatação do Python, num binário só.
+Por que não a alternativa: flake8 + isort + black são três ferramentas e três configurações.
+Onde roda: na máquina do dev e na CI (`.github/workflows/ci.yml`), antes do teste.
+Quem opera: quem altera código (`engenheiro-full-stack`); o auditor confere o código de saída.
+Custo e licença: gratuito, MIT.
+
+## Pré-requisitos
+
+- Python 3 instalado: `python --version` (no Windows sem `python`, `py -3 --version`).
+
+## Instalar
+
+1. `python -m pip install {RUFF}` → termina com `Successfully installed ruff-0.17.6`.
+
+## Configurar
+
+- `ruff.toml` na raiz (já criado pelo kit): `line-length = 100` e as regras em `[lint] select`.
+- Regra desligada numa linha só com motivo: `# noqa: E501 — <motivo>`. Sem motivo, não passa revisão.
+
+## Conferir
+
+- `ruff check .` → `All checks passed!`, código de saída 0.
+- `ruff format --check .` → `N files already formatted`, código de saída 0.
+
+## Outra máquina
+
+- Repete-se o passo Instalar. `ruff.toml` e a CI vêm pelo repositório.
+
+## Quando falhar
+
+- `ruff: command not found` → o Scripts do Python fora do PATH → use `python -m ruff check .`.
+- `ruff format --check` acusa arquivo → rode `ruff format <arquivo>` só nos arquivos que você tocou;
+  reformatação do projeto inteiro é commit separado, nunca junto com mudança funcional.
+
+## Desfazer
+
+1. `python -m pip uninstall -y ruff`.
+2. Apague `ruff.toml`, este arquivo e os três passos de ruff em `.github/workflows/ci.yml`.
+3. Confira: `python -m ruff --version` falha com `No module named ruff`.
+"""
+
+GUIA_LINT_TS = f"""# ESLint 10.15.0 + Prettier 3.10.1 — configuração
+
+Para que serve aqui: o ESLint acha erro provável e fronteira quebrada (import proibido); o Prettier
+formata. Cada um faz uma coisa, sem regra de estilo brigando entre eles.
+Por que não a alternativa: Biome junta os dois numa ferramenta; fica o par ESLint + Prettier porque é
+o que o §16.6 do método já indica. Projeto que preferir Biome troca pelo §14.3.
+Onde roda: na máquina do dev e na CI (`npm run lint`, antes do `npm test`).
+Quem opera: quem altera código (`engenheiro-full-stack`); o auditor confere o código de saída.
+Custo e licença: gratuitos, MIT (ESLint, typescript-eslint, Prettier) e Apache-2.0 (TypeScript).
+
+## Pré-requisitos
+
+- Node e npm: `node --version` e `npm --version`.
+- `package.json` na raiz (`npm init -y`, se ainda não existe).
+
+## Instalar
+
+1. `npm install --save-dev --save-exact {NPM_LINT}`
+   → `added N packages`, com as versões exatas em `devDependencies` e no `package-lock.json`.
+
+## Configurar
+
+- Já criados pelo kit: `eslint.config.mjs`, `.prettierrc.json` (`endOfLine: "auto"` mantém o fim
+  de linha de cada arquivo) e `.prettierignore`.
+- Em `package.json`, dentro de `"scripts"`:
+  `"lint": "eslint . && prettier --check ."` e `"format": "prettier --write"`.
+- Regra desligada numa linha só com motivo:
+  `// eslint-disable-next-line <regra> -- <motivo>`. Sem motivo, não passa revisão.
+
+## Conferir
+
+- `npm run lint` → o ESLint não imprime nada e o Prettier diz
+  `All matched files use Prettier code style!`; código de saída 0.
+
+## Outra máquina
+
+- `npm ci` instala tudo pelo `package-lock.json`. As configs e a CI vêm pelo repositório.
+
+## Quando falhar
+
+- `Cannot find package '@eslint/js'` → as dependências não foram instaladas → `npm ci`.
+- O Prettier acusa arquivo → `npm run format -- <arquivos que você tocou>`; reformatação do projeto
+  inteiro é commit separado, nunca junto com mudança funcional.
+
+## Desfazer
+
+1. `npm uninstall eslint @eslint/js typescript-eslint typescript prettier`.
+2. Apague `eslint.config.mjs`, `.prettierrc.json`, `.prettierignore`, este arquivo e os scripts
+   `lint` e `format` do `package.json`; tire o `npm run lint` de `.github/workflows/ci.yml`.
+3. Confira: `npx --no-install eslint --version` falha.
+"""
+
+ARQUIVOS_LINT = {
+    "python": {"ruff.toml": RUFF_TOML, "docs/lint-e-formatacao.md": GUIA_LINT_PY},
+    "typescript": {"eslint.config.mjs": ESLINT_CONFIG, ".prettierrc.json": PRETTIERRC,
+                   ".prettierignore": PRETTIERIGNORE, "docs/lint-e-formatacao.md": GUIA_LINT_TS},
 }
 
 GITIGNORE = """# Segredos e ambiente (§14.6 item 7)
@@ -89,13 +238,14 @@ ARQUIVO_DO_PROJETO = {
 
 
 def ci_yml(linguagem):
-    comandos = TESTE[linguagem]
+    comandos = TESTE[linguagem][:-1] + LINT.get(linguagem, []) + TESTE[linguagem][-1:]
     if linguagem in ARQUIVO_DO_PROJETO:
         teste = " && ".join(comandos)
         arquivos = ARQUIVO_DO_PROJETO[linguagem]
         comandos = [f"if ls {arquivos} >/dev/null 2>&1; then {teste}; "
                     f"else echo '::notice::ainda sem {arquivos.split()[0]}: crie o projeto e o primeiro teste'; fi"]
-    passos = "\n".join(f"      - run: {cmd}" for cmd in comandos)
+    # Bloco literal: comando com ": " (ex.: o ::notice::) em escalar simples quebra o YAML.
+    passos = "\n".join(f"      - run: |\n          {cmd}" for cmd in comandos)
     return f"""name: ci
 
 on:
@@ -166,6 +316,7 @@ def main(argv=None):
     if a.linguagem == "python":
         # Sem nenhum teste o pytest sai com código 5 e a primeira CI nasce vermelha.
         arquivos["tests/test_fumaca.py"] = FUMACA_PY
+    arquivos.update(ARQUIVOS_LINT.get(a.linguagem, {}))
     for rel, conteudo in arquivos.items():
         escrever(destino, rel, conteudo, criados, mantidos)
     if not (destino / ".git").exists():

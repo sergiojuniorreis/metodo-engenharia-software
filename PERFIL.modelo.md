@@ -19,6 +19,8 @@ lei de dados e as palavras de domínio.** Campo não preenchido: o agente pergun
 | Provedores de IA autorizados e o que o contrato permite (§11, §17.4) | <ex.: provedor, retenção, uso para treino, região> |
 | Cofre de segredos usado (§14.6 item 7) | <ex.: DPAPI · Keychain · Vault · secret manager da nuvem> |
 | Ferramenta de deploy e listagem do artefato (§14.6 item 8) | <preencher> |
+| Pasta temporária permitida e a proibida (§14.4) | <ex.: temporário do sistema · D:\temp, nunca no disco do sistema> |
+| Limpeza do temporário da tarefa no fim (§14.4) | <automática, só pasta e manifesto da tarefa (padrão) · com lista ao dono antes> |
 
 ## Linhas de trabalho (exemplo — substitua pelas suas)
 

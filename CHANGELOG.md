@@ -6,6 +6,46 @@ muda) sobe o primeiro número.
 
 ## [Não lançado]
 
+## [1.4.0] — 2026-11-24
+
+### Adicionado
+
+- **Lint e formatação no kit** (`/iniciar`, §17.9). Em Python, o kit cria `ruff.toml` (ruff
+  0.17.6). Em TypeScript, cria `eslint.config.mjs`, `.prettierrc.json` e `.prettierignore` (ESLint
+  10.15.0, typescript-eslint 8.74.0, TypeScript 6.0.3, Prettier 3.10.1). O lint roda na CI antes do
+  teste, e o passo a passo do §14.3 fica em `docs/lint-e-formatacao.md`.
+- **Lint no trabalho dos agentes**:
+  - `engenheiro-full-stack` (item 6a): lint na linha de base e a cada passo; Prettier só nos
+    arquivos tocados; regra desligada só com o motivo na linha.
+  - `arquiteto-software`: fronteira que dá para travar no lint vira regra de lint.
+  - `auditor-entrega`: lint e formatação são passos da régua.
+
+### Corrigido
+
+- **`ci.yml` do kit inválido em go, rust, java, csharp e typescript**: o `: ` do aviso `::notice::`
+  em escalar simples quebrava o YAML, e a CI não rodava. Agora todo passo sai como bloco `run: |`,
+  com teste que confere as 7 linguagens.
+
+## [1.3.0] — 2026-11-24
+
+### Adicionado
+
+- **"O script executa, o agente confere"** (§14.4): passo mecânico de roteiro fixo (CI local, linha
+  de base, base × candidato, conferências de entrega, resumo de log) vira script do projeto com uma
+  linha na tela e um JSON; o agente lê só o que falhou. Gatilho no terceiro uso; código de saída
+  0/1/2 separando veredito de ambiente; CI local que lê a própria configuração da CI; cache por
+  commit com o código do script na chave; temporário onde o perfil manda; o script tem bateria.
+- **Temporário com ciclo de vida** (§14.4): uma pasta por tarefa com manifesto (estado, evidência,
+  cache, descartável); estado de retomada num arquivo só, gravado a cada passo, para retomar sem
+  varrer o diretório de novo; cache com chave e validade; limpeza automática no fim da tarefa,
+  restrita à pasta e ao manifesto, idempotente e registrada; tarefa interrompida não limpa; teto de
+  espaço; a limpeza tem bateria.
+- **Teto de contexto por agente** (§14.4, "Porte e freio"): passou do teto do projeto, grava o
+  estado em arquivo e devolve; outro agente continua do arquivo.
+- §18 (saída recortada e estado em arquivo), `auditor-entrega` (passo 0) e `engenheiro-full-stack`
+  (linha de base) apontam para o §14.4; `PERFIL.modelo.md` ganha a linha da pasta temporária
+  permitida e proibida.
+
 ## [1.2.1] — 2026-11-20
 
 ### Adicionado

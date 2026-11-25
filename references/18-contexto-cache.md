@@ -69,10 +69,13 @@ Cache velho é pior que cache nenhum: o agente confia e erra com segurança.
    que se aplicam.
 5. **Saída de comando recortada**: filtre log, teste e listagem para o que decide (código de saída,
    falhas, a linha que importa). Despejar saída inteira no contexto é o desperdício mais comum.
+   Passo mecânico que se repete vira script que grava JSON e o agente lê só o que falhou (§14.4,
+   "O script executa, o agente confere").
 6. **Agente só para o que não cabe** (§14.4): o agente devolve conclusão e evidência em formato
    fixo; o trabalho dele não se refaz no contexto principal.
 7. **Tarefa longa guarda o estado em arquivo** — âncora, decisões, o que já foi verificado (§14.2).
-   A retomada lê o arquivo, não refaz a investigação.
+   A retomada lê o arquivo, não refaz a investigação. Pasta da tarefa, manifesto, limpeza no fim e
+   teto de espaço: §14.4, "Temporário com ciclo de vida".
 
 ## Medir
 

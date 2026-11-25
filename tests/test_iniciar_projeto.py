@@ -1,4 +1,5 @@
 """Testes do kit de início de projeto."""
+import json
 import subprocess
 import sys
 import tempfile
@@ -56,6 +57,50 @@ class Kit(unittest.TestCase):
         ci = (pasta / ".github/workflows/ci.yml").read_text(encoding="utf-8")
         self.assertIn("if ls go.mod", ci)
         self.assertIn("::notice::", ci)
+
+    def test_python_nasce_com_lint_antes_do_teste(self):
+        self.assertEqual(rodar(self.pasta, "--nome", "A", "--linguagem", "python").returncode, 0)
+        ruff = (self.pasta / "ruff.toml").read_text(encoding="utf-8")
+        self.assertIn("[lint]", ruff)
+        ci = (self.pasta / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        self.assertIn("ruff==", ci)
+        self.assertLess(ci.index("ruff check ."), ci.index("python -m pytest"))
+        self.assertLess(ci.index("ruff format --check ."), ci.index("python -m pytest"))
+        guia = (self.pasta / "docs/lint-e-formatacao.md").read_text(encoding="utf-8")
+        self.assertIn("ruff==", guia)
+        self.assertIn("Desfazer", guia)
+
+    def test_typescript_nasce_com_eslint_e_prettier(self):
+        self.assertEqual(rodar(self.pasta, "--nome", "T", "--linguagem", "typescript").returncode, 0)
+        for rel in ["eslint.config.mjs", ".prettierrc.json", ".prettierignore", "docs/lint-e-formatacao.md"]:
+            self.assertTrue((self.pasta / rel).exists(), rel)
+        prettierrc = json.loads((self.pasta / ".prettierrc.json").read_text(encoding="utf-8"))
+        self.assertEqual(prettierrc["endOfLine"], "auto")  # não reescreve o fim de linha do arquivo
+        ci = (self.pasta / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        self.assertLess(ci.index("npm run lint"), ci.index("npm test"))
+        guia = (self.pasta / "docs/lint-e-formatacao.md").read_text(encoding="utf-8")
+        self.assertIn("prettier@", guia)
+        self.assertIn("eslint@", guia)
+
+    def test_ci_e_yaml_valido_em_todas_as_linguagens(self):
+        # Escalar simples com ": " no meio é mapeamento aninhado: o YAML não abre e a CI não roda.
+        for ling in ["python", "typescript", "java", "go", "csharp", "rust", "outra"]:
+            with self.subTest(ling=ling):
+                pasta = Path(self._tmp.name) / f"yaml-{ling}"
+                self.assertEqual(rodar(pasta, "--nome", "Y", "--linguagem", ling).returncode, 0)
+                ci = (pasta / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+                for linha in ci.splitlines():
+                    if linha.strip().startswith("- run: ") and linha.strip() != "- run: |":
+                        valor = linha.strip()[len("- run: "):]
+                        self.assertNotIn(": ", valor, linha)
+                        self.assertNotIn(" #", valor, linha)
+
+    def test_lint_so_onde_ha_config(self):
+        pasta = Path(self._tmp.name) / "go"
+        self.assertEqual(rodar(pasta, "--nome", "G", "--linguagem", "go").returncode, 0)
+        self.assertFalse((pasta / "ruff.toml").exists())
+        self.assertFalse((pasta / ".prettierrc.json").exists())
+        self.assertFalse((pasta / "docs/lint-e-formatacao.md").exists())
 
     def test_nao_sobrescreve(self):
         self.pasta.mkdir(parents=True)

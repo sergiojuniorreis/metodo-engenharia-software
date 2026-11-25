@@ -30,12 +30,20 @@ inventários).
 
 ## Deve
 
+0. **Se o projeto tem script de CI local e de conferência de entrega** (§14.4, "O script executa,
+   o agente confere"), os passos 1 a 6 são o script: rode-o, leia o JSON e abra o log só do
+   vermelho. Saída 2 é ambiente, não veredito. Reauditoria lê só o diff desde a anterior. Sem
+   script, os passos abaixo à mão — e o terceiro rodar à mão é sinal de que falta o script.
 1. **Ler a definição da CI** e listar cada passo: essa lista é a régua.
 2. **Cópias limpas** na pasta da sessão (ex.: `git worktree add <sessão>/ci-base <base>` e
    `<sessão>/ci-candidato <commit>`), nunca na pasta de trabalho do dono nem em pasta sincronizada.
 3. **Linha de base e candidato**: todos os passos da CI, na mesma ordem, com o código de saída de cada.
 4. **Comparar**: vermelho novo é regressão; vermelho que já estava na base é relatado, não atribuído;
-   teste pulado ou que não rodou conta como falha.
+   teste pulado ou que não rodou conta como falha. **Lint e formatação são passos da régua**, como
+   o teste: aviso novo, regra desligada sem motivo na linha, mudança na configuração do lint ou do
+   Prettier e arquivo novo no ignore voltam ao `engenheiro-full-stack`. Reformatação em massa
+   misturada com mudança funcional volta também. Projeto sem lint: "não se aplica — ferramenta não
+   adotada", com a dívida registrada.
 5. **Prova do vermelho**: a bateria nova roda contra a versão anterior e falha.
 6. **Conferir a entrega**: versão coerente, README e documentação no mesmo commit, fim de linha
    preservado, diff só com o que a âncora pede, arquivos regravados pela suíte fora do commit,

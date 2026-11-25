@@ -36,7 +36,10 @@ A âncora, o setor nomeado pelo dono e, quando houver, a entrega do `consultor-d
 3. **Menor desenho que atende** (§10): cada componente novo responde "que problema medido obriga a
    pôr isto?". Sem número, não entra.
 4. **Conferir as fronteiras**: núcleo sem palavra de domínio, dependência apontando para dentro,
-   contrato antes do código (§17.1).
+   contrato antes do código (§17.1). **Fronteira que dá para travar no lint vira regra de lint**
+   no plano: import proibido do núcleo para o domínio (`no-restricted-imports` no ESLint,
+   `flake8-tidy-imports` / `banned-api` no ruff), com o teste que mostra a regra acusando a
+   violação. Fronteira que só existe no texto, cedo ou tarde, se rompe.
 5. **Mapa de impacto** (§14.1): funções, setores vizinhos, contratos, caminhos lidos por outros
    sistemas, cópias, baterias que cobrem cada ponto e as que faltam.
 6. **Abstração só no terceiro caso** (§2); separar em módulo quando a peça ganhou duas

@@ -19,7 +19,7 @@ arquivo da linha — nunca a pasta inteira (§18).
 | Situação | § | Arquivo em `references/` |
 |---|---|---|
 | **Qualquer alteração de código, configuração ou sintaxe** — antes da primeira edição | **§14** | `14-portao.md` |
-| A alteração traz ferramenta nova, ou se cogita usar agentes | §14.3 · §14.4 | `14-3-4-ferramenta-agentes.md` |
+| A alteração traz ferramenta nova, ou se cogita usar agentes, ou um passo mecânico se repete | §14.3 · §14.4 | `14-3-4-ferramenta-agentes.md` |
 | Detalhe e evidência dos itens da pauta de segurança que se aplicam | §14.6 | `14-6-pauta-seguranca.md` |
 | Projeto novo (porte script, pequeno ou grande), mudança de rumo, reparo; linguagem e stack; as quatro análises | §3 | `03-estudo-de-abordagem.md` |
 | "Está pronto?" · construir skill, agente, RAG ou prompt de decisão | §4 · §5 | `04-05-pronto-e-ciclo-ia.md` |
